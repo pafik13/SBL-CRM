@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{767825CF-12E9-46D2-9593-1DCF47F70236}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SBLCRM</RootNamespace>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
+    <AssemblyName>SBL-CRM</AssemblyName>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <XamarinInsightsApiKey>ab2791e7a953ee603df672b89bc00a1ac5a24e20</XamarinInsightsApiKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.10.6\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\packages\Xamarin.Android.Support.v4.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.20.0.0.2\lib\MonoAndroid10\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\MonoAndroid10\RestSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Lib\Fragments\SignInFragment.cs" />
+    <Compile Include="Lib\Dialogs\SignInDialog.cs" />
+    <Compile Include="Lib\Entities\User.cs" />
+    <Compile Include="Lib\Entities\IEntity.cs" />
+    <Compile Include="Lib\Common.cs" />
+    <Compile Include="Lib\Entities\Merchant.cs" />
+    <Compile Include="Lib\Entities\Manager.cs" />
+    <Compile Include="Lib\Entities\Project.cs" />
+    <Compile Include="Lib\Entities\Drug.cs" />
+    <Compile Include="Lib\Entities\Info.cs" />
+    <Compile Include="Lib\Entities\Territory.cs" />
+    <Compile Include="Lib\Entities\Pharmacy\Pharmacy.cs" />
+    <Compile Include="Lib\Entities\Pharmacy\PharmacyManager.cs" />
+    <Compile Include="Lib\Entities\Pharmacy\PharmacyRepository.cs" />
+    <Compile Include="Lib\Entities\Attendance\Attendance.cs" />
+    <Compile Include="Lib\Entities\Attendance\AttendanceManager.cs" />
+    <Compile Include="Lib\Entities\Attendance\AttendanceRepository.cs" />
+    <Compile Include="Lib\Entities\AttendancePhoto\AttendancePhoto.cs" />
+    <Compile Include="Lib\Entities\AttendancePhoto\AttendancePhotoManager.cs" />
+    <Compile Include="Lib\Entities\AttendancePhoto\AttendancePhotoRepository.cs" />
+    <Compile Include="Lib\Entities\AttendanceResult\AttendanceResult.cs" />
+    <Compile Include="Lib\Entities\AttendanceResult\AttendanceResultManager.cs" />
+    <Compile Include="Lib\Entities\AttendanceResult\AttendanceResultRepository.cs" />
+    <Compile Include="Lib\Entities\SyncQueue\SyncQueue.cs" />
+    <Compile Include="Lib\Entities\SyncQueue\SyncQueueManager.cs" />
+    <Compile Include="Lib\Entities\SyncQueue\SyncQueueRepository.cs" />
+    <Compile Include="Lib\Fragments\Block1Fragment.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable\bottomline.xml" />
+    <AndroidResource Include="Resources\layout\SignInDialog.axml" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\anim\slide_up.xml" />
+    <AndroidResource Include="Resources\anim\slide_right.xml" />
+    <AndroidResource Include="Resources\anim\slide_bottom.xml" />
+    <AndroidResource Include="Resources\layout\SignInFragment.axml" />
+    <AndroidResource Include="Resources\drawable\ic_keyboard_arrow_left_black_24dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_keyboard_arrow_right_black_24dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_adjust_black_24dp.png" />
+    <AndroidResource Include="Resources\layout\Block1Fragment.axml" />
+    <AndroidResource Include="Resources\drawable\ic_fast_forward_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_fast_rewind_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_fast_forward_black_36dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_fast_rewind_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\drawable\" />
+    <Folder Include="Lib\" />
+    <Folder Include="Lib\Fragments\" />
+    <Folder Include="Lib\Entities\" />
+    <Folder Include="Resources\anim\" />
+    <Folder Include="Lib\Dialogs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="..\packages\Xamarin.Insights.1.10.6\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.6\build\MonoAndroid10\Xamarin.Insights.targets')" />
+</Project>

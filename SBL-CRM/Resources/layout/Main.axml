@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#E0E0E0">
+    <RelativeLayout
+        android:id="@+id/maUpPanelRL"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:background="@drawable/bottomline">
+        <TextView
+            android:text="ТЕКУЩАЯ АПТЕКА"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/maInfoText"
+            android:gravity="center"
+            android:textColor="#03A9F4"
+            android:height="64dp"
+            android:paddingRight="24dp"
+            android:paddingLeft="24dp" />
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/maInfoText"
+            android:id="@+id/maVisitControlB"
+            android:background="#03A9F4"
+            android:typeface="monospace"
+            android:width="150dp"
+            android:height="64dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+        <ImageView
+            android:src="@drawable/ic_fast_forward_black_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/maNextBockIV"
+            android:layout_alignParentRight="true"
+            android:paddingRight="14dp"
+            android:layout_centerVertical="true" />
+        <ImageView
+            android:src="@drawable/ic_fast_rewind_black_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/maNextBockIV"
+            android:id="@+id/maPrevBlockIV"
+            android:layout_centerVertical="true"
+            android:paddingRight="14dp" />
+    </RelativeLayout>
+    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/maContentFL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone" />
+    <TableLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/maPharmacyTable" />
+    <RelativeLayout
+        android:id="@+id/maDownPanelRL"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:background="@drawable/bottomline">
+        <TextView
+            android:text="СТРАНИЦА : "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/maPageText"
+            android:gravity="center"
+            android:textColor="#03A9F4"
+            android:height="56dp"
+            android:paddingRight="32dp"
+            android:paddingLeft="24dp"
+            android:layout_toLeftOf="@+id/maPrevImage" />
+        <ImageView
+            android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/maPrevImage"
+            android:paddingRight="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/maNextImage"
+            android:minHeight="56dp" />
+        <ImageView
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/maNextImage"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="14dp"
+            android:minHeight="56dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sifBeforeSignInRL"
+        android:background="#E0E0E0">
+        <TextView
+            android:id="@+id/sifNotSignInText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="НЕ ВЫПОЛНЕН ВХОД!"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:textSize="24dp"
+            android:textColor="#37474F" />
+        <Button
+            android:text="ВОЙТИ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sifNotSignInText"
+            android:id="@+id/maSignInButton"
+            android:layout_centerInParent="true"
+            android:textSize="24dp"
+            android:width="150dp"
+            android:background="#03A9F4"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+    </RelativeLayout>
+</LinearLayout>

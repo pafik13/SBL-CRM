@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ifGeneralLayout">
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sifBeforeSignInRL"
+        android:background="#E0E0E0"
+        tools:visibility="visible">
+        <TextView
+            android:id="@+id/sifNotSignInText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="НЕ ВЫПОЛНЕН ВХОД!"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:textSize="24dp"
+            android:textColor="#37474F" />
+        <Button
+            android:text="ВОЙТИ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sifNotSignInText"
+            android:id="@+id/sifSignInButton"
+            android:layout_centerInParent="true"
+            android:textSize="24dp"
+            android:width="150dp"
+            android:background="#03A9F4"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+    </RelativeLayout>
+</RelativeLayout>
