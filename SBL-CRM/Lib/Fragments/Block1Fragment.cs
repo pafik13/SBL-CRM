@@ -17,10 +17,6 @@ namespace SBLCRM.Lib.Fragments
 {
 	public class Block1Fragment : Fragment
 	{
-		public const string PHARMACY_ID = @"pharmacyID";
-
-		LinearLayout ll = null;
-
 		public override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
@@ -36,14 +32,17 @@ namespace SBLCRM.Lib.Fragments
 			base.OnCreateView (inflater, container, savedInstanceState);
 
 			View rootView = inflater.Inflate (Resource.Layout.Block1Fragment, container, false);
-			ll = rootView.FindViewById<LinearLayout> (Resource.Id.b1LinearLayout);
-			int pharmacyID = Arguments.GetInt (Block1Fragment.PHARMACY_ID);
+			int pharmacyID = Arguments.GetInt (Common.PHARMACY_ID);
 			Pharmacy pharmacy = PharmacyManager.GetPharmacy (pharmacyID);
 
-			ll.AddView (GetItem (string.Format(@"ID : {0}", pharmacy.id)));
-			ll.AddView (GetItem (string.Format(@"FullName : {0}", pharmacy.fullName)))																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																;
-			ll.AddView (GetItem (string.Format(@"ShortName : {0}", pharmacy.shortName)));
-			ll.AddView (GetItem (string.Format(@"Subway : {0}", pharmacy.subway)));
+			rootView.FindViewById<TextView> (Resource.Id.b1fTradenetText).Text = @"Аптечная Сеть";
+			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = @"Город";
+			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyNameText).Text = pharmacy.shortName;
+			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyAddressText).Text = pharmacy.address;
+			rootView.FindViewById<EditText> (Resource.Id.b1fCategoryInNetEdit).Text = @"Категория";
+			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
+			rootView.FindViewById<EditText> (Resource.Id.b1fTelephoneEdit).Text = @"Телефон";
+			rootView.FindViewById<EditText> (Resource.Id.b1fCommentEdit).Text = @"Комментарий";
 
 			return rootView;
 		}

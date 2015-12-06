@@ -13,6 +13,7 @@ namespace SBLCRM.Lib.Entities
 		public int id { get; set; }
 		public int attendance { get; set; }
 		public int drug { get; set; }
+		public int subType { get; set; }
 		public float longitude { get; set; }
 		public float latitude { get; set; }
 		public string photoPath { get; set; }
@@ -25,6 +26,7 @@ namespace SBLCRM.Lib.Entities
 				@" { " 
 					+ quote + @"attendance" + quote + @" : " + attendance + @","	
 					+ quote + @"drug" + quote + @" : " + drug + @","
+					+ quote + @"subType" + quote + @" : " + subType + @","
 					+ quote + @"longitude" + quote + @" : " + longitude + @","
 					+ quote + @"latitude" + quote + @" : " + latitude + @","
 					+ quote + @"stamp" + quote + @" : " + quote + stamp.ToString(@"O") + quote

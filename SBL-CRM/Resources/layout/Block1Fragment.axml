@@ -4,22 +4,152 @@
     android:minHeight="25px"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/b1RelativeLayout">
+    android:id="@+id/b1fRelativeLayout"
+    android:background="#E0E0E0">
     <ScrollView
         android:minWidth="25px"
         android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ifBeforeSignInLayout"
-        android:id="@+id/scrollView1">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/b1fScrollView"
+        android:layout_centerHorizontal="true">
+        <TableLayout
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/b1LinearLayout"
-            android:gravity="center_horizontal"
-            android:background="#E0E0E0" />
+            android:id="@+id/tableLayout1">
+            <TableRow
+                android:id="@+id/b1fTRHeader">
+                <TextView
+                    android:layout_column="0"
+                    android:id="@+id/textView1"
+                    android:width="300dp" />
+                <TextView
+                    android:layout_column="1"
+                    android:id="@+id/textView2"
+                    android:width="300dp" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent1">
+                <TextView
+                    android:text="Название АС"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light" />
+                <TextView
+                    android:text="TradenetText"
+                    android:layout_column="1"
+                    style="@style/text_row"
+                    android:id="@+id/b1fTradenetText" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent2">
+                <TextView
+                    android:text="Город"
+                    android:layout_column="0"
+                    style="@style/text_row_large"
+                    android:background="@android:color/background_light" />
+                <TextView
+                    android:text="CityText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fCityText" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent3">
+                <TextView
+                    android:text="Название Аптеки"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light" />
+                <TextView
+                    android:text="PharmacyNameText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fPharmacyNameText" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent4">
+                <TextView
+                    android:text="Адрес Аптеки"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light" />
+                <TextView
+                    android:text="PharmacyAddressText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fPharmacyAddressText" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent5">
+                <TextView
+                    android:text="Категория в Сети"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light" />
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_column="1"
+                    android:id="@+id/b1fCategoryInNetEdit"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/bottomline"
+                    android:textColorHint="#E0E0E0"
+                    android:textColor="#000000"
+                    android:hint="Категория в Сети" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent6">
+                <TextView
+                    android:text="Категория OTC-фарм"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light" />
+                <TextView
+                    android:text="CategoryInOTCText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fCategoryInOTCText" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fTRContent7">
+                <TextView
+                    android:text="Телефон"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light" />
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_column="1"
+                    android:id="@+id/b1fTelephoneEdit"
+                    android:background="@drawable/bottomline"
+                    android:textColorHint="#E0E0E0"
+                    android:textColor="#000000"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:hint="Телефон" />
+            </TableRow>
+            <TableRow
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:id="@+id/tableRow1">
+                <TextView
+                    android:text="Комментарий"
+                    android:layout_column="0"
+                    style="@style/text_row_large"
+                    android:background="@android:color/background_light" />
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_column="1"
+                    android:id="@+id/b1fCommentEdit"
+                    android:background="@drawable/bottomline"
+                    android:textColorHint="#E0E0E0"
+                    android:textColor="#000000"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:hint="Комментарий"
+                    android:inputType="textMultiLine"
+                    android:maxWidth="300dp" />
+            </TableRow>
+        </TableLayout>
     </ScrollView>
 </RelativeLayout>

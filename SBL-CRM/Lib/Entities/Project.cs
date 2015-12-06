@@ -14,6 +14,8 @@ namespace SBLCRM.Lib.Entities
         public int id { get; set; }
         public string fullName { get; set; }
         public string description { get; set; }
+		public int drugsInWeek { get; set; }
+		public int startWeek { get; set; }
         public int[] drugs { get; set; }
     }
 

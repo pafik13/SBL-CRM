@@ -36,6 +36,19 @@
             android:textColor="#FFFFFF"
             android:textSize="24dp"
             android:textStyle="bold" />
+        <Button
+            android:text="Button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/maRightB"
+            android:background="#03A9F4"
+            android:typeface="monospace"
+            android:width="150dp"
+            android:height="64dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:textStyle="bold" />
         <ImageView
             android:src="@drawable/ic_fast_forward_black_36dp"
             android:layout_width="wrap_content"

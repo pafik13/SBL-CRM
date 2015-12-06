@@ -13,6 +13,7 @@ namespace SBLCRM.Lib
 {
     public class Common
     {
+		public const string PHARMACY_ID = @"pharmacyID";
 
         static Common()
 		{
@@ -208,6 +209,62 @@ namespace SBLCRM.Lib
 			using (var writer = new StreamWriter(storeLocation))
 			{
 				serializer.Serialize(writer, infos);
+			}
+
+			return true;
+		}
+
+		/******  PhotoType  *****/
+		public static List<PhotoType> GetPhotoTypes(string username)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"photoTypes.xml");
+			var serializer = new XmlSerializer(typeof(List<PhotoType>));
+
+			if (File.Exists (storeLocation)) {
+				using (var stream = new FileStream (storeLocation, FileMode.Open)) {
+					return (List<PhotoType>)serializer.Deserialize (stream);
+				}
+			}
+
+			return new List<PhotoType> ();
+		}
+
+		public static bool SetPhotoTypes(string username, List<PhotoType> photoTypes)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"photoTypes.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<PhotoType>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, photoTypes);
+			}
+
+			return true;
+		}
+
+		/******  PHOTOSUBTYPE  *****/
+		public static List<PhotoSubType> GetPhotoSubTypes(string username)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"photoSubTypes.xml");
+			var serializer = new XmlSerializer(typeof(List<PhotoSubType>));
+
+			if (File.Exists (storeLocation)) {
+				using (var stream = new FileStream (storeLocation, FileMode.Open)) {
+					return (List<PhotoSubType>)serializer.Deserialize (stream);
+				}
+			}
+
+			return new List<PhotoSubType> ();
+		}
+
+		public static bool SetPhotoSubTypes(string username, List<PhotoSubType> photoSubTypes)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"photoSubTypes.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<PhotoSubType>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, photoSubTypes);
 			}
 
 			return true;

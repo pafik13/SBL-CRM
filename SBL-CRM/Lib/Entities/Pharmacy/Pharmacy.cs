@@ -17,7 +17,10 @@ namespace SBLCRM.Lib.Entities
 		public string subway { get; set; }
 		public string phone { get; set; }
 		public string email { get; set; }
-
+		public string category_otc { get; set; }
+		public string category_sbl { get; set; }
+		public string code_sbl { get; set; }
+		public int tradenet { get; set; }
 	}
 }
 

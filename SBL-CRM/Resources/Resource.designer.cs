@@ -886,17 +886,68 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a000f
 			public const int always = 2131361807;
 			
-			// aapt resource value: 0x7f0a003f
-			public const int b1LinearLayout = 2131361855;
+			// aapt resource value: 0x7f0a004b
+			public const int b1fCategoryInNetEdit = 2131361867;
+			
+			// aapt resource value: 0x7f0a004d
+			public const int b1fCategoryInOTCText = 2131361869;
+			
+			// aapt resource value: 0x7f0a0045
+			public const int b1fCityText = 2131361861;
+			
+			// aapt resource value: 0x7f0a0051
+			public const int b1fCommentEdit = 2131361873;
+			
+			// aapt resource value: 0x7f0a0049
+			public const int b1fPharmacyAddressText = 2131361865;
+			
+			// aapt resource value: 0x7f0a0047
+			public const int b1fPharmacyNameText = 2131361863;
 			
 			// aapt resource value: 0x7f0a003c
-			public const int b1RelativeLayout = 2131361852;
+			public const int b1fRelativeLayout = 2131361852;
+			
+			// aapt resource value: 0x7f0a003d
+			public const int b1fScrollView = 2131361853;
+			
+			// aapt resource value: 0x7f0a0042
+			public const int b1fTRContent1 = 2131361858;
+			
+			// aapt resource value: 0x7f0a0044
+			public const int b1fTRContent2 = 2131361860;
+			
+			// aapt resource value: 0x7f0a0046
+			public const int b1fTRContent3 = 2131361862;
+			
+			// aapt resource value: 0x7f0a0048
+			public const int b1fTRContent4 = 2131361864;
+			
+			// aapt resource value: 0x7f0a004a
+			public const int b1fTRContent5 = 2131361866;
+			
+			// aapt resource value: 0x7f0a004c
+			public const int b1fTRContent6 = 2131361868;
+			
+			// aapt resource value: 0x7f0a004e
+			public const int b1fTRContent7 = 2131361870;
+			
+			// aapt resource value: 0x7f0a003f
+			public const int b1fTRHeader = 2131361855;
+			
+			// aapt resource value: 0x7f0a004f
+			public const int b1fTelephoneEdit = 2131361871;
+			
+			// aapt resource value: 0x7f0a0043
+			public const int b1fTradenetText = 2131361859;
+			
+			// aapt resource value: 0x7f0a0053
+			public const int b2fText = 2131361875;
 			
 			// aapt resource value: 0x7f0a0016
 			public const int beginning = 2131361814;
 			
-			// aapt resource value: 0x7f0a0059
-			public const int btnDialogEmail = 2131361881;
+			// aapt resource value: 0x7f0a0071
+			public const int btnDialogEmail = 2131361905;
 			
 			// aapt resource value: 0x7f0a002d
 			public const int checkbox = 2131361837;
@@ -909,6 +960,9 @@ namespace SBLCRM
 			
 			// aapt resource value: 0x7f0a0014
 			public const int dialog = 2131361812;
+			
+			// aapt resource value: 0x7f0a0054
+			public const int difText = 2131361876;
 			
 			// aapt resource value: 0x7f0a0009
 			public const int disableHome = 2131361801;
@@ -937,11 +991,8 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a002a
 			public const int icon = 2131361834;
 			
-			// aapt resource value: 0x7f0a003d
-			public const int ifBeforeSignInLayout = 2131361853;
-			
-			// aapt resource value: 0x7f0a005a
-			public const int ifGeneralLayout = 2131361882;
+			// aapt resource value: 0x7f0a0072
+			public const int ifGeneralLayout = 2131361906;
 			
 			// aapt resource value: 0x7f0a0011
 			public const int ifRoom = 2131361809;
@@ -955,53 +1006,56 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a0029
 			public const int list_item = 2131361833;
 			
-			// aapt resource value: 0x7f0a0057
-			public const int llDanger = 2131361879;
+			// aapt resource value: 0x7f0a006f
+			public const int llDanger = 2131361903;
 			
-			// aapt resource value: 0x7f0a0050
-			public const int llInfo = 2131361872;
+			// aapt resource value: 0x7f0a0068
+			public const int llInfo = 2131361896;
 			
-			// aapt resource value: 0x7f0a0053
-			public const int llSuccess = 2131361875;
+			// aapt resource value: 0x7f0a006b
+			public const int llSuccess = 2131361899;
+			
+			// aapt resource value: 0x7f0a006d
+			public const int llWarning = 2131361901;
+			
+			// aapt resource value: 0x7f0a005b
+			public const int maContentFL = 2131361883;
+			
+			// aapt resource value: 0x7f0a005d
+			public const int maDownPanelRL = 2131361885;
+			
+			// aapt resource value: 0x7f0a0056
+			public const int maInfoText = 2131361878;
+			
+			// aapt resource value: 0x7f0a0059
+			public const int maNextBockIV = 2131361881;
+			
+			// aapt resource value: 0x7f0a0060
+			public const int maNextImage = 2131361888;
+			
+			// aapt resource value: 0x7f0a005e
+			public const int maPageText = 2131361886;
+			
+			// aapt resource value: 0x7f0a005c
+			public const int maPharmacyTable = 2131361884;
+			
+			// aapt resource value: 0x7f0a005a
+			public const int maPrevBlockIV = 2131361882;
+			
+			// aapt resource value: 0x7f0a005f
+			public const int maPrevImage = 2131361887;
+			
+			// aapt resource value: 0x7f0a0058
+			public const int maRightB = 2131361880;
+			
+			// aapt resource value: 0x7f0a0063
+			public const int maSignInButton = 2131361891;
 			
 			// aapt resource value: 0x7f0a0055
-			public const int llWarning = 2131361877;
+			public const int maUpPanelRL = 2131361877;
 			
-			// aapt resource value: 0x7f0a0045
-			public const int maContentFL = 2131361861;
-			
-			// aapt resource value: 0x7f0a0047
-			public const int maDownPanelRL = 2131361863;
-			
-			// aapt resource value: 0x7f0a0041
-			public const int maInfoText = 2131361857;
-			
-			// aapt resource value: 0x7f0a0043
-			public const int maNextBockIV = 2131361859;
-			
-			// aapt resource value: 0x7f0a004a
-			public const int maNextImage = 2131361866;
-			
-			// aapt resource value: 0x7f0a0048
-			public const int maPageText = 2131361864;
-			
-			// aapt resource value: 0x7f0a0046
-			public const int maPharmacyTable = 2131361862;
-			
-			// aapt resource value: 0x7f0a0044
-			public const int maPrevBlockIV = 2131361860;
-			
-			// aapt resource value: 0x7f0a0049
-			public const int maPrevImage = 2131361865;
-			
-			// aapt resource value: 0x7f0a004d
-			public const int maSignInButton = 2131361869;
-			
-			// aapt resource value: 0x7f0a0040
-			public const int maUpPanelRL = 2131361856;
-			
-			// aapt resource value: 0x7f0a0042
-			public const int maVisitControlB = 2131361858;
+			// aapt resource value: 0x7f0a0057
+			public const int maVisitControlB = 2131361879;
 			
 			// aapt resource value: 0x7f0a0018
 			public const int middle = 2131361816;
@@ -1015,8 +1069,14 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a0007
 			public const int normal = 2131361799;
 			
-			// aapt resource value: 0x7f0a0051
-			public const int progressBar1 = 2131361873;
+			// aapt resource value: 0x7f0a0064
+			public const int pafText = 2131361892;
+			
+			// aapt resource value: 0x7f0a0065
+			public const int plfText = 2131361893;
+			
+			// aapt resource value: 0x7f0a0069
+			public const int progressBar1 = 2131361897;
 			
 			// aapt resource value: 0x7f0a0004
 			public const int progress_circular = 2131361796;
@@ -1027,8 +1087,8 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a002f
 			public const int radio = 2131361839;
 			
-			// aapt resource value: 0x7f0a003e
-			public const int scrollView1 = 2131361854;
+			// aapt resource value: 0x7f0a0052
+			public const int relativeLayout1 = 2131361874;
 			
 			// aapt resource value: 0x7f0a0032
 			public const int search_badge = 2131361842;
@@ -1072,26 +1132,26 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a000d
 			public const int showTitle = 2131361805;
 			
-			// aapt resource value: 0x7f0a0058
-			public const int sidProgressDanger = 2131361880;
+			// aapt resource value: 0x7f0a0070
+			public const int sidProgressDanger = 2131361904;
 			
-			// aapt resource value: 0x7f0a0052
-			public const int sidProgressInfo = 2131361874;
+			// aapt resource value: 0x7f0a006a
+			public const int sidProgressInfo = 2131361898;
 			
-			// aapt resource value: 0x7f0a0054
-			public const int sidProgressSuccess = 2131361876;
+			// aapt resource value: 0x7f0a006c
+			public const int sidProgressSuccess = 2131361900;
 			
-			// aapt resource value: 0x7f0a0056
-			public const int sidProgressWarning = 2131361878;
+			// aapt resource value: 0x7f0a006e
+			public const int sidProgressWarning = 2131361902;
 			
-			// aapt resource value: 0x7f0a004b
-			public const int sifBeforeSignInRL = 2131361867;
+			// aapt resource value: 0x7f0a0061
+			public const int sifBeforeSignInRL = 2131361889;
 			
-			// aapt resource value: 0x7f0a004c
-			public const int sifNotSignInText = 2131361868;
+			// aapt resource value: 0x7f0a0062
+			public const int sifNotSignInText = 2131361890;
 			
-			// aapt resource value: 0x7f0a005b
-			public const int sifSignInButton = 2131361883;
+			// aapt resource value: 0x7f0a0073
+			public const int sifSignInButton = 2131361907;
 			
 			// aapt resource value: 0x7f0a001e
 			public const int split_action_bar = 2131361822;
@@ -1102,17 +1162,29 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0a0008
 			public const int tabMode = 2131361800;
 			
+			// aapt resource value: 0x7f0a003e
+			public const int tableLayout1 = 2131361854;
+			
+			// aapt resource value: 0x7f0a0050
+			public const int tableRow1 = 2131361872;
+			
+			// aapt resource value: 0x7f0a0040
+			public const int textView1 = 2131361856;
+			
+			// aapt resource value: 0x7f0a0041
+			public const int textView2 = 2131361857;
+			
 			// aapt resource value: 0x7f0a002b
 			public const int title = 2131361835;
 			
 			// aapt resource value: 0x7f0a0020
 			public const int top_action_bar = 2131361824;
 			
-			// aapt resource value: 0x7f0a004f
-			public const int txtPassword = 2131361871;
+			// aapt resource value: 0x7f0a0067
+			public const int txtPassword = 2131361895;
 			
-			// aapt resource value: 0x7f0a004e
-			public const int txtUsername = 2131361870;
+			// aapt resource value: 0x7f0a0066
+			public const int txtUsername = 2131361894;
 			
 			// aapt resource value: 0x7f0a0021
 			public const int up = 2131361825;
@@ -1228,16 +1300,28 @@ namespace SBLCRM
 			public const int Block1Fragment = 2130968600;
 			
 			// aapt resource value: 0x7f040019
-			public const int Main = 2130968601;
+			public const int Block2Fragment = 2130968601;
 			
 			// aapt resource value: 0x7f04001a
-			public const int SignInDialog = 2130968602;
+			public const int DrugInfoFragment = 2130968602;
 			
 			// aapt resource value: 0x7f04001b
-			public const int SignInFragment = 2130968603;
+			public const int Main = 2130968603;
 			
 			// aapt resource value: 0x7f04001c
-			public const int support_simple_spinner_dropdown_item = 2130968604;
+			public const int PhotoAddFragment = 2130968604;
+			
+			// aapt resource value: 0x7f04001d
+			public const int PhotoListFragment = 2130968605;
+			
+			// aapt resource value: 0x7f04001e
+			public const int SignInDialog = 2130968606;
+			
+			// aapt resource value: 0x7f04001f
+			public const int SignInFragment = 2130968607;
+			
+			// aapt resource value: 0x7f040020
+			public const int support_simple_spinner_dropdown_item = 2130968608;
 			
 			static Layout()
 			{

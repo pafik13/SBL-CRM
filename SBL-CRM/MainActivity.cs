@@ -19,6 +19,7 @@ namespace SBLCRM
 	public class MainActivity : Activity
 	{
 		RelativeLayout upPanel = null;
+		RelativeLayout beforeSignIn = null;
 		FrameLayout content = null;
 		TableLayout pharamcyTable = null;
 		Button bSignIn = null;
@@ -30,10 +31,13 @@ namespace SBLCRM
 		ImageView upPrevBlock = null;
 		TextView upInfo = null;
 		Button upVisitControl = null;
+		Button upRightB = null;
 
 		User user = null;
 		int page = 1;
 		int itemsNum = 12;
+		int fragmentNum = 1;
+		int selectedPharmacyID = 0;
 		bool isVisitStart = false;
 
 		protected override void OnCreate (Bundle savedInstanceState)
@@ -48,6 +52,7 @@ namespace SBLCRM
 			SetContentView (Resource.Layout.Main);
 
 			upPanel = FindViewById<RelativeLayout> (Resource.Id.maUpPanelRL);
+			beforeSignIn = FindViewById<RelativeLayout> (Resource.Id.sifBeforeSignInRL);
 			content = FindViewById<FrameLayout> (Resource.Id.maContentFL);
 			pharamcyTable = FindViewById<TableLayout> (Resource.Id.maPharmacyTable);
 			bSignIn = FindViewById<Button> (Resource.Id.maSignInButton);
@@ -57,9 +62,22 @@ namespace SBLCRM
 
 			// Up Panel
 			upNextBlock = FindViewById<ImageView> (Resource.Id.maNextBockIV);
+			upNextBlock.Click += (object sender, EventArgs e) => {
+				if (fragmentNum < 5) {
+					fragmentNum ++;
+					RefreshContent();
+				}
+			};
 			upPrevBlock = FindViewById<ImageView> (Resource.Id.maPrevBlockIV);
+			upPrevBlock.Click += (object sender, EventArgs e) => {
+				if (fragmentNum > 1) {
+					fragmentNum --;
+					RefreshContent();
+				}
+			};
 			upInfo = FindViewById<TextView> (Resource.Id.maInfoText);
 			upVisitControl = FindViewById<Button> (Resource.Id.maVisitControlB);
+			upRightB = FindViewById<Button> (Resource.Id.maRightB);
 
 			next.Click += (object sender, EventArgs e) => {
 				page++;
@@ -95,6 +113,33 @@ namespace SBLCRM
 			RefreshMainView ();
 		}
 
+		void RefreshContent()
+		{
+			Bundle args = new Bundle ();
+			args.PutInt (Common.PHARMACY_ID, selectedPharmacyID);
+			Fragment fragment = null;
+			switch (fragmentNum)
+			{
+			case 1:
+				fragment = new Block1Fragment();
+				break;
+			case 2:
+				fragment = new Block2Fragment();
+				break;
+			case 3:
+				fragment = new DrugInfoFragment();
+				break;
+			case 4:
+				fragment = new PhotoAddFragment();
+				break;
+			case 5:
+				fragment = new PhotoListFragment();
+				break;
+			}
+			fragment.Arguments = args;
+			FragmentManager.BeginTransaction ().Replace (Resource.Id.maContentFL, fragment).Commit();
+		}
+
 		void SigninDialog_SuccessSignedIn (object sender, EventArgs e)
 		{
 			RunOnUiThread(() => RefreshMainView ()); 
@@ -108,19 +153,21 @@ namespace SBLCRM
 				content.Visibility = ViewStates.Gone;
 				upPanel.Visibility = ViewStates.Gone;
 				pharamcyTable.Visibility = ViewStates.Gone;
+				beforeSignIn.Visibility = ViewStates.Visible;
 			} else {
 				content.Visibility = ViewStates.Gone;
+				beforeSignIn.Visibility = ViewStates.Gone;
 
 				// Set Up Panel
 				upPanel.Visibility = ViewStates.Visible;
 				upVisitControl.Visibility = ViewStates.Gone;
+				upRightB.Visibility = ViewStates.Gone;
 				upNextBlock.Visibility = ViewStates.Gone;
 				upPrevBlock.Visibility = ViewStates.Gone;
 				Project project = Common.GetProject (user.username);
 				Territory territory = Common.GetTerritory (user.username);
+				upInfo.Visibility = ViewStates.Visible;
 				upInfo.Text = string.Format (@"ПРОЕКТ : {0}; ГОРОД : {1}", project.fullName, territory.baseCity);
-
-				pharamcyTable.Visibility = ViewStates.Visible;
 
 				RefreshPharmacyTable ();
 			}			
@@ -128,6 +175,8 @@ namespace SBLCRM
 
 		void RefreshPharmacyTable()
 		{
+			pharamcyTable.Visibility = ViewStates.Visible;
+
 			//Add Header Row
 			TableRow hRow = new TableRow (this);
 			hRow.SetBackgroundResource(Resource.Drawable.bottomline);
@@ -271,9 +320,9 @@ namespace SBLCRM
 		void Action_Click (object sender, EventArgs e)
 		{
 			ImageView img = (ImageView)sender;
-			int pharmacyID = (int) img.GetTag(Resource.String.pharmacyID);
+			selectedPharmacyID = (int) img.GetTag(Resource.String.pharmacyID);
 			Bundle args = new Bundle ();
-			args.PutInt (Block1Fragment.PHARMACY_ID, pharmacyID);
+			args.PutInt (Common.PHARMACY_ID, selectedPharmacyID);
 			Fragment fragment = new Block1Fragment ();
 			fragment.Arguments = args;
 			FragmentManager.BeginTransaction ().Replace (Resource.Id.maContentFL, fragment).Commit();
@@ -286,6 +335,16 @@ namespace SBLCRM
 			upVisitControl.Text = @"НАЧАТЬ ВИЗИТ";
 			upVisitControl.Click += UpVisitControl_Click;
 			//Toast.MakeText(this, string.Format(@"ID : {0}", pharmacyID), ToastLength.Short).Show();
+
+			upRightB.Visibility = ViewStates.Visible;
+			upRightB.Text = @"ЗАКРЫТЬ";
+			upRightB.Click += UpRightB_Click;;
+		}
+
+		void UpRightB_Click (object sender, EventArgs e)
+		{
+			FragmentManager.BeginTransaction ().Remove (FragmentManager.FindFragmentById (Resource.Id.maContentFL)).Commit ();
+			RefreshMainView ();
 		}
 
 		void UpVisitControl_Click (object sender, EventArgs e)

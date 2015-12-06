@@ -24,6 +24,8 @@ namespace SBLCRM.Lib.Dialogs
 {
 	public class SigninDialog : DialogFragment
 	{
+		const char quote = '"';
+
 		Button bSignUp = null;
 
 		Animation mAnimation= null;
@@ -381,6 +383,34 @@ namespace SBLCRM.Lib.Dialogs
 			{
 				//Debug.WriteLine(@"Не удалось сохранить информации о препаратах", @"Error");
 				WriteWarning (@"Не удалось сохранить информацию о собираемых данных", 2000);
+				return false;
+			}
+
+
+			WriteInfo (@"Получение типов фотографий", 2000);
+			request = new RestRequest(@"project/{id}/photoTypes", Method.GET);
+			request.AddCookie(cookieName, cookieValue);
+			request.AddUrlSegment(@"id", merchant.project.ToString());
+			List<PhotoType> photoTypes = client.Execute<List<PhotoType>>(request).Data;
+
+			if (!Common.SetPhotoTypes(username, photoTypes))
+			{
+				//Debug.WriteLine(@"Не удалось сохранить информации о препаратах", @"Error");
+				WriteWarning (@"Не удалось сохранить типы фотографий", 2000);
+				return false;
+			}
+
+			WriteInfo (@"Получение подтипов фотографий", 2000);
+			string ids = string.Join(", ", from item in photoTypes select item.id);
+			ids = @"{" + quote + @"type" + quote + @" : [" + ids + @"]}";
+			request = new RestRequest(@"photosubtype?populate=false&where=" + ids, Method.GET);
+			request.AddCookie(cookieName, cookieValue);
+			List<PhotoSubType> photoSubTypes = client.Execute<List<PhotoSubType>>(request).Data;
+
+			if (!Common.SetPhotoSubTypes(username, photoSubTypes))
+			{
+				//Debug.WriteLine(@"Не удалось сохранить информации о препаратах", @"Error");
+				WriteWarning (@"Не удалось сохранить подтипы фотографий", 2000);
 				return false;
 			}
 
