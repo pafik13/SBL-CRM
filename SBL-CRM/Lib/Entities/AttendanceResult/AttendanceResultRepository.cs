@@ -189,5 +189,34 @@ namespace SBLCRM.Lib.Entities
 			}
 			return -1;
 		}
+
+
+		public static List<AttendanceResult> GetCurrentAttendanceResults()
+		{
+			string storeLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"Current", @"attendanceResults.xml");
+			if (!File.Exists(storeLocation)) {
+				return null;
+			}
+
+			var serializer = new XmlSerializer(typeof(List<AttendanceResult>));
+
+			using (var stream = new FileStream(storeLocation, FileMode.Open))
+			{
+				return (List<AttendanceResult>)serializer.Deserialize(stream);
+			}
+		}
+
+		public static bool SetCurrentAttendanceResults(List<AttendanceResult> attendanceResults)
+		{
+			string storeLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"Current", @"attendanceResults.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<AttendanceResult>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, attendanceResults);
+			}
+
+			return true;
+		}
 	}
 }

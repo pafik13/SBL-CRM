@@ -66,6 +66,14 @@ namespace SBLCRM.Lib.Entities
 			return null;
 		}
 
+		public static Attendance GetLastAttendance(int pharmacyID)
+		{
+			return (from att in attendances
+					where att.pharmacy == pharmacyID
+			         orderby att.date descending
+			         select att).FirstOrDefault ();
+		}
+
 		public static IEnumerable<Attendance> GetAttendances ()
 		{
 			return attendances;
@@ -131,6 +139,34 @@ namespace SBLCRM.Lib.Entities
 				}
 			}
 			return -1;
+		}
+
+		public static Attendance GetCurrentAttendance()
+		{
+			string storeLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"Current", @"attendance.xml");
+			if (!File.Exists(storeLocation)) {
+				return null;
+			}
+
+			var serializer = new XmlSerializer(typeof(Attendance));
+
+			using (var stream = new FileStream(storeLocation, FileMode.Open))
+			{
+				return (Attendance)serializer.Deserialize(stream);
+			}
+		}
+
+		public static bool SetCurrentAttendance(Attendance attendance)
+		{
+			string storeLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"Current", @"attendance.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(Attendance));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, attendance);
+			}
+
+			return true;
 		}
 	}
 }

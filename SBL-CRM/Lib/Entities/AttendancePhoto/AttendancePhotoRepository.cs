@@ -150,5 +150,33 @@ namespace SBLCRM.Lib.Entities
 			}
 			return -1;
 		}
+
+		public static List<AttendancePhoto> GetCurrentAttendancePhotos()
+		{
+			string storeLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"Current", @"attendancePhotos.xml");
+			if (!File.Exists(storeLocation)) {
+				return null;
+			}
+
+			var serializer = new XmlSerializer(typeof(List<AttendancePhoto>));
+
+			using (var stream = new FileStream(storeLocation, FileMode.Open))
+			{
+				return (List<AttendancePhoto>)serializer.Deserialize(stream);
+			}
+		}
+
+		public static bool SetCurrentAttendancePhotos(List<AttendancePhoto> attendancePhotos)
+		{
+			string storeLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"Current", @"attendancePhotos.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<AttendancePhoto>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, attendancePhotos);
+			}
+
+			return true;
+		}
 	}
 }

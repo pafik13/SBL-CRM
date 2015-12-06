@@ -1,15 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
-    p1:minWidth="25px"
-    p1:minHeight="25px"
-    p1:layout_width="match_parent"
-    p1:layout_height="match_parent"
-    p1:id="@+id/relativeLayout1">
-    <TextView
-        p1:text="БЛОК ДОБАВЛЕНИЯ ФОТО"
-        p1:textAppearance="?android:attr/textAppearanceLarge"
-        p1:layout_width="wrap_content"
-        p1:layout_height="wrap_content"
-        p1:id="@+id/pafText"
-        p1:layout_centerInParent="true" />
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/pafRelativeLayout"
+    android:background="#E0E0E0">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout1"
+        android:layout_weight="1">
+        <TextView
+            android:text="ДОБАВИТЬ ФОТО"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pafAddPhotoHeaderText"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000"
+            android:background="@drawable/bottomline"
+            android:layout_marginTop="100dp" />
+        <TextView
+            android:text="Тип фото"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pafAddPhotoHeaderText"
+            android:id="@+id/pafPhotoTypeText"
+            android:layout_marginTop="60dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pafPhotoTypeText"
+            android:id="@+id/pafPhotoTypeSpinner"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            android:text="Подтип фото"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pafPhotoTypeSpinner"
+            android:id="@+id/pafPhotoSubTypeText"
+            android:layout_marginTop="60dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pafPhotoSubTypeText"
+            android:id="@+id/pafPhotoSubTypeSpinner"
+            android:layout_centerHorizontal="true" />
+        <Button
+            android:text="ДОБАВИТь"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pafPhotoSubTypeSpinner"
+            android:id="@+id/pafAddPhotoButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:typeface="monospace"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:background="#03A9F4"
+            android:textColor="#FFFFFF"
+            android:minWidth="160dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout1"
+        android:layout_weight="1">
+        <ScrollView
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pafScrollView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp">
+            <LinearLayout
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/pafLinearLayout"
+                android:orientation="vertical"
+                android:background="@drawable/bottomline">
+                <TextView
+                    android:text="ВЫПОЛНЕННЫЕ ФОТО"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pafAddedPhotoHeaderText"
+                    android:textColor="#000000"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</LinearLayout>

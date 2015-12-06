@@ -47,5 +47,14 @@ namespace SBLCRM.Lib.Entities
 			return AttendancePhotoRepository.DeleteAttendancePhoto(id);
 		}
 
+		public static List<AttendancePhoto> GetCurrentAttendancePhotos()
+		{
+			return AttendancePhotoRepository.GetCurrentAttendancePhotos ();
+		}
+
+		public static bool SetCurrentAttendancePhotos(List<AttendancePhoto> attendancePhotos)
+		{
+			return AttendancePhotoRepository.SetCurrentAttendancePhotos(attendancePhotos);
+		}
 	}
 }

@@ -14,6 +14,7 @@ namespace SBLCRM.Lib.Entities
 		public int pharmacy { get; set; }
 		public string category_net { get; set; }
 		public string telephone { get; set; }
+		public string comment { get; set; }
 		public string purchaserFIO { get; set; }
 		public string promos { get; set; }
 		public int pharmacistCount { get; set; }
@@ -28,6 +29,7 @@ namespace SBLCRM.Lib.Entities
 					+ quote + @"pharmacy" + quote + @" : " + pharmacy + ","
 					+ quote + @"category_net" + quote + @" : " + quote + category_net + quote + ","
 					+ quote + @"telephone" + quote + @" : " + quote + telephone + quote + ","
+					+ quote + @"comment" + quote + @" : " + quote + comment + quote + ","
 					+ quote + @"purchaserFIO" + quote + @" : " + quote + purchaserFIO + quote + ","
 					+ quote + @"promos" + quote + @" : " + quote + promos + quote + ","
 					+ quote + @"pharmacistCount" + quote + @" : " + pharmacistCount + ","

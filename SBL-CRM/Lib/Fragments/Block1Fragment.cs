@@ -17,6 +17,11 @@ namespace SBLCRM.Lib.Fragments
 {
 	public class Block1Fragment : Fragment
 	{
+		private EditText categoryInNetEdit = null;
+		private EditText telephoneEdit = null;
+		private EditText commentEdit = null;
+
+
 		public override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
@@ -39,10 +44,13 @@ namespace SBLCRM.Lib.Fragments
 			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = @"Город";
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyNameText).Text = pharmacy.shortName;
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyAddressText).Text = pharmacy.address;
-			rootView.FindViewById<EditText> (Resource.Id.b1fCategoryInNetEdit).Text = @"Категория";
+			categoryInNetEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCategoryInNetEdit);
+			categoryInNetEdit.Text = @"Категория";
 			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
-			rootView.FindViewById<EditText> (Resource.Id.b1fTelephoneEdit).Text = @"Телефон";
-			rootView.FindViewById<EditText> (Resource.Id.b1fCommentEdit).Text = @"Комментарий";
+			telephoneEdit = rootView.FindViewById<EditText> (Resource.Id.b1fTelephoneEdit);
+			telephoneEdit.Text = @"Телефон";
+			commentEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCommentEdit);
+			commentEdit.Text = @"Комментарий";
 
 			return rootView;
 		}
@@ -55,6 +63,18 @@ namespace SBLCRM.Lib.Fragments
 			textView.Text = text;
 
 			return textView;
+		}
+
+		public override void OnPause ()
+		{
+			base.OnPause ();
+			AttendanceManager.SetCurrentAttendance (new Attendance () {
+				pharmacy = Arguments.GetInt (Common.PHARMACY_ID),
+				date = DateTime.Now,
+				category_net = categoryInNetEdit.Text,
+				telephone = telephoneEdit.Text,
+				comment = commentEdit.Text
+			});
 		}
 	}
 }

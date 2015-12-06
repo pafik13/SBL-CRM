@@ -18,6 +18,11 @@ namespace SBLCRM.Lib.Entities
 			return AttendanceRepository.GetAttendance(id);
 		}
 
+		public static Attendance GetLastAttendance(int pharmacyID)
+		{
+			return AttendanceRepository.GetLastAttendance(pharmacyID);
+		}
+
 		public static IList<Attendance> GetAttendances (int pharmacyID = -1)
 		{
 			if (pharmacyID == -1) {
@@ -41,6 +46,16 @@ namespace SBLCRM.Lib.Entities
 		{
 			return AttendanceRepository.DeleteAttendance(id);
 		}
-			
+
+		public static Attendance GetCurrentAttendance()
+		{
+			return AttendanceRepository.GetCurrentAttendance ();
+		}
+
+		public static bool SetCurrentAttendance(Attendance attendance)
+		{
+			return AttendanceRepository.SetCurrentAttendance (attendance);
+		}
+
 	}
 }

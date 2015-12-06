@@ -3,4 +3,8 @@
 	<string name="hello">Hello World, Click Me!</string>
 	<string name="app_name">SBL-CRM</string>
 	<string name="pharmacyID">PharmacyID</string>
+
+	<string name="IDattendance">ID посещения - используется в MainFragment</string>
+    <string name="IDdrug">ID препарата - используется в MainFragment</string>
+    <string name="IDinfo">ID информации - используется в MainFragment</string>
 </resources>

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +11,14 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 
+using SBLCRM.Lib.Entities;
+
 namespace SBLCRM
 {
 	public class Block2Fragment : Fragment
 	{
+		private Attendance currentAttendance = null;
+
 		public override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
@@ -29,6 +32,8 @@ namespace SBLCRM
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
 			base.OnCreateView (inflater, container, savedInstanceState);
+
+			currentAttendance = AttendanceManager.GetCurrentAttendance ();
 
 			return inflater.Inflate (Resource.Layout.Block2Fragment, container, false);
 		}

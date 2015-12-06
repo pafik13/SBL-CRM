@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Android.App;
 using Android.Widget;
@@ -30,8 +31,9 @@ namespace SBLCRM
 		ImageView upNextBlock = null;
 		ImageView upPrevBlock = null;
 		TextView upInfo = null;
-		Button upVisitControl = null;
-		Button upRightB = null;
+		Button upStartAttendance = null;
+		Button upEndAttendance = null;
+		Button upClose = null;
 
 		User user = null;
 		int page = 1;
@@ -63,7 +65,7 @@ namespace SBLCRM
 			// Up Panel
 			upNextBlock = FindViewById<ImageView> (Resource.Id.maNextBockIV);
 			upNextBlock.Click += (object sender, EventArgs e) => {
-				if (fragmentNum < 5) {
+				if (fragmentNum < 4) {
 					fragmentNum ++;
 					RefreshContent();
 				}
@@ -76,8 +78,11 @@ namespace SBLCRM
 				}
 			};
 			upInfo = FindViewById<TextView> (Resource.Id.maInfoText);
-			upVisitControl = FindViewById<Button> (Resource.Id.maVisitControlB);
-			upRightB = FindViewById<Button> (Resource.Id.maRightB);
+			upStartAttendance = FindViewById<Button> (Resource.Id.maStartAttendance);
+			upStartAttendance.Click += UpStartAttendance_Click;
+			upEndAttendance = FindViewById<Button> (Resource.Id.maEndAttendance);
+			upEndAttendance.Click += UpEndAttendance_Click;
+			upClose = FindViewById<Button> (Resource.Id.maClose);
 
 			next.Click += (object sender, EventArgs e) => {
 				page++;
@@ -113,6 +118,22 @@ namespace SBLCRM
 			RefreshMainView ();
 		}
 
+		void UpEndAttendance_Click (object sender, EventArgs e)
+		{
+			isVisitStart = false;
+			// SAVE
+			upPrevBlock.Visibility = ViewStates.Gone;
+			upNextBlock.Visibility = ViewStates.Gone;
+			FragmentManager.BeginTransaction ().Remove (FragmentManager.FindFragmentById (Resource.Id.maContentFL)).Commit ();
+			fragmentNum = 1;
+			Attendance att = AttendanceManager.GetCurrentAttendance ();
+			List<AttendanceResult> attResults = AttendanceResultManager.GetCurrentAttendanceResults ();
+			List<AttendancePhoto> attPhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
+//			AttendanceManager.SetCurrentAttendance (null);
+//			AttendanceResultManager.SetCurrentAttendanceResults (null);
+			RefreshMainView ();
+		}
+
 		void RefreshContent()
 		{
 			Bundle args = new Bundle ();
@@ -121,19 +142,20 @@ namespace SBLCRM
 			switch (fragmentNum)
 			{
 			case 1:
+				upEndAttendance.Visibility = ViewStates.Gone;
 				fragment = new Block1Fragment();
 				break;
 			case 2:
+				upEndAttendance.Visibility = ViewStates.Gone;
 				fragment = new Block2Fragment();
 				break;
 			case 3:
+				upEndAttendance.Visibility = ViewStates.Gone;
 				fragment = new DrugInfoFragment();
 				break;
 			case 4:
+				upEndAttendance.Visibility = ViewStates.Visible;
 				fragment = new PhotoAddFragment();
-				break;
-			case 5:
-				fragment = new PhotoListFragment();
 				break;
 			}
 			fragment.Arguments = args;
@@ -160,8 +182,9 @@ namespace SBLCRM
 
 				// Set Up Panel
 				upPanel.Visibility = ViewStates.Visible;
-				upVisitControl.Visibility = ViewStates.Gone;
-				upRightB.Visibility = ViewStates.Gone;
+				upStartAttendance.Visibility = ViewStates.Gone;
+				upEndAttendance.Visibility = ViewStates.Gone;
+				upClose.Visibility = ViewStates.Gone;
 				upNextBlock.Visibility = ViewStates.Gone;
 				upPrevBlock.Visibility = ViewStates.Gone;
 				Project project = Common.GetProject (user.username);
@@ -331,36 +354,28 @@ namespace SBLCRM
 
 			// Setup Up Panel
 			upInfo.Visibility = ViewStates.Gone;
-			upVisitControl.Visibility = ViewStates.Visible;
-			upVisitControl.Text = @"НАЧАТЬ ВИЗИТ";
-			upVisitControl.Click += UpVisitControl_Click;
+			upStartAttendance.Visibility = ViewStates.Visible;
 			//Toast.MakeText(this, string.Format(@"ID : {0}", pharmacyID), ToastLength.Short).Show();
 
-			upRightB.Visibility = ViewStates.Visible;
-			upRightB.Text = @"ЗАКРЫТЬ";
-			upRightB.Click += UpRightB_Click;;
+			upClose.Visibility = ViewStates.Visible;
+			upClose.Click += UpRightB_Click;;
+		}
+
+		void UpStartAttendance_Click (object sender, EventArgs e)
+		{
+			isVisitStart = true;
+			upNextBlock.Visibility = ViewStates.Visible;
+			upPrevBlock.Visibility = ViewStates.Visible;
+			upStartAttendance.Visibility = ViewStates.Gone;
+			upClose.Visibility = ViewStates.Gone;
 		}
 
 		void UpRightB_Click (object sender, EventArgs e)
 		{
 			FragmentManager.BeginTransaction ().Remove (FragmentManager.FindFragmentById (Resource.Id.maContentFL)).Commit ();
+			AttendanceManager.SetCurrentAttendance (null);
+			AttendanceResultManager.SetCurrentAttendanceResults (null);
 			RefreshMainView ();
-		}
-
-		void UpVisitControl_Click (object sender, EventArgs e)
-		{
-			if (isVisitStart) {
-				upNextBlock.Visibility = ViewStates.Gone;
-				upPrevBlock.Visibility = ViewStates.Gone;
-				upVisitControl.Visibility = ViewStates.Gone;
-				isVisitStart = false;
-			} else {
-				upNextBlock.Visibility = ViewStates.Visible;
-				upPrevBlock.Visibility = ViewStates.Visible;
-				upVisitControl.Visibility = ViewStates.Gone;
-				upVisitControl.Text = @"ЗАКОНЧИТЬ ВИЗИТ";
-				isVisitStart = true;
-			}
 		}
 
 		TextView GetItem (ColumnPosition columnPosition)

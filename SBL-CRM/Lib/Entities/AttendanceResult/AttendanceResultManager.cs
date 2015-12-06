@@ -64,6 +64,16 @@ namespace SBLCRM.Lib.Entities
 			return AttendanceResultRepository.DeleteAttendanceResult(id);
 		}
 
+		public static List<AttendanceResult> GetCurrentAttendanceResults()
+		{
+			return AttendanceResultRepository.GetCurrentAttendanceResults ();
+		}
+
+		public static bool SetCurrentAttendanceResults(List<AttendanceResult> attendanceResults)
+		{
+			return AttendanceResultRepository.SetCurrentAttendanceResults(attendanceResults);
+		}
+
 		public static List<AttendanceResult> GenerateResults(List<Info> infos, List<Drug> drugs, string defaultValue = null)
 		{
 			if (string.IsNullOrEmpty (defaultValue)) {

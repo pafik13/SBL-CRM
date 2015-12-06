@@ -18,7 +18,7 @@
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/tableLayout1">
+            android:id="@+id/b1fTableLayout">
             <TableRow
                 android:id="@+id/b1fTRHeader">
                 <TextView

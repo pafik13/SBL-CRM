@@ -13,7 +13,7 @@
         android:minHeight="25px"
         android:background="@drawable/bottomline">
         <TextView
-            android:text="ТЕКУЩАЯ АПТЕКА"
+            android:text="ИНФОРМАЦИЯ"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,31 +24,47 @@
             android:paddingRight="24dp"
             android:paddingLeft="24dp" />
         <Button
-            android:text="Button"
+            android:text="НАЧАТЬ ВИЗИТ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/maInfoText"
-            android:id="@+id/maVisitControlB"
+            android:id="@+id/maStartAttendance"
             android:background="#03A9F4"
             android:typeface="monospace"
             android:width="150dp"
-            android:height="64dp"
+            android:height="62dp"
             android:textColor="#FFFFFF"
             android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:minHeight="62dp" />
         <Button
-            android:text="Button2"
+            android:text="ЗАКОНЧИТЬ ВИЗИТ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/maStartAttendance"
+            android:id="@+id/maEndAttendance"
+            android:background="#03A9F4"
+            android:typeface="monospace"
+            android:width="150dp"
+            android:height="62dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:minHeight="62dp" />
+        <Button
+            android:text="ЗАКРЫТЬ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/maRightB"
+            android:id="@+id/maClose"
             android:background="#03A9F4"
             android:typeface="monospace"
             android:width="150dp"
-            android:height="64dp"
+            android:height="62dp"
             android:textColor="#FFFFFF"
             android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:minHeight="62dp" />
         <ImageView
             android:src="@drawable/ic_fast_forward_black_36dp"
             android:layout_width="wrap_content"

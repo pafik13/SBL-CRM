@@ -93,6 +93,7 @@
     <Compile Include="Lib\Fragments\PhotoListFragment.cs" />
     <Compile Include="Lib\Entities\PhotoType.cs" />
     <Compile Include="Lib\Entities\PhotoSubType.cs" />
+    <Compile Include="Lib\Transliteration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
