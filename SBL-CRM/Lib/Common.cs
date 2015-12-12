@@ -88,6 +88,35 @@ namespace SBLCRM.Lib
             return true;
         }
 
+		/******  IS_ATTENDANCE_RUN  *****/
+		public static bool GetIsAttendanceRun(string username)
+		{
+			if (string.IsNullOrEmpty (username)) {
+				return false;
+			}
+
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"isAttendanceRun.xml");
+			var serializer = new XmlSerializer(typeof(bool));
+
+			using (var stream = new FileStream(storeLocation, FileMode.Open))
+			{
+				return (bool)serializer.Deserialize(stream);
+			}
+		}
+
+		public static bool SetIsAttendanceRun(string username, bool isAttendanceRun)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"isAttendanceRun.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(bool));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, isAttendanceRun);
+			}
+
+			return true;
+		}
+
 		/******  MERCHANT  *****/
 		public static Merchant GetMerchant (string username)
 		{

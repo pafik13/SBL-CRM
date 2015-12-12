@@ -98,10 +98,17 @@
                     style="@style/text_row_large"
                     android:layout_column="0"
                     android:background="@android:color/background_light" />
-                <TextView
-                    android:text="PromosText"
+                <EditText
+                    android:textCursorDrawable="@null"
                     android:layout_column="1"
-                    android:id="@+id/b2fPromosText" />
+                    android:id="@+id/b2fPromosEdit"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/bottomline"
+                    android:textColorHint="#E0E0E0"
+                    android:textColor="#000000"
+                    android:hint="ТМ акции OTC-фарм" />
             </TableRow>
             <TableRow
                 android:id="@+id/b2fTRContent6">

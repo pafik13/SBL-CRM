@@ -128,6 +128,8 @@
     <AndroidResource Include="Resources\layout\PhotoAddFragment.axml" />
     <AndroidResource Include="Resources\layout\DrugInfoFragment.axml" />
     <AndroidResource Include="Resources\layout\PhotoListFragment.axml" />
+    <AndroidResource Include="Resources\drawable\bottomline_green.xml" />
+    <AndroidResource Include="Resources\drawable\ic_exit_to_app_black_36dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

@@ -81,6 +81,14 @@
             android:id="@+id/maPrevBlockIV"
             android:layout_centerVertical="true"
             android:paddingRight="14dp" />
+        <ImageView
+            android:src="@drawable/ic_exit_to_app_black_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/maEndAttendance"
+            android:id="@+id/maLogOut"
+            android:paddingLeft="14dp"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
     <FrameLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/maContentFL"
@@ -93,6 +101,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/maPharmacyTable" />
+    <RelativeLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sifBeforeSignInRL"
+        android:background="#E0E0E0">
+        <TextView
+            android:id="@+id/sifNotSignInText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="НЕ ВЫПОЛНЕН ВХОД!"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:textSize="24dp"
+            android:textColor="#37474F" />
+        <Button
+            android:text="ВОЙТИ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sifNotSignInText"
+            android:id="@+id/maSignInButton"
+            android:layout_centerInParent="true"
+            android:textSize="24dp"
+            android:width="150dp"
+            android:background="#03A9F4"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/maDownPanelRL"
         android:orientation="horizontal"
@@ -131,36 +170,5 @@
             android:layout_centerVertical="true"
             android:paddingRight="14dp"
             android:minHeight="56dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:orientation="vertical"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/sifBeforeSignInRL"
-        android:background="#E0E0E0">
-        <TextView
-            android:id="@+id/sifNotSignInText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="НЕ ВЫПОЛНЕН ВХОД!"
-            android:layout_gravity="center"
-            android:layout_centerInParent="true"
-            android:textSize="24dp"
-            android:textColor="#37474F" />
-        <Button
-            android:text="ВОЙТИ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sifNotSignInText"
-            android:id="@+id/maSignInButton"
-            android:layout_centerInParent="true"
-            android:textSize="24dp"
-            android:width="150dp"
-            android:background="#03A9F4"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:typeface="monospace" />
     </RelativeLayout>
 </LinearLayout>

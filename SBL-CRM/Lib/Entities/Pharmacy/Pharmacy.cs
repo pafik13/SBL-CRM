@@ -21,6 +21,8 @@ namespace SBLCRM.Lib.Entities
 		public string category_sbl { get; set; }
 		public string code_sbl { get; set; }
 		public int tradenet { get; set; }
+		public DateTime prev { get; set; }
+		public DateTime next { get; set; }
 	}
 }
 

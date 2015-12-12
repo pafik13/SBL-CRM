@@ -20,7 +20,12 @@ namespace SBLCRM.Lib.Fragments
 		private EditText categoryInNetEdit = null;
 		private EditText telephoneEdit = null;
 		private EditText commentEdit = null;
+		private int pharmacyID = -1;
 
+		User user = null;
+		Pharmacy pharmacy = null;
+		Attendance attendance = null;
+		Merchant merchant = null;
 
 		public override void OnCreate (Bundle savedInstanceState)
 		{
@@ -37,44 +42,50 @@ namespace SBLCRM.Lib.Fragments
 			base.OnCreateView (inflater, container, savedInstanceState);
 
 			View rootView = inflater.Inflate (Resource.Layout.Block1Fragment, container, false);
-			int pharmacyID = Arguments.GetInt (Common.PHARMACY_ID);
-			Pharmacy pharmacy = PharmacyManager.GetPharmacy (pharmacyID);
+
+			pharmacyID = Arguments.GetInt (Common.PHARMACY_ID);
+			user = Common.GetCurrentUser ();
+			merchant = Common.GetMerchant (user.username);
+			pharmacy = PharmacyManager.GetPharmacy (pharmacyID);
+			attendance = AttendanceManager.GetCurrentAttendance ();
+
+			if (attendance == null) {
+				attendance = AttendanceManager.GetLastAttendance (pharmacyID);
+
+				if (attendance == null) {
+					
+					attendance = new Attendance () {
+						pharmacy = pharmacyID,
+						date = DateTime.Now,
+						merchant = merchant.id
+					};
+				}
+			}
 
 			rootView.FindViewById<TextView> (Resource.Id.b1fTradenetText).Text = @"Аптечная Сеть";
 			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = @"Город";
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyNameText).Text = pharmacy.shortName;
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyAddressText).Text = pharmacy.address;
 			categoryInNetEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCategoryInNetEdit);
-			categoryInNetEdit.Text = @"Категория";
+			categoryInNetEdit.Text = attendance.category_net;
 			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
 			telephoneEdit = rootView.FindViewById<EditText> (Resource.Id.b1fTelephoneEdit);
-			telephoneEdit.Text = @"Телефон";
+			telephoneEdit.Text = attendance.telephone;
 			commentEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCommentEdit);
-			commentEdit.Text = @"Комментарий";
+			commentEdit.Text = attendance.comment;
 
 			return rootView;
-		}
-
-		TextView GetItem (string text)
-		{
-			TextView textView = new TextView (Activity);
-			textView.SetTextAppearance (Activity, Resource.Style.rowTextForPharmacy);
-			textView.SetHeight (48);
-			textView.Text = text;
-
-			return textView;
 		}
 
 		public override void OnPause ()
 		{
 			base.OnPause ();
-			AttendanceManager.SetCurrentAttendance (new Attendance () {
-				pharmacy = Arguments.GetInt (Common.PHARMACY_ID),
-				date = DateTime.Now,
-				category_net = categoryInNetEdit.Text,
-				telephone = telephoneEdit.Text,
-				comment = commentEdit.Text
-			});
+			if (Common.GetIsAttendanceRun (user.username)) {
+				attendance.category_net = categoryInNetEdit.Text;
+				attendance.telephone = telephoneEdit.Text;
+				attendance.comment = commentEdit.Text;
+				AttendanceManager.SetCurrentAttendance (attendance);
+			}
 		}
 	}
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Globalization;
 using System.Collections.Generic;
 
 using Android.App;
@@ -20,6 +22,7 @@ namespace SBLCRM
 	public class MainActivity : Activity
 	{
 		RelativeLayout upPanel = null;
+		RelativeLayout botPanel = null;
 		RelativeLayout beforeSignIn = null;
 		FrameLayout content = null;
 		TableLayout pharamcyTable = null;
@@ -31,6 +34,7 @@ namespace SBLCRM
 		ImageView upNextBlock = null;
 		ImageView upPrevBlock = null;
 		TextView upInfo = null;
+		ImageView upLogout = null;
 		Button upStartAttendance = null;
 		Button upEndAttendance = null;
 		Button upClose = null;
@@ -41,6 +45,8 @@ namespace SBLCRM
 		int fragmentNum = 1;
 		int selectedPharmacyID = 0;
 		bool isVisitStart = false;
+
+		Fragment fragment = null;
 
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
@@ -54,6 +60,7 @@ namespace SBLCRM
 			SetContentView (Resource.Layout.Main);
 
 			upPanel = FindViewById<RelativeLayout> (Resource.Id.maUpPanelRL);
+			botPanel = FindViewById<RelativeLayout> (Resource.Id.maDownPanelRL);
 			beforeSignIn = FindViewById<RelativeLayout> (Resource.Id.sifBeforeSignInRL);
 			content = FindViewById<FrameLayout> (Resource.Id.maContentFL);
 			pharamcyTable = FindViewById<TableLayout> (Resource.Id.maPharmacyTable);
@@ -78,11 +85,17 @@ namespace SBLCRM
 				}
 			};
 			upInfo = FindViewById<TextView> (Resource.Id.maInfoText);
+			upLogout = FindViewById<ImageView> (Resource.Id.maLogOut);
+			upLogout.Click += (object sender, EventArgs e) => {
+				Common.SetCurrentUser(null);
+				RefreshMainView();
+			};
 			upStartAttendance = FindViewById<Button> (Resource.Id.maStartAttendance);
 			upStartAttendance.Click += UpStartAttendance_Click;
 			upEndAttendance = FindViewById<Button> (Resource.Id.maEndAttendance);
 			upEndAttendance.Click += UpEndAttendance_Click;
 			upClose = FindViewById<Button> (Resource.Id.maClose);
+			upClose.Click += UpRightB_Click;
 
 			next.Click += (object sender, EventArgs e) => {
 				page++;
@@ -91,7 +104,7 @@ namespace SBLCRM
 				} else {
 					prev.Enabled = true;
 				}
-				RefreshPharmacyTable();
+				RefreshPharmacyTable ();
 			};
 
 			prev.Click += (object sender, EventArgs e) => {
@@ -121,16 +134,32 @@ namespace SBLCRM
 		void UpEndAttendance_Click (object sender, EventArgs e)
 		{
 			isVisitStart = false;
+			Common.SetIsAttendanceRun (user.username, isVisitStart);
+
 			// SAVE
 			upPrevBlock.Visibility = ViewStates.Gone;
 			upNextBlock.Visibility = ViewStates.Gone;
-			FragmentManager.BeginTransaction ().Remove (FragmentManager.FindFragmentById (Resource.Id.maContentFL)).Commit ();
+			FragmentManager.BeginTransaction ().Remove (fragment).Commit ();
 			fragmentNum = 1;
-			Attendance att = AttendanceManager.GetCurrentAttendance ();
-			List<AttendanceResult> attResults = AttendanceResultManager.GetCurrentAttendanceResults ();
-			List<AttendancePhoto> attPhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
-//			AttendanceManager.SetCurrentAttendance (null);
-//			AttendanceResultManager.SetCurrentAttendanceResults (null);
+
+			Attendance newAttendance = AttendanceManager.GetCurrentAttendance ();
+			List<AttendanceResult> newAttendanceResults = AttendanceResultManager.GetCurrentAttendanceResults ();
+			List<AttendancePhoto> newAttendancePhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
+			int attID = AttendanceManager.SaveAttendance (newAttendance);
+			AttendanceResultManager.SaveNewAttendanceResults (attID, newAttendanceResults);
+			AttendancePhotoManager.SaveNewAttendancePhotos (attID, newAttendancePhotos);
+
+			//Correct Pharmacy
+			Pharmacy pharmacy = PharmacyManager.GetPharmacy (selectedPharmacyID);
+			pharmacy.prev = DateTime.Now;
+			pharmacy.next = DateTimeFormatInfo.CurrentInfo.Calendar.AddWeeks(pharmacy.prev, 2);
+			PharmacyManager.SavePharmacy (pharmacy);
+
+			//Clear
+			AttendanceManager.SetCurrentAttendance (null);
+			AttendanceResultManager.SetCurrentAttendanceResults (null);
+			AttendancePhotoManager.SetCurrentAttendancePhotos (null);
+
 			RefreshMainView ();
 		}
 
@@ -138,7 +167,6 @@ namespace SBLCRM
 		{
 			Bundle args = new Bundle ();
 			args.PutInt (Common.PHARMACY_ID, selectedPharmacyID);
-			Fragment fragment = null;
 			switch (fragmentNum)
 			{
 			case 1:
@@ -174,14 +202,17 @@ namespace SBLCRM
 			if (user == null) {
 				content.Visibility = ViewStates.Gone;
 				upPanel.Visibility = ViewStates.Gone;
+				botPanel.Visibility = ViewStates.Gone;
 				pharamcyTable.Visibility = ViewStates.Gone;
 				beforeSignIn.Visibility = ViewStates.Visible;
 			} else {
+				Common.SetIsAttendanceRun (user.username, isVisitStart);
 				content.Visibility = ViewStates.Gone;
 				beforeSignIn.Visibility = ViewStates.Gone;
 
 				// Set Up Panel
 				upPanel.Visibility = ViewStates.Visible;
+				botPanel.Visibility = ViewStates.Visible;
 				upStartAttendance.Visibility = ViewStates.Gone;
 				upEndAttendance.Visibility = ViewStates.Gone;
 				upClose.Visibility = ViewStates.Gone;
@@ -190,6 +221,7 @@ namespace SBLCRM
 				Project project = Common.GetProject (user.username);
 				Territory territory = Common.GetTerritory (user.username);
 				upInfo.Visibility = ViewStates.Visible;
+				upLogout.Visibility = ViewStates.Visible;
 				upInfo.Text = string.Format (@"ПРОЕКТ : {0}; ГОРОД : {1}", project.fullName, territory.baseCity);
 
 				RefreshPharmacyTable ();
@@ -209,45 +241,45 @@ namespace SBLCRM
 			hID.Text = @"ID";
 			hRow.AddView (hID);
 
-			TextView hFullName = GetHeadItem (ColumnPosition.cpMiddle);
-			hFullName.Gravity = GravityFlags.CenterVertical;
-			hFullName.Text = @"Full Name";
-			hRow.AddView (hFullName);
-
 			TextView hShortName = GetHeadItem (ColumnPosition.cpMiddle);
 			hShortName.Gravity = GravityFlags.CenterVertical;
-			hShortName.Text = @"Short Name";
+			hShortName.Text = @"Аптека";
 			hRow.AddView (hShortName);
 
-//			TextView hOfficialName = GetHeadItem (ColumnPosition.cpMiddle);
-//			hOfficialName.Gravity = GravityFlags.CenterVertical;
-//			hOfficialName.Text = @"Official Name";
-//			hRow.AddView (hOfficialName);
-
-			TextView hAction = GetHeadItem (ColumnPosition.cpMiddle);
-			hAction.Gravity = GravityFlags.CenterVertical;
-			hAction.Text = @"Action";
-			hRow.AddView (hAction);
+			TextView hTradeNet = GetHeadItem (ColumnPosition.cpMiddle);
+			hTradeNet.Gravity = GravityFlags.CenterVertical;
+			hTradeNet.Text = @"Сеть";
+			hRow.AddView (hTradeNet);
 
 			TextView hAddress = GetHeadItem (ColumnPosition.cpMiddle);
 			hAddress.Gravity = GravityFlags.CenterVertical;
-			hAddress.Text = @"Address";
+			hAddress.Text = @"Адрес";
 			hRow.AddView (hAddress);
 
-			TextView hSubway = GetHeadItem (ColumnPosition.cpMiddle);
-			hSubway.Gravity = GravityFlags.CenterVertical;
-			hSubway.Text = @"Subway";
-			hRow.AddView (hSubway);
+			TextView hWeekM2 = GetHeadItem (ColumnPosition.cpMiddle);
+			hWeekM2.Gravity = GravityFlags.CenterVertical;
+			hWeekM2.Text = @"Неделя -2";
+			hRow.AddView (hWeekM2);
 
-			TextView hPhone = GetHeadItem (ColumnPosition.cpMiddle);
-			hPhone.Gravity = GravityFlags.CenterVertical;
-			hPhone.Text = @"Phone";
-			hRow.AddView (hPhone);
+			TextView hWeekM1 = GetHeadItem (ColumnPosition.cpMiddle);
+			hWeekM1.Gravity = GravityFlags.CenterVertical;
+			hWeekM1.Text = @"Неделя -1";
+			hRow.AddView (hWeekM1);
 
-			TextView hEmail = GetHeadItem (ColumnPosition.cpMiddle);
-			hEmail.Gravity = GravityFlags.CenterVertical;
-			hEmail.Text = @"E-mail";
-			hRow.AddView (hEmail);
+			TextView hWeek = GetHeadItem (ColumnPosition.cpMiddle);
+			hWeek.Gravity = GravityFlags.CenterVertical;
+			hWeek.Text = @"Текущ. неделя";
+			hRow.AddView (hWeek);
+
+			TextView hWeekP1 = GetHeadItem (ColumnPosition.cpMiddle);
+			hWeekP1.Gravity = GravityFlags.CenterVertical;
+			hWeekP1.Text = @"Неделя +1";
+			hRow.AddView (hWeekP1);
+
+			TextView hWeekP2 = GetHeadItem (ColumnPosition.cpLast);
+			hWeekP2.Gravity = GravityFlags.CenterVertical;
+			hWeekP2.Text = @"Неделя +2";
+			hRow.AddView (hWeekP2);
 
 			pharamcyTable.AddView(hRow);
 
@@ -261,31 +293,52 @@ namespace SBLCRM
 				}
 					
 				pageNum.Text = string.Format(@"СТРАНИЦА : {0}", page);
-				var pharmacies = PharmacyManager.GetPharmacies ((page - 1), itemsNum);
+				var pharmacies = (from pharm in PharmacyManager.GetPharmacies ((page - 1), itemsNum) 
+					           orderby pharm.next, pharm.id
+							    select pharm);
 
 				foreach (var pharmacy in pharmacies) {
 					TableRow cRow = new TableRow (this);
-					cRow.SetBackgroundResource(Resource.Drawable.bottomline);
+					if (pharmacy.prev.Date == DateTime.Now.Date) {
+						cRow.SetBackgroundResource (Resource.Drawable.bottomline_green);
+					} else {
+						cRow.SetBackgroundResource (Resource.Drawable.bottomline);
+					}
 
 					TextView id = GetItem(ColumnPosition.cpFirst);
 					id.Gravity = GravityFlags.Center;
 					id.Text = pharmacy.id.ToString ();
 					cRow.AddView (id);
 
-					TextView fullName = GetItem(ColumnPosition.cpMiddle);
-					fullName.Gravity = GravityFlags.CenterVertical;
-					fullName.Text = pharmacy.fullName;
-					cRow.AddView (fullName);
-
 					TextView shortName = GetItem(ColumnPosition.cpMiddle);
 					shortName.Gravity = GravityFlags.CenterVertical;
 					shortName.Text = pharmacy.shortName;
 					cRow.AddView (shortName);
 
-//					TextView officialName = GetItem(ColumnPosition.cpMiddle);
-//					officialName.Gravity = GravityFlags.CenterVertical;
-//					officialName.Text = pharmacy.officialName;
-//					cRow.AddView (officialName);
+					TextView tradeNet = GetItem(ColumnPosition.cpMiddle);
+					tradeNet.Gravity = GravityFlags.CenterVertical;
+					tradeNet.Text = pharmacy.tradenet.ToString();
+					cRow.AddView (tradeNet);
+
+					TextView address = GetItem(ColumnPosition.cpMiddle);
+					address.Gravity = GravityFlags.CenterVertical;
+					address.Text = pharmacy.address;
+					cRow.AddView (address);
+
+					DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+					Calendar cal = dfi.Calendar;
+					int dWeekM = (cal.GetWeekOfYear (pharmacy.prev, dfi.CalendarWeekRule, dfi.FirstDayOfWeek) - cal.GetWeekOfYear (DateTime.Now, dfi.CalendarWeekRule, dfi.FirstDayOfWeek));
+					int dWeekP = (cal.GetWeekOfYear (pharmacy.next, dfi.CalendarWeekRule, dfi.FirstDayOfWeek) - cal.GetWeekOfYear (DateTime.Now, dfi.CalendarWeekRule, dfi.FirstDayOfWeek));
+				
+					TextView weekM2 = GetItem(ColumnPosition.cpMiddle);
+					weekM2.Gravity = GravityFlags.CenterVertical;
+					weekM2.Text = (dWeekM == -2) ? pharmacy.prev.ToString(@"d") : string.Empty;
+					cRow.AddView (weekM2);
+
+					TextView weekM1 = GetItem(ColumnPosition.cpMiddle);
+					weekM1.Gravity = GravityFlags.CenterVertical;
+					weekM1.Text = (dWeekM == -1) ? pharmacy.prev.ToString(@"d") : string.Empty;
+					cRow.AddView (weekM1);
 
 					ImageView action = GetImageItem (ColumnPosition.cpMiddle);
 					action.SetImageResource (Resource.Drawable.ic_adjust_black_24dp);
@@ -293,25 +346,15 @@ namespace SBLCRM
 					action.Click += Action_Click;
 					cRow.AddView (action);
 
-					TextView address = GetItem(ColumnPosition.cpMiddle);
-					address.Gravity = GravityFlags.CenterVertical;
-					address.Text = pharmacy.address;
-					cRow.AddView (address);
+					TextView weekP1 = GetItem(ColumnPosition.cpMiddle);
+					weekP1.Gravity = GravityFlags.CenterVertical;
+					weekP1.Text = (dWeekP == 1) ? pharmacy.next.ToString(@"d") : string.Empty;
+					cRow.AddView (weekP1);
 
-					TextView subway = GetItem(ColumnPosition.cpMiddle);
-					subway.Gravity = GravityFlags.CenterVertical;
-					subway.Text = pharmacy.subway;
-					cRow.AddView (subway);
-
-					TextView phone = GetItem(ColumnPosition.cpMiddle);
-					phone.Gravity = GravityFlags.CenterVertical;
-					phone.Text = pharmacy.phone;
-					cRow.AddView (phone);
-
-					TextView email = GetItem(ColumnPosition.cpLast);
-					email.Gravity = GravityFlags.CenterVertical;
-					email.Text = pharmacy.email;
-					cRow.AddView (email);
+					TextView weekP2 = GetItem(ColumnPosition.cpLast);
+					weekP2.Gravity = GravityFlags.CenterVertical;
+					weekP2.Text = (dWeekP == 2) ? pharmacy.next.ToString(@"d") : string.Empty;
+					cRow.AddView (weekP2);
 
 					pharamcyTable.AddView (cRow);
 				}
@@ -346,7 +389,7 @@ namespace SBLCRM
 			selectedPharmacyID = (int) img.GetTag(Resource.String.pharmacyID);
 			Bundle args = new Bundle ();
 			args.PutInt (Common.PHARMACY_ID, selectedPharmacyID);
-			Fragment fragment = new Block1Fragment ();
+			fragment = new Block1Fragment ();
 			fragment.Arguments = args;
 			FragmentManager.BeginTransaction ().Replace (Resource.Id.maContentFL, fragment).Commit();
 			pharamcyTable.Visibility = ViewStates.Gone;
@@ -354,16 +397,18 @@ namespace SBLCRM
 
 			// Setup Up Panel
 			upInfo.Visibility = ViewStates.Gone;
+			upLogout.Visibility = ViewStates.Gone;
 			upStartAttendance.Visibility = ViewStates.Visible;
 			//Toast.MakeText(this, string.Format(@"ID : {0}", pharmacyID), ToastLength.Short).Show();
 
 			upClose.Visibility = ViewStates.Visible;
-			upClose.Click += UpRightB_Click;;
 		}
 
 		void UpStartAttendance_Click (object sender, EventArgs e)
 		{
 			isVisitStart = true;
+			Common.SetIsAttendanceRun (user.username, isVisitStart);
+
 			upNextBlock.Visibility = ViewStates.Visible;
 			upPrevBlock.Visibility = ViewStates.Visible;
 			upStartAttendance.Visibility = ViewStates.Gone;
@@ -372,9 +417,10 @@ namespace SBLCRM
 
 		void UpRightB_Click (object sender, EventArgs e)
 		{
-			FragmentManager.BeginTransaction ().Remove (FragmentManager.FindFragmentById (Resource.Id.maContentFL)).Commit ();
+			FragmentManager.BeginTransaction ().Remove (fragment).Commit ();
 			AttendanceManager.SetCurrentAttendance (null);
 			AttendanceResultManager.SetCurrentAttendanceResults (null);
+			AttendancePhotoManager.SetCurrentAttendancePhotos (null);
 			RefreshMainView ();
 		}
 

@@ -54,7 +54,7 @@ namespace SBLCRM
 			photoSubTypes = Common.GetPhotoSubTypes (user.username);
 
 			newAttendancePhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
-			if (newAttendancePhotos == null) {
+			if ((newAttendancePhotos == null) || (newAttendancePhotos.Count == 0)) {
 				newAttendancePhotos = new List<AttendancePhoto> ();
 			} 
 
@@ -165,7 +165,10 @@ namespace SBLCRM
 					attPhoto.stamp = dtStamp;
 				};
 
+				attPhoto.subType = currentPhotoSubTypes[spnPhotoSubTypes.SelectedItemPosition].id;
 				newAttendancePhotos.Add (attPhoto);
+				AttendancePhotoManager.SetCurrentAttendancePhotos (newAttendancePhotos);
+
 				RefreshPhotoList ();
 			}
 
@@ -176,7 +179,9 @@ namespace SBLCRM
 		public override void OnPause ()
 		{
 			base.OnPause ();
-			AttendancePhotoManager.SetCurrentAttendancePhotos (newAttendancePhotos);
+			if (Common.GetIsAttendanceRun (user.username)) {
+				AttendancePhotoManager.SetCurrentAttendancePhotos (newAttendancePhotos);
+			}
 		}
 	}
 }

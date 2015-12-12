@@ -65,7 +65,9 @@ namespace SBLCRM
 		public override void OnPause ()
 		{
 			base.OnPause ();
-			AttendanceResultManager.SetCurrentAttendanceResults (newAttendanceResults);
+			if (Common.GetIsAttendanceRun (user.username)) {
+				AttendanceResultManager.SetCurrentAttendanceResults (newAttendanceResults);
+			}
 		}
 
 		void RefreshTable()
@@ -221,6 +223,7 @@ namespace SBLCRM
 				rlValue.SetBackgroundColor (Android.Graphics.Color.LightGreen);
 			}
 			tvValue.Text = AttendanceResult.StringBoolToRussian(value);
+			AttendanceResultManager.SetCurrentAttendanceResults (newAttendanceResults);
 		}
 	}
 }
