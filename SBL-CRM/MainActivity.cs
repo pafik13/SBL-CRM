@@ -35,6 +35,7 @@ namespace SBLCRM
 		ImageView upPrevBlock = null;
 		TextView upInfo = null;
 		ImageView upLogout = null;
+		ImageView upSync = null;
 		Button upStartAttendance = null;
 		Button upEndAttendance = null;
 		Button upClose = null;
@@ -89,6 +90,10 @@ namespace SBLCRM
 			upLogout.Click += (object sender, EventArgs e) => {
 				Common.SetCurrentUser(null);
 				RefreshMainView();
+			};
+			upSync = FindViewById<ImageView> (Resource.Id.maSync);
+			upSync.Click += (object sender, EventArgs e) => {
+				StartActivity(typeof(SyncActivity)); 
 			};
 			upStartAttendance = FindViewById<Button> (Resource.Id.maStartAttendance);
 			upStartAttendance.Click += UpStartAttendance_Click;
@@ -199,6 +204,28 @@ namespace SBLCRM
 		{
 			user = Common.GetCurrentUser ();
 
+			// Testing
+			List<Promo> promos = new List<Promo> ();
+
+			promos.Add (new Promo { id = 1, name = @"Promo1", key = @"Key1" });
+			promos.Add (new Promo { id = 2, name = @"Promo2", key = @"Key2" });
+			promos.Add (new Promo { id = 3, name = @"Promo3", key = @"Key3" });
+			promos.Add (new Promo { id = 4, name = @"Promo4", key = @"Key4" });
+
+			Common.SetPromos (user.username, promos);
+
+			List<NetCategory> netCategories = new List<NetCategory> ();
+
+			netCategories.Add (new NetCategory { id = 1, name = @"NetCatName1", key = @"NetCat1" });
+			netCategories.Add (new NetCategory { id = 2, name = @"NetCatName2", key = @"NetCat2" });
+			netCategories.Add (new NetCategory { id = 3, name = @"NetCatName3", key = @"NetCat3" });
+			netCategories.Add (new NetCategory { id = 4, name = @"NetCatName4", key = @"NetCat4" });
+
+			Common.SetNetCategories (user.username, netCategories);
+
+			AttendanceManager.SetCurrentAttendance (null);
+			// Testing
+
 			if (user == null) {
 				content.Visibility = ViewStates.Gone;
 				upPanel.Visibility = ViewStates.Gone;
@@ -222,6 +249,7 @@ namespace SBLCRM
 				Territory territory = Common.GetTerritory (user.username);
 				upInfo.Visibility = ViewStates.Visible;
 				upLogout.Visibility = ViewStates.Visible;
+				upSync.Visibility = ViewStates.Visible;
 				upInfo.Text = string.Format (@"ПРОЕКТ : {0}; ГОРОД : {1}", project.fullName, territory.baseCity);
 
 				RefreshPharmacyTable ();
@@ -293,9 +321,10 @@ namespace SBLCRM
 				}
 					
 				pageNum.Text = string.Format(@"СТРАНИЦА : {0}", page);
-				var pharmacies = (from pharm in PharmacyManager.GetPharmacies ((page - 1), itemsNum) 
+				var pharmacies = (from pharm in PharmacyManager.GetPharmacies(string.Empty)
 					           orderby pharm.next, pharm.id
-							    select pharm);
+								select pharm).Skip((page - 1) * itemsNum)
+											 .Take(itemsNum);
 
 				foreach (var pharmacy in pharmacies) {
 					TableRow cRow = new TableRow (this);
@@ -340,8 +369,14 @@ namespace SBLCRM
 					weekM1.Text = (dWeekM == -1) ? pharmacy.prev.ToString(@"d") : string.Empty;
 					cRow.AddView (weekM1);
 
-					ImageView action = GetImageItem (ColumnPosition.cpMiddle);
-					action.SetImageResource (Resource.Drawable.ic_adjust_black_24dp);
+//					ImageView action = GetImageItem (ColumnPosition.cpMiddle);
+//					action.SetImageResource (Resource.Drawable.ic_adjust_black_24dp);
+//					action.SetTag (Resource.String.pharmacyID, pharmacy.id);
+//					action.Click += Action_Click;
+//					cRow.AddView (action);
+
+					Button action = GetButtonItem (ColumnPosition.cpMiddle);
+					action.Text = DateTime.Now.ToString (@"d");
 					action.SetTag (Resource.String.pharmacyID, pharmacy.id);
 					action.Click += Action_Click;
 					cRow.AddView (action);
@@ -385,8 +420,10 @@ namespace SBLCRM
 
 		void Action_Click (object sender, EventArgs e)
 		{
-			ImageView img = (ImageView)sender;
-			selectedPharmacyID = (int) img.GetTag(Resource.String.pharmacyID);
+//			ImageView img = (ImageView)sender;
+//			selectedPharmacyID = (int) img.GetTag(Resource.String.pharmacyID);
+			Button btn = (Button)sender;
+			selectedPharmacyID = (int) btn.GetTag(Resource.String.pharmacyID);
 			Bundle args = new Bundle ();
 			args.PutInt (Common.PHARMACY_ID, selectedPharmacyID);
 			fragment = new Block1Fragment ();
@@ -398,6 +435,7 @@ namespace SBLCRM
 			// Setup Up Panel
 			upInfo.Visibility = ViewStates.Gone;
 			upLogout.Visibility = ViewStates.Gone;
+			upSync.Visibility = ViewStates.Gone;
 			upStartAttendance.Visibility = ViewStates.Visible;
 			//Toast.MakeText(this, string.Format(@"ID : {0}", pharmacyID), ToastLength.Short).Show();
 
@@ -465,6 +503,26 @@ namespace SBLCRM
 				break;
 			}
 			return imageView;
+		}
+
+		Button GetButtonItem (ColumnPosition columnPosition)
+		{
+			Button button = new Button (this);
+
+			switch (columnPosition) {
+			case ColumnPosition.cpFirst:
+				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24, LeftMargin = 24 };
+				break;
+			case ColumnPosition.cpMiddle:
+				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56, Gravity = GravityFlags.CenterVertical };
+				break;		
+			case ColumnPosition.cpLast:
+				button.LayoutParameters = new TableRow.LayoutParams () { LeftMargin = 24 };
+				break;						
+			default:
+				break;
+			}
+			return button;
 		}
 
 		string UppercaseFirst(string s)

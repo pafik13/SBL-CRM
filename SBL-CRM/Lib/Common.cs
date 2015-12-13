@@ -243,7 +243,63 @@ namespace SBLCRM.Lib
 			return true;
 		}
 
-		/******  PhotoType  *****/
+		/******  PROMO  *****/
+		public static List<Promo> GetPromos(string username)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"promos.xml");
+			var serializer = new XmlSerializer(typeof(List<Promo>));
+
+			if (File.Exists (storeLocation)) {
+				using (var stream = new FileStream (storeLocation, FileMode.Open)) {
+					return (List<Promo>)serializer.Deserialize (stream);
+				}
+			}
+
+			return new List<Promo> ();
+		}
+
+		public static bool SetPromos(string username, List<Promo> promos)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"promos.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<Promo>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, promos);
+			}
+
+			return true;
+		}
+
+		/******  NETCATEGORY  *****/
+		public static List<NetCategory> GetNetCategories(string username)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"netCategories.xml");
+			var serializer = new XmlSerializer(typeof(List<NetCategory>));
+
+			if (File.Exists (storeLocation)) {
+				using (var stream = new FileStream (storeLocation, FileMode.Open)) {
+					return (List<NetCategory>)serializer.Deserialize (stream);
+				}
+			}
+
+			return new List<NetCategory> ();
+		}
+
+		public static bool SetNetCategories(string username, List<NetCategory> netCategories)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"netCategories.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<NetCategory>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, netCategories);
+			}
+
+			return true;
+		}
+
+		/******  PHOTOTYPE  *****/
 		public static List<PhotoType> GetPhotoTypes(string username)
 		{
 			string storeLocation = Path.Combine(DatabaseFileDir, username, @"photoTypes.xml");

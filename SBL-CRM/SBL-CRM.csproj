@@ -94,6 +94,9 @@
     <Compile Include="Lib\Entities\PhotoType.cs" />
     <Compile Include="Lib\Entities\PhotoSubType.cs" />
     <Compile Include="Lib\Transliteration.cs" />
+    <Compile Include="SyncActivity.cs" />
+    <Compile Include="Lib\Entities\Promo.cs" />
+    <Compile Include="Lib\Entities\NetCategory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -130,6 +133,13 @@
     <AndroidResource Include="Resources\layout\PhotoListFragment.axml" />
     <AndroidResource Include="Resources\drawable\bottomline_green.xml" />
     <AndroidResource Include="Resources\drawable\ic_exit_to_app_black_36dp.png" />
+    <AndroidResource Include="Resources\layout\Sync.axml" />
+    <AndroidResource Include="Resources\drawable\ic_loop_black_36dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_cached_black_48dp.png" />
+    <AndroidResource Include="Resources\layout\Spinner.axml" />
+    <AndroidResource Include="Resources\layout\SyncFragmentItem.axml" />
+    <AndroidResource Include="Resources\drawable\ic_check_circle_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_highlight_off_white_48dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

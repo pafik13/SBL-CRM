@@ -17,12 +17,13 @@ namespace SBLCRM.Lib.Fragments
 {
 	public class Block1Fragment : Fragment
 	{
-		private EditText categoryInNetEdit = null;
+		private Spinner categoryNetSpinner = null;
 		private EditText telephoneEdit = null;
 		private EditText commentEdit = null;
 		private int pharmacyID = -1;
 
 		User user = null;
+		List<NetCategory> netCategories = null;
 		Pharmacy pharmacy = null;
 		Attendance attendance = null;
 		Merchant merchant = null;
@@ -45,6 +46,7 @@ namespace SBLCRM.Lib.Fragments
 
 			pharmacyID = Arguments.GetInt (Common.PHARMACY_ID);
 			user = Common.GetCurrentUser ();
+			netCategories = Common.GetNetCategories (user.username);
 			merchant = Common.GetMerchant (user.username);
 			pharmacy = PharmacyManager.GetPharmacy (pharmacyID);
 			attendance = AttendanceManager.GetCurrentAttendance ();
@@ -66,8 +68,22 @@ namespace SBLCRM.Lib.Fragments
 			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = @"Город";
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyNameText).Text = pharmacy.shortName;
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyAddressText).Text = pharmacy.address;
-			categoryInNetEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCategoryInNetEdit);
-			categoryInNetEdit.Text = attendance.category_net;
+
+			categoryNetSpinner = rootView.FindViewById<Spinner> (Resource.Id.b1fCategoryNetSpinner);
+			ArrayAdapter adapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, (from item in netCategories select item.key).ToArray<string>());
+			categoryNetSpinner.Adapter = adapter;
+			categoryNetSpinner.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
+				attendance.category_net = netCategories[e.Position].id;
+			};
+			// SetValue
+			if (attendance.category_net != 0) {
+				for (int i = 0; i < netCategories.Count; i++) {
+					if (netCategories [i].id == attendance.category_net) {
+						categoryNetSpinner.SetSelection (i);
+					}
+				}
+			}
+
 			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
 			telephoneEdit = rootView.FindViewById<EditText> (Resource.Id.b1fTelephoneEdit);
 			telephoneEdit.Text = attendance.telephone;
@@ -81,7 +97,6 @@ namespace SBLCRM.Lib.Fragments
 		{
 			base.OnPause ();
 			if (Common.GetIsAttendanceRun (user.username)) {
-				attendance.category_net = categoryInNetEdit.Text;
 				attendance.telephone = telephoneEdit.Text;
 				attendance.comment = commentEdit.Text;
 				AttendanceManager.SetCurrentAttendance (attendance);
