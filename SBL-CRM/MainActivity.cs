@@ -73,7 +73,7 @@ namespace SBLCRM
 			// Up Panel
 			upNextBlock = FindViewById<ImageView> (Resource.Id.maNextBockIV);
 			upNextBlock.Click += (object sender, EventArgs e) => {
-				if (fragmentNum < 4) {
+				if (fragmentNum < 3) {
 					fragmentNum ++;
 					RefreshContent();
 				}
@@ -180,13 +180,9 @@ namespace SBLCRM
 				break;
 			case 2:
 				upEndAttendance.Visibility = ViewStates.Gone;
-				fragment = new Block2Fragment();
-				break;
-			case 3:
-				upEndAttendance.Visibility = ViewStates.Gone;
 				fragment = new DrugInfoFragment();
 				break;
-			case 4:
+			case 3:
 				upEndAttendance.Visibility = ViewStates.Visible;
 				fragment = new PhotoAddFragment();
 				break;

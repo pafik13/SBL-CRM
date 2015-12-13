@@ -50,41 +50,9 @@ namespace SBLCRM
 
 			View rootView = inflater.Inflate (Resource.Layout.Block2Fragment, container, false);
 
-			purchaserFIOEdit = rootView.FindViewById<EditText> (Resource.Id.b2fPurchaserFIOEdit);
-			lastAttendanceText = rootView.FindViewById<TextView> (Resource.Id.b2fLastAttendanceText);
-			nextAttendanceEdit = rootView.FindViewById<EditText> (Resource.Id.b2fNextAttendanceEdit);
-			allAttendanciesText = rootView.FindViewById<TextView> (Resource.Id.b2fAllAttendanciesText);
-			promosEdit = rootView.FindViewById<EditText> (Resource.Id.b2fPromosEdit);
-			promosButton = rootView.FindViewById<Button> (Resource.Id.b2fPromosButton);
-			promosButton.Click += (object sender, EventArgs e) => {
-				bool[] checkedItems = new bool[promos.Count];
-				if (currentAttendance.promos != null) {
-					for (int i = 0; i < promos.Count; i++) {
-						if(currentAttendance.promos.Contains(promos[i].id)){
-							checkedItems[i] = true;
-							tempPromos.Add(promos[i].id);
-						}
-					}
-				}
-				string[] items = (from promo in promos
-							   orderby promo.id
-								select promo.name).ToArray<string>();
-				AlertDialog.Builder builder;
-				builder = new AlertDialog.Builder(Activity);
-				builder.SetTitle("Выбор ПРОМО-матералов");
-				builder.SetCancelable(false);
-				builder.SetMultiChoiceItems(items, checkedItems, MultiListClicked);
-				builder.SetPositiveButton(@"Сохранить", 
-					delegate {
-						currentAttendance.promos = tempPromos.ToArray<int>(); 
-						builder.Dispose();
-						RefreshPromos();
-					}
-				);
-				builder.SetNegativeButton(@"Отмена", delegate { builder.Dispose(); });
-				builder.Show();
-			};
-			pharmacistCountEdit = rootView.FindViewById<EditText> (Resource.Id.b2fPharmacistCountEdit);
+
+
+
 
 
 			currentAttendance = AttendanceManager.GetCurrentAttendance ();

@@ -31,92 +31,139 @@
                     android:width="300dp" />
             </TableRow>
             <TableRow
-                android:id="@+id/b1fTRContent1">
+                android:id="@+id/b1fRow1">
                 <TextView
                     android:text="Название АС"
                     style="@style/text_row_large"
                     android:layout_column="0"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <TextView
                     android:text="TradenetText"
                     android:layout_column="1"
                     style="@style/text_row"
-                    android:id="@+id/b1fTradenetText" />
+                    android:id="@+id/b1fTradenetText"
+                    android:layout_gravity="center_vertical" />
             </TableRow>
             <TableRow
-                android:id="@+id/b1fTRContent2">
+                android:id="@+id/b1fRow2">
                 <TextView
                     android:text="Город"
                     android:layout_column="0"
                     style="@style/text_row_large"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <TextView
                     android:text="CityText"
                     android:layout_column="1"
-                    android:id="@+id/b1fCityText" />
+                    android:id="@+id/b1fCityText"
+                    android:layout_gravity="center_vertical" />
             </TableRow>
             <TableRow
-                android:id="@+id/b1fTRContent3">
+                android:id="@+id/b1fRow3">
                 <TextView
                     android:text="Название Аптеки"
                     style="@style/text_row_large"
                     android:layout_column="0"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <TextView
                     android:text="PharmacyNameText"
                     android:layout_column="1"
-                    android:id="@+id/b1fPharmacyNameText" />
+                    android:id="@+id/b1fPharmacyNameText"
+                    android:layout_gravity="center_vertical" />
             </TableRow>
             <TableRow
-                android:id="@+id/b1fTRContent4">
+                android:id="@+id/b1fRow4">
                 <TextView
                     android:text="Адрес Аптеки"
                     style="@style/text_row_large"
                     android:layout_column="0"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <TextView
                     android:text="PharmacyAddressText"
                     android:layout_column="1"
-                    android:id="@+id/b1fPharmacyAddressText" />
+                    android:id="@+id/b1fPharmacyAddressText"
+                    android:layout_gravity="center_vertical" />
             </TableRow>
             <TableRow
-                android:id="@+id/b1fTRContent5">
-                <TextView
-                    android:text="Категория в Сети"
-                    style="@style/text_row_large"
-                    android:layout_column="0"
-                    android:background="@android:color/background_light" />
-                <EditText
-                    android:textCursorDrawable="@null"
-                    android:layout_column="1"
-                    android:id="@+id/b1fCategoryInNetEdit"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:background="@drawable/bottomline"
-                    android:textColorHint="#E0E0E0"
-                    android:textColor="#000000"
-                    android:hint="Категория в Сети" />
-            </TableRow>
-            <TableRow
-                android:id="@+id/b1fTRContent6">
+                android:id="@+id/b1fRow5">
                 <TextView
                     android:text="Категория OTC-фарм"
                     style="@style/text_row_large"
                     android:layout_column="0"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <TextView
                     android:text="CategoryInOTCText"
                     android:layout_column="1"
-                    android:id="@+id/b1fCategoryInOTCText" />
+                    android:id="@+id/b1fCategoryInOTCText"
+                    android:layout_gravity="center_vertical" />
             </TableRow>
             <TableRow
-                android:id="@+id/b1fTRContent7">
+                android:id="@+id/b1fRow6">
+                <TextView
+                    android:text="Дата посл. визита"
+                    android:layout_column="0"
+                    style="@style/text_row_large"
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
+                <TextView
+                    android:text="LastAttendanceText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fLastAttendanceText"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow7">
+                <TextView
+                    android:text="Дата след. визита"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
+                <TextView
+                    android:text="NextAttendanceText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fNextAttendanceText"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow8">
+                <TextView
+                    android:text="Всего визитов за цикл"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
+                <TextView
+                    android:text="AllAttendanciesText"
+                    android:layout_column="1"
+                    android:id="@+id/b1fAllAttendanciesText"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow9">
+                <TextView
+                    android:text="Категория в Сети"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/b1fCategoryNetSpinner" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow10">
                 <TextView
                     android:text="Телефон"
                     style="@style/text_row_large"
                     android:layout_column="0"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <EditText
                     android:textCursorDrawable="@null"
                     android:layout_column="1"
@@ -126,17 +173,92 @@
                     android:textColor="#000000"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:hint="Телефон" />
+                    android:hint="Телефон"
+                    android:phoneNumber="true" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow11">
+                <TextView
+                    android:text="ФИО закупщика"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_column="1"
+                    android:id="@+id/b1fPurchaserFIOEdit"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/bottomline"
+                    android:textColorHint="#E0E0E0"
+                    android:textColor="#000000"
+                    android:hint="ФИО закупщика" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow12">
+                <TextView
+                    android:text="ТМ акции OTC-фарм"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light"
+                    android:gravity="left"
+                    android:layout_gravity="center_vertical" />
+                <LinearLayout
+                    android:layout_column="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content">
+                    <TextView
+                        android:id="@+id/b1fPromosText"
+                        android:text="ТМ акции OTC-фарм"
+                        style="@style/text_row_large"
+                        android:background="@android:color/background_light"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical" />
+                    <Button
+                        android:id="@+id/b1fPromosButton"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="..."
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+                </LinearLayout>
+            </TableRow>
+            <TableRow
+                android:id="@+id/b1fRow13">
+                <TextView
+                    android:text="Количество первостольников"
+                    style="@style/text_row_large"
+                    android:layout_column="0"
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
+                <EditText
+                    android:textCursorDrawable="@null"
+                    android:layout_column="1"
+                    android:id="@+id/b1fPharmacistCountEdit"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/bottomline"
+                    android:textColorHint="#E0E0E0"
+                    android:textColor="#000000"
+                    android:hint="Количество первостольников"
+                    android:numeric="integer" />
             </TableRow>
             <TableRow
                 android:minWidth="25px"
                 android:minHeight="25px"
-                android:id="@+id/tableRow1">
+                android:id="@+id/b1fRow14">
                 <TextView
                     android:text="Комментарий"
                     android:layout_column="0"
                     style="@style/text_row_large"
-                    android:background="@android:color/background_light" />
+                    android:background="@android:color/background_light"
+                    android:layout_gravity="center_vertical" />
                 <EditText
                     android:textCursorDrawable="@null"
                     android:layout_column="1"
@@ -147,7 +269,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:hint="Комментарий"
-                    android:inputType="textMultiLine"
+                    android:inputType="textCapSentences"
                     android:maxWidth="300dp" />
             </TableRow>
         </TableLayout>

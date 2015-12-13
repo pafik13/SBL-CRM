@@ -19,11 +19,19 @@ namespace SBLCRM.Lib.Fragments
 	{
 		private Spinner categoryNetSpinner = null;
 		private EditText telephoneEdit = null;
+		private EditText purchaserFIOEdit = null;
+		private TextView promosText = null;
+		private Button promosButton = null;
+		private EditText pharmacistCountEdit = null;
 		private EditText commentEdit = null;
+
 		private int pharmacyID = -1;
 
 		User user = null;
 		List<NetCategory> netCategories = null;
+		List<Promo> promos = null;
+		List<int> tempPromos = null;
+
 		Pharmacy pharmacy = null;
 		Attendance attendance = null;
 		Merchant merchant = null;
@@ -47,10 +55,12 @@ namespace SBLCRM.Lib.Fragments
 			pharmacyID = Arguments.GetInt (Common.PHARMACY_ID);
 			user = Common.GetCurrentUser ();
 			netCategories = Common.GetNetCategories (user.username);
+			promos = Common.GetPromos (user.username);
 			merchant = Common.GetMerchant (user.username);
 			pharmacy = PharmacyManager.GetPharmacy (pharmacyID);
-			attendance = AttendanceManager.GetCurrentAttendance ();
 
+
+			attendance = AttendanceManager.GetCurrentAttendance ();
 			if (attendance == null) {
 				attendance = AttendanceManager.GetLastAttendance (pharmacyID);
 
@@ -68,6 +78,10 @@ namespace SBLCRM.Lib.Fragments
 			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = @"Город";
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyNameText).Text = pharmacy.shortName;
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyAddressText).Text = pharmacy.address;
+			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
+			rootView.FindViewById<TextView> (Resource.Id.b1fLastAttendanceText).Text = pharmacy.prev.ToString (@"d");
+			rootView.FindViewById<TextView> (Resource.Id.b1fNextAttendanceText).Text = pharmacy.next.ToString (@"d");
+			rootView.FindViewById<TextView> (Resource.Id.b1fAllAttendanciesText).Text = @"Статистика посещений";
 
 			categoryNetSpinner = rootView.FindViewById<Spinner> (Resource.Id.b1fCategoryNetSpinner);
 			ArrayAdapter adapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, (from item in netCategories select item.key).ToArray<string>());
@@ -84,19 +98,80 @@ namespace SBLCRM.Lib.Fragments
 				}
 			}
 
-			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
 			telephoneEdit = rootView.FindViewById<EditText> (Resource.Id.b1fTelephoneEdit);
 			telephoneEdit.Text = attendance.telephone;
+
+			purchaserFIOEdit = rootView.FindViewById<EditText> (Resource.Id.b1fPurchaserFIOEdit);
+			purchaserFIOEdit.Text = attendance.purchaserFIO;
+
+			promosText = rootView.FindViewById<TextView> (Resource.Id.b1fPromosText);
+			promosButton = rootView.FindViewById<Button> (Resource.Id.b1fPromosButton);
+			promosButton.Click += (object sender, EventArgs e) => {
+				bool[] checkedItems = new bool[promos.Count];
+				if (attendance.promos != null) {
+					for (int i = 0; i < promos.Count; i++) {
+						if(attendance.promos.Contains(promos[i].id)){
+							checkedItems[i] = true;
+							tempPromos.Add(promos[i].id);
+						}
+					}
+				}
+				string[] items = (from promo in promos
+					orderby promo.id
+					select promo.name).ToArray<string>();
+				AlertDialog.Builder builder;
+				builder = new AlertDialog.Builder(Activity);
+				builder.SetTitle("Выбор ПРОМО-матералов");
+				builder.SetCancelable(false);
+				builder.SetMultiChoiceItems(items, checkedItems, MultiListClicked);
+				builder.SetPositiveButton(@"Сохранить", 
+					delegate {
+						attendance.promos = tempPromos.ToArray<int>(); 
+						builder.Dispose();
+						RefreshPromos();
+					}
+				);
+				builder.SetNegativeButton(@"Отмена", delegate { builder.Dispose(); });
+				builder.Show();
+			};
+			RefreshPromos();
+
+			pharmacistCountEdit = rootView.FindViewById<EditText> (Resource.Id.b1fPharmacistCountEdit);
+			pharmacistCountEdit.Text = attendance.pharmacistCount.ToString ();
+
 			commentEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCommentEdit);
 			commentEdit.Text = attendance.comment;
 
 			return rootView;
 		}
 
+		private void MultiListClicked (object sender, DialogMultiChoiceClickEventArgs e)
+		{
+			Toast.MakeText (Activity, string.Format ("You selected: {0}", (int)e.Which), ToastLength.Short).Show ();
+			if (e.IsChecked) {
+				tempPromos.Add (promos [e.Which].id);
+			} else {
+				tempPromos.Remove (promos [e.Which].id);
+			}
+		}
+
+		private void RefreshPromos()
+		{
+			if (attendance.promos != null) {
+				promosText.Text = string.Join (@", ", (from promo in promos
+					where attendance.promos.Contains (promo.id)
+					orderby promo.id
+					select promo.key));
+			}
+			tempPromos = new List<int> ();
+		}
+
 		public override void OnPause ()
 		{
 			base.OnPause ();
 			if (Common.GetIsAttendanceRun (user.username)) {
+				attendance.purchaserFIO = purchaserFIOEdit.Text;
+				attendance.pharmacistCount = int.Parse (pharmacistCountEdit.Text);
 				attendance.telephone = telephoneEdit.Text;
 				attendance.comment = commentEdit.Text;
 				AttendanceManager.SetCurrentAttendance (attendance);
