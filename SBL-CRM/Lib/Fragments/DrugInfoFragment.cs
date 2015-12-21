@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -19,7 +20,10 @@ namespace SBLCRM
 	public class DrugInfoFragment : Fragment
 	{
 		private User user = null;
+		private Project project = null;
+
 		private TableLayout table = null;
+
 		private List<Info> infos = null;
 		private List<Drug> drugs = null;
 
@@ -45,9 +49,21 @@ namespace SBLCRM
 
 			user = Common.GetCurrentUser ();
 
+			project = Common.GetProject (user.username);
+				
 			infos = Common.GetInfos (user.username);
 
-			drugs = Common.GetDrugs (user.username);
+			List<Drug> allDrugs = Common.GetDrugs (user.username);
+			DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+			int currWeek = dfi.Calendar.GetWeekOfYear (DateTime.Now, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
+			int skip = (currWeek - project.startWeek) % (allDrugs.Count / project.drugsInWeek);
+				
+			drugs = (from drug in allDrugs
+				  orderby drug.id
+				   select drug
+			        ).Skip (skip * project.drugsInWeek)
+				     .Take (project.drugsInWeek)
+				     .ToList<Drug>();
 
 //			AttendanceResultManager.SetCurrentAttendanceResults (null);
 
@@ -152,19 +168,52 @@ namespace SBLCRM
 
 					string value = string.Empty;
 					value = AttendanceResultManager.GetResultValue (newAttendanceResults, info.id, drug.id);
-					rlValue.Click += Rl_Click;
 
-					TextView tvValue = new TextView (Activity);
-					tvValue.Gravity = GravityFlags.Center;
-					if (string.IsNullOrEmpty (value) || value.Equals(@"N")) {
-						tvValue.SetTextAppearance (Activity, Resource.Style.text_danger);
-						rlValue.SetBackgroundColor (Android.Graphics.Color.LightPink);
-					} else {
-						tvValue.SetTextAppearance (Activity, Resource.Style.text_success);
-						rlValue.SetBackgroundColor (Android.Graphics.Color.LightGreen);
+					if (info.valueType == @"number") {
+						RelativeLayout.LayoutParams nlpValue = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.MatchParent);
+						nlpValue.AddRule (LayoutRules.CenterInParent);
+						nlpValue.SetMargins (1, 1, 1, 1);
+
+						EditText evValue = new EditText (Activity) { LayoutParameters = nlpValue };
+						evValue.SetMinimumWidth (64);
+						evValue.SetMaxWidth (64);
+						evValue.InputType = Android.Text.InputTypes.ClassNumber;
+						value = value.Equals (@"N") ? string.Empty : value;
+						evValue.Text = value;
+						rlValue.AddView (evValue);
+						evValue.AfterTextChanged += NumberValue_AfterTextChanged;
 					}
-					tvValue.Text = AttendanceResult.StringBoolToRussian(value);
-					rlValue.AddView (tvValue);	
+
+					if (info.valueType == @"decimal") {
+						RelativeLayout.LayoutParams dlpValue = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.MatchParent);
+						dlpValue.AddRule (LayoutRules.CenterInParent);
+						dlpValue.SetMargins (1, 1, 1, 1);
+
+						EditText evValue = new EditText (Activity) { LayoutParameters = dlpValue };
+						evValue.SetMinimumWidth (64);
+						evValue.SetMaxWidth (64);
+						evValue.InputType = Android.Text.InputTypes.NumberFlagDecimal;
+						value = value.Equals (@"N") ? string.Empty : value;
+						evValue.Text = value;
+						rlValue.AddView (evValue);
+						evValue.AfterTextChanged += DecimalValue_AfterTextChanged;
+					}
+
+					if (info.valueType == @"boolean") {
+						rlValue.Click += Rl_Click;
+
+						TextView tvValue = new TextView (Activity);
+						tvValue.Gravity = GravityFlags.Center;
+						if (string.IsNullOrEmpty (value) || value.Equals (@"N")) {
+							tvValue.SetTextAppearance (Activity, Resource.Style.text_danger);
+							rlValue.SetBackgroundColor (Android.Graphics.Color.LightPink);
+						} else {
+							tvValue.SetTextAppearance (Activity, Resource.Style.text_success);
+							rlValue.SetBackgroundColor (Android.Graphics.Color.LightGreen);
+						}
+						tvValue.Text = AttendanceResult.StringBoolToRussian (value);
+						rlValue.AddView (tvValue);	
+					}
 
 					trRow.AddView (rlValue);
 				}
@@ -195,6 +244,24 @@ namespace SBLCRM
 			rDelim.AddView (vDelim);
 
 			return rDelim;
+		}
+
+		void NumberValue_AfterTextChanged (object sender, Android.Text.AfterTextChangedEventArgs e)
+		{
+			EditText evValue = (EditText) sender;
+			RelativeLayout rlValue = (RelativeLayout) evValue.Parent;
+			int IDdrug = (int) rlValue.GetTag(Resource.String.IDdrug);
+			int IDinfo = (int) rlValue.GetTag(Resource.String.IDinfo);
+			AttendanceResultManager.SetResultValue(newAttendanceResults, IDinfo, IDdrug, e.Editable.ToString ());
+		}
+
+		void DecimalValue_AfterTextChanged (object sender, Android.Text.AfterTextChangedEventArgs e)
+		{
+			EditText evValue = (EditText) sender;
+			RelativeLayout rlValue = (RelativeLayout) evValue.Parent;
+			int IDdrug = (int) rlValue.GetTag(Resource.String.IDdrug);
+			int IDinfo = (int) rlValue.GetTag(Resource.String.IDinfo);
+			AttendanceResultManager.SetResultValue(newAttendanceResults, IDinfo, IDdrug, e.Editable.ToString ());
 		}
 
 		void Rl_Click (object sender, EventArgs e)

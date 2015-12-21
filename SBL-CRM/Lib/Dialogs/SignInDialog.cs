@@ -387,6 +387,33 @@ namespace SBLCRM.Lib.Dialogs
 			}
 
 
+			WriteInfo (@"Получение категорий в сети", 2000);
+			request = new RestRequest(@"project/{id}/netCats", Method.GET);
+			request.AddCookie(cookieName, cookieValue);
+			request.AddUrlSegment(@"id", merchant.project.ToString());
+			List<NetCategory> netCategories = client.Execute<List<NetCategory>>(request).Data;
+
+			if (!Common.SetNetCategories(username, netCategories))
+			{
+				//Debug.WriteLine(@"Не удалось сохранить информации о препаратах", @"Error");
+				WriteWarning (@"Не удалось сохранить категории в сети", 2000);
+				return false;
+			}
+
+			WriteInfo (@"Получение ПРОМО-материалов и акций", 2000);
+			request = new RestRequest(@"project/{id}/promos", Method.GET);
+			request.AddCookie(cookieName, cookieValue);
+			request.AddUrlSegment(@"id", merchant.project.ToString());
+			List<Promo> promos = client.Execute<List<Promo>>(request).Data;
+
+			if (!Common.SetPromos(username, promos))
+			{
+				//Debug.WriteLine(@"Не удалось сохранить информации о препаратах", @"Error");
+				WriteWarning (@"Не удалось сохранить ПРОМО-материалы и акции", 2000);
+				return false;
+			}
+
+
 			WriteInfo (@"Получение типов фотографий", 2000);
 			request = new RestRequest(@"project/{id}/photoTypes", Method.GET);
 			request.AddCookie(cookieName, cookieValue);
@@ -399,6 +426,7 @@ namespace SBLCRM.Lib.Dialogs
 				WriteWarning (@"Не удалось сохранить типы фотографий", 2000);
 				return false;
 			}
+
 
 			WriteInfo (@"Получение подтипов фотографий", 2000);
 			string ids = string.Join(", ", from item in photoTypes select item.id);

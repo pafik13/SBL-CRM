@@ -90,7 +90,7 @@ namespace SBLCRM.Lib.Entities
 		}
 
 		/// <summary>
-		/// Insert or update a Doctor
+		/// Добавление или обновление доктора
 		/// </summary>
 		public static int SaveAttendance (Attendance item)
 		{

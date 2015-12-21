@@ -81,12 +81,27 @@ namespace SBLCRM.Lib.Entities
 			}
 
 			var results = new List<AttendanceResult> ();
+			string value = string.Empty;
 			foreach (var info in infos) {
+				switch (info.valueType) {
+				case @"boolean":
+					value = @"N";
+					break;
+				case @"number":
+				case @"decimal":	
+				case @"string":
+					value = string.Empty;
+					break;
+				default:
+					value = defaultValue;
+					break;
+				}
+
 				foreach (var drug in drugs) {
 					results.Add (new AttendanceResult () {
 						info = info.id,
 						drug = drug.id,
-						value = defaultValue
+						value = value
 					});
 				}
 			}

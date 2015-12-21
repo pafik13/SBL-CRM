@@ -200,27 +200,7 @@ namespace SBLCRM
 		{
 			user = Common.GetCurrentUser ();
 
-			// Testing
-			List<Promo> promos = new List<Promo> ();
 
-			promos.Add (new Promo { id = 1, name = @"Promo1", key = @"Key1" });
-			promos.Add (new Promo { id = 2, name = @"Promo2", key = @"Key2" });
-			promos.Add (new Promo { id = 3, name = @"Promo3", key = @"Key3" });
-			promos.Add (new Promo { id = 4, name = @"Promo4", key = @"Key4" });
-
-			Common.SetPromos (user.username, promos);
-
-			List<NetCategory> netCategories = new List<NetCategory> ();
-
-			netCategories.Add (new NetCategory { id = 1, name = @"NetCatName1", key = @"NetCat1" });
-			netCategories.Add (new NetCategory { id = 2, name = @"NetCatName2", key = @"NetCat2" });
-			netCategories.Add (new NetCategory { id = 3, name = @"NetCatName3", key = @"NetCat3" });
-			netCategories.Add (new NetCategory { id = 4, name = @"NetCatName4", key = @"NetCat4" });
-
-			Common.SetNetCategories (user.username, netCategories);
-
-			AttendanceManager.SetCurrentAttendance (null);
-			// Testing
 
 			if (user == null) {
 				content.Visibility = ViewStates.Gone;
@@ -229,6 +209,27 @@ namespace SBLCRM
 				pharamcyTable.Visibility = ViewStates.Gone;
 				beforeSignIn.Visibility = ViewStates.Visible;
 			} else {
+				// Testing
+//				List<Promo> promos = new List<Promo> ();
+//
+//				promos.Add (new Promo { id = 1, name = @"Промо1", key = @"П1" });
+//				promos.Add (new Promo { id = 2, name = @"Промо2", key = @"П2" });
+//				promos.Add (new Promo { id = 4, name = @"Промо3", key = @"п3" });
+//
+//				Common.SetPromos (user.username, promos);
+//
+//				List<NetCategory> netCategories = new List<NetCategory> ();
+//
+//				netCategories.Add (new NetCategory { id = 1, name = @"КатСети1", key = @"Кат1" });
+//				netCategories.Add (new NetCategory { id = 2, name = @"КатСети2", key = @"Кат2" });
+//				netCategories.Add (new NetCategory { id = 3, name = @"КатСети3", key = @"Кат3" });
+//				netCategories.Add (new NetCategory { id = 4, name = @"КатСети4", key = @"Кат4" });
+//
+//				Common.SetNetCategories (user.username, netCategories);
+
+				AttendanceManager.SetCurrentAttendance (null);
+				// Testing
+
 				Common.SetIsAttendanceRun (user.username, isVisitStart);
 				content.Visibility = ViewStates.Gone;
 				beforeSignIn.Visibility = ViewStates.Gone;
