@@ -57,5 +57,9 @@ namespace SBLCRM.Lib.Entities
 			return AttendanceRepository.SetCurrentAttendance (attendance);
 		}
 
+		public static string GetStatistics(int pharmacyID)
+		{
+			return AttendanceRepository.GetStatistics(pharmacyID);
+		}
 	}
 }

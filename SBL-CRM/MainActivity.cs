@@ -5,9 +5,12 @@ using System.Collections.Generic;
 
 using Android.App;
 using Android.Widget;
+using Android.Content;
 using Android.Views;
 using Android.OS;
 using Android.Util;
+using Android.Content.PM;
+using Android.Views.InputMethods;
 
 using SBLCRM.Lib;
 using SBLCRM.Lib.Entities;
@@ -18,7 +21,7 @@ namespace SBLCRM
 {
 	enum ColumnPosition {cpFirst, cpLast, cpMiddle}
 
-	[Activity (Label = "SBL-CRM", MainLauncher = true, Icon = "@mipmap/icon")]
+	[Activity (Label = "SBL-CRM", MainLauncher = true, Icon = "@mipmap/icon", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Landscape)]
 	public class MainActivity : Activity
 	{
 		RelativeLayout upPanel = null;
@@ -170,6 +173,14 @@ namespace SBLCRM
 
 		void RefreshContent()
 		{
+			//			InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
+			//			imm.HideSoftInputFromInputMethod(Window.DecorView.WindowToken, HideSoftInputFlags.NotAlways);
+			Activity activity = fragment.Activity;
+			if (activity.CurrentFocus != null) {
+				InputMethodManager imm = (InputMethodManager)activity.GetSystemService(Context.InputMethodService);
+				imm.HideSoftInputFromWindow(activity.CurrentFocus.WindowToken, HideSoftInputFlags.NotAlways);
+			}
+
 			Bundle args = new Bundle ();
 			args.PutInt (Common.PHARMACY_ID, selectedPharmacyID);
 			switch (fragmentNum)
@@ -322,7 +333,13 @@ namespace SBLCRM
 					           orderby pharm.next, pharm.id
 								select pharm).Skip((page - 1) * itemsNum)
 											 .Take(itemsNum);
-
+				
+				var tradenets = Common.GetTradeNets (user.username);
+				Dictionary <int, string> tnDict = new Dictionary<int, string> ();
+				foreach (var item in tradenets) {
+					tnDict.Add (item.id, item.shortName);
+				};
+					
 				foreach (var pharmacy in pharmacies) {
 					TableRow cRow = new TableRow (this);
 					if (pharmacy.prev.Date == DateTime.Now.Date) {
@@ -339,11 +356,14 @@ namespace SBLCRM
 					TextView shortName = GetItem(ColumnPosition.cpMiddle);
 					shortName.Gravity = GravityFlags.CenterVertical;
 					shortName.Text = pharmacy.shortName;
+					shortName.SetSingleLine (true);
+					shortName.Ellipsize = Android.Text.TextUtils.TruncateAt.End;
 					cRow.AddView (shortName);
 
 					TextView tradeNet = GetItem(ColumnPosition.cpMiddle);
 					tradeNet.Gravity = GravityFlags.CenterVertical;
-					tradeNet.Text = pharmacy.tradenet.ToString();
+					//tradeNet.Text = pharmacy.tradenet.ToString();
+					tradeNet.Text = tnDict[pharmacy.tradenet];
 					cRow.AddView (tradeNet);
 
 					TextView address = GetItem(ColumnPosition.cpMiddle);
@@ -407,7 +427,7 @@ namespace SBLCRM
 				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56 };
 				break;		
 			case ColumnPosition.cpLast:
-				textView.LayoutParameters = new TableRow.LayoutParams () { LeftMargin = 24 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
 				break;						
 			default:
 				break;
@@ -443,6 +463,7 @@ namespace SBLCRM
 		{
 			isVisitStart = true;
 			Common.SetIsAttendanceRun (user.username, isVisitStart);
+			((Block1Fragment)fragment).RefreshControlsState ();
 
 			upNextBlock.Visibility = ViewStates.Visible;
 			upPrevBlock.Visibility = ViewStates.Visible;
@@ -473,7 +494,7 @@ namespace SBLCRM
 				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56 };
 				break;		
 			case ColumnPosition.cpLast:
-				textView.LayoutParameters = new TableRow.LayoutParams () { LeftMargin = 24 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
 				break;						
 			default:
 				break;
@@ -494,7 +515,7 @@ namespace SBLCRM
 				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56, Gravity = GravityFlags.CenterVertical };
 				break;		
 			case ColumnPosition.cpLast:
-				imageView.LayoutParameters = new TableRow.LayoutParams () { LeftMargin = 24 };
+				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
 				break;						
 			default:
 				break;
@@ -514,7 +535,7 @@ namespace SBLCRM
 				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56, Gravity = GravityFlags.CenterVertical };
 				break;		
 			case ColumnPosition.cpLast:
-				button.LayoutParameters = new TableRow.LayoutParams () { LeftMargin = 24 };
+				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
 				break;						
 			default:
 				break;

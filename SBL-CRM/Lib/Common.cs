@@ -380,6 +380,31 @@ namespace SBLCRM.Lib
             return true;
         }
 
+		/******  TRADENET  *****/
+		public static List<TradeNet> GetTradeNets(string username)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"tradenets.xml");
+			var serializer = new XmlSerializer(typeof(List<TradeNet>));
+
+			using (var stream = new FileStream(storeLocation, FileMode.Open))
+			{
+				return (List<TradeNet>)serializer.Deserialize(stream);
+			}
+		}
+
+		public static bool SetTradeNets(string username, List<TradeNet> tradenets)
+		{
+			string storeLocation = Path.Combine(DatabaseFileDir, username, @"tradenets.xml");
+			new FileInfo(storeLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(List<TradeNet>));
+			using (var writer = new StreamWriter(storeLocation))
+			{
+				serializer.Serialize(writer, tradenets);
+			}
+
+			return true;
+		}
+
 		/******  PHARMACY  *****/
         public static List<Pharmacy> GetPharmacies(string username)
         {

@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Views.InputMethods;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -20,7 +21,7 @@ namespace SBLCRM.Lib.Fragments
 		private Spinner categoryNetSpinner = null;
 		private EditText telephoneEdit = null;
 		private EditText purchaserFIOEdit = null;
-		private TextView promosText = null;
+		private EditText promosEdit = null;
 		private Button promosButton = null;
 		private EditText pharmacistCountEdit = null;
 		private EditText commentEdit = null;
@@ -35,6 +36,7 @@ namespace SBLCRM.Lib.Fragments
 		Pharmacy pharmacy = null;
 		Attendance attendance = null;
 		Merchant merchant = null;
+		Territory territory = null;
 
 		public override void OnCreate (Bundle savedInstanceState)
 		{
@@ -57,8 +59,14 @@ namespace SBLCRM.Lib.Fragments
 			netCategories = Common.GetNetCategories (user.username);
 			promos = Common.GetPromos (user.username);
 			merchant = Common.GetMerchant (user.username);
+			territory = Common.GetTerritory (user.username);
 			pharmacy = PharmacyManager.GetPharmacy (pharmacyID);
 
+			var tradenets = Common.GetTradeNets (user.username);
+			Dictionary <int, string> tnDict = new Dictionary<int, string> ();
+			foreach (var item in tradenets) {
+				tnDict.Add (item.id, item.shortName);
+			};
 
 			attendance = AttendanceManager.GetCurrentAttendance ();
 			if (attendance == null) {
@@ -74,14 +82,14 @@ namespace SBLCRM.Lib.Fragments
 				}
 			}
 
-			rootView.FindViewById<TextView> (Resource.Id.b1fTradenetText).Text = @"Аптечная Сеть";
-			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = @"Город";
+			rootView.FindViewById<TextView> (Resource.Id.b1fTradenetText).Text = tnDict [pharmacy.tradenet];//@"Аптечная Сеть";
+			rootView.FindViewById<TextView> (Resource.Id.b1fCityText).Text = territory.baseCity;
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyNameText).Text = pharmacy.shortName;
 			rootView.FindViewById<TextView> (Resource.Id.b1fPharmacyAddressText).Text = pharmacy.address;
 			rootView.FindViewById<TextView> (Resource.Id.b1fCategoryInOTCText).Text = pharmacy.category_otc;
-			rootView.FindViewById<TextView> (Resource.Id.b1fLastAttendanceText).Text = pharmacy.prev.ToString (@"d");
-			rootView.FindViewById<TextView> (Resource.Id.b1fNextAttendanceText).Text = pharmacy.next.ToString (@"d");
-			rootView.FindViewById<TextView> (Resource.Id.b1fAllAttendanciesText).Text = @"Статистика посещений";
+			rootView.FindViewById<TextView> (Resource.Id.b1fLastAttendanceText).Text = pharmacy.prev == DateTime.MinValue ? String.Empty : pharmacy.prev.ToString (@"d");
+			rootView.FindViewById<TextView> (Resource.Id.b1fNextAttendanceText).Text = pharmacy.next == DateTime.MinValue ? String.Empty : pharmacy.next.ToString (@"d");
+			rootView.FindViewById<TextView> (Resource.Id.b1fAllAttendanciesText).Text = AttendanceManager.GetStatistics(pharmacy.id);
 
 			categoryNetSpinner = rootView.FindViewById<Spinner> (Resource.Id.b1fCategoryNetSpinner);
 			ArrayAdapter adapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, (from item in netCategories select item.key).ToArray<string>());
@@ -90,11 +98,9 @@ namespace SBLCRM.Lib.Fragments
 				attendance.category_net = netCategories[e.Position].id;
 			};
 			// SetValue
-			if (attendance.category_net != 0) {
-				for (int i = 0; i < netCategories.Count; i++) {
-					if (netCategories [i].id == attendance.category_net) {
-						categoryNetSpinner.SetSelection (i);
-					}
+			for (int i = 0; i < netCategories.Count; i++) {
+				if (netCategories [i].id == attendance.category_net) {
+					categoryNetSpinner.SetSelection (i);
 				}
 			}
 
@@ -104,7 +110,7 @@ namespace SBLCRM.Lib.Fragments
 			purchaserFIOEdit = rootView.FindViewById<EditText> (Resource.Id.b1fPurchaserFIOEdit);
 			purchaserFIOEdit.Text = attendance.purchaserFIO;
 
-			promosText = rootView.FindViewById<TextView> (Resource.Id.b1fPromosText);
+			promosEdit = rootView.FindViewById<EditText> (Resource.Id.b1fPromosEdit);
 			promosButton = rootView.FindViewById<Button> (Resource.Id.b1fPromosButton);
 			promosButton.Click += (object sender, EventArgs e) => {
 				bool[] checkedItems = new bool[promos.Count];
@@ -142,6 +148,7 @@ namespace SBLCRM.Lib.Fragments
 			commentEdit = rootView.FindViewById<EditText> (Resource.Id.b1fCommentEdit);
 			commentEdit.Text = attendance.comment;
 
+			RefreshControlsState ();
 			return rootView;
 		}
 
@@ -158,12 +165,41 @@ namespace SBLCRM.Lib.Fragments
 		private void RefreshPromos()
 		{
 			if (attendance.promos != null) {
-				promosText.Text = string.Join (@", ", (from promo in promos
+				promosEdit.Text = string.Join (@", ", (from promo in promos
 					where attendance.promos.Contains (promo.id)
 					orderby promo.id
 					select promo.key));
 			}
 			tempPromos = new List<int> ();
+		}
+
+		public void RefreshControlsState()
+		{
+			if (Common.GetIsAttendanceRun (user.username)) {
+				if (categoryNetSpinner.SelectedView == null) {
+					categoryNetSpinner.Enabled = true;
+				} else {
+					categoryNetSpinner.SelectedView.Enabled = true;
+					categoryNetSpinner.Enabled = true;
+				}
+				telephoneEdit.Enabled = true;
+				purchaserFIOEdit.Enabled = true;
+				promosButton.Enabled = true;
+				pharmacistCountEdit.Enabled = true;
+				commentEdit.Enabled = true;
+			} else {
+				if (categoryNetSpinner.SelectedView == null) {
+					categoryNetSpinner.Enabled = false;
+				} else {
+					categoryNetSpinner.SelectedView.Enabled = false;
+					categoryNetSpinner.Enabled = false;
+				}
+				telephoneEdit.Enabled = false;
+				purchaserFIOEdit.Enabled = false;
+				promosButton.Enabled = false;
+				pharmacistCountEdit.Enabled = false;
+				commentEdit.Enabled = false;
+			}
 		}
 
 		public override void OnPause ()
@@ -175,7 +211,14 @@ namespace SBLCRM.Lib.Fragments
 				attendance.telephone = telephoneEdit.Text;
 				attendance.comment = commentEdit.Text;
 				AttendanceManager.SetCurrentAttendance (attendance);
+			} else {
+				AttendanceManager.SetCurrentAttendance (null);
 			}
+//			Activity.Window.SetSoftInputMode (SoftInput.StateAlwaysHidden);
+//			if (Activity.CurrentFocus != null) {
+//				InputMethodManager imm = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
+//				imm.HideSoftInputFromWindow(Activity.CurrentFocus.WindowToken, HideSoftInputFlags.NotAlways);
+//			}
 		}
 	}
 }

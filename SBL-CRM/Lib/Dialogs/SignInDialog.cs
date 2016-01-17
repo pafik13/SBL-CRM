@@ -470,6 +470,19 @@ namespace SBLCRM.Lib.Dialogs
 				return false;
 			}
 
+			WriteInfo (@"Получение аптечных сетей", 2000);
+			string tnIDs = string.Join(", ", (from item in pharmacies select item.tradenet).Distinct().ToList());
+			ids = @"{" + quote + @"id" + quote + @" : [" + tnIDs + @"]}";
+			request = new RestRequest(@"tradenet?populate=false&where=" + ids, Method.GET);
+			request.AddCookie(cookieName, cookieValue);
+			List<TradeNet> tradenets = client.Execute<List<TradeNet>>(request).Data;
+
+			if (!Common.SetTradeNets(username, tradenets))
+			{
+				//Debug.WriteLine(@"Не удалось сохранить информации о препаратах", @"Error");
+				WriteWarning (@"Не удалось сохранить аптечные сети", 2000);
+				return false;
+			}
 
 //			request = new RestRequest(@"territory/{id}/pharmacies?limit=1000", Method.GET);
 //			request.AddCookie(cookieName, cookieValue);

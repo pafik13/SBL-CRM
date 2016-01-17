@@ -42,7 +42,7 @@ namespace SBLCRM
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
 			base.OnCreateView (inflater, container, savedInstanceState);
-
+				
 			View rootView = inflater.Inflate (Resource.Layout.DrugInfoFragment, container, false);
 
 			table = rootView.FindViewById<TableLayout> (Resource.Id.difTableLayout);
@@ -74,6 +74,8 @@ namespace SBLCRM
 			}
 
 			RefreshTable ();
+
+//			Activity.Window.SetSoftInputMode (SoftInput.StateAlwaysHidden);
 
 			return rootView;
 		}

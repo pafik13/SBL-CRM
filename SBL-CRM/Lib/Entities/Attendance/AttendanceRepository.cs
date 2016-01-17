@@ -168,5 +168,10 @@ namespace SBLCRM.Lib.Entities
 
 			return true;
 		}
+
+		public static string GetStatistics(int pharmacyID)
+		{
+			return @"Статистика посещений";
+		}
 	}
 }

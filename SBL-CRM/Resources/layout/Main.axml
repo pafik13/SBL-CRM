@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:minWidth="25px"
-        android:minHeight="25px"
+        android:minHeight="64px"
         android:background="@drawable/bottomline">
         <TextView
             android:text="ИНФОРМАЦИЯ"
@@ -32,11 +32,11 @@
             android:background="#03A9F4"
             android:typeface="monospace"
             android:width="150dp"
-            android:height="62dp"
             android:textColor="#FFFFFF"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:minHeight="62dp" />
+            android:minHeight="62dp"
+            android:layout_marginBottom="2dp" />
         <Button
             android:text="ЗАКОНЧИТЬ ВИЗИТ"
             android:layout_width="wrap_content"
@@ -46,11 +46,11 @@
             android:background="#03A9F4"
             android:typeface="monospace"
             android:width="150dp"
-            android:height="62dp"
             android:textColor="#FFFFFF"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:minHeight="62dp" />
+            android:minHeight="62dp"
+            android:layout_marginBottom="2dp" />
         <Button
             android:text="ЗАКРЫТЬ"
             android:layout_width="wrap_content"
@@ -64,7 +64,8 @@
             android:textColor="#FFFFFF"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:minHeight="62dp" />
+            android:minHeight="62dp"
+            android:layout_marginBottom="2dp" />
         <ImageView
             android:src="@drawable/ic_fast_forward_black_36dp"
             android:layout_width="wrap_content"
@@ -72,23 +73,26 @@
             android:id="@+id/maNextBockIV"
             android:layout_alignParentRight="true"
             android:paddingRight="14dp"
-            android:layout_centerVertical="true" />
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp" />
         <ImageView
             android:src="@drawable/ic_fast_rewind_black_36dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/maNextBockIV"
             android:id="@+id/maPrevBlockIV"
-            android:layout_centerVertical="true"
-            android:paddingRight="14dp" />
+            android:paddingRight="14dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp" />
         <ImageView
             android:src="@drawable/ic_loop_black_36dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/maSync"
-            android:layout_centerVertical="true"
             android:paddingRight="14dp"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp" />
         <ImageView
             android:src="@drawable/ic_exit_to_app_black_36dp"
             android:layout_width="wrap_content"
@@ -96,7 +100,8 @@
             android:layout_toRightOf="@id/maEndAttendance"
             android:id="@+id/maLogOut"
             android:paddingLeft="14dp"
-            android:layout_centerVertical="true" />
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp" />
     </RelativeLayout>
     <FrameLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/maContentFL"
@@ -108,7 +113,9 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/maPharmacyTable" />
+        android:id="@+id/maPharmacyTable"
+        android:shrinkColumns="1"
+        android:stretchColumns="2,3" />
     <RelativeLayout
         android:orientation="vertical"
         android:minWidth="25px"

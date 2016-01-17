@@ -7,6 +7,7 @@ namespace SBLCRM.Lib.Entities
 	{
 		public Attendance ()
 		{
+			promos = new int[0];
 		}
 
 		public int id { get; set; }
@@ -23,6 +24,9 @@ namespace SBLCRM.Lib.Entities
 		public string ToJSON()
 		{
 			const char quote = '"';
+//			if (promos == null) {
+//				promos = new int[0];
+//			}
 			return
 				@" { " 
 					+ quote + @"merchant" + quote + @" : " + merchant + ","	

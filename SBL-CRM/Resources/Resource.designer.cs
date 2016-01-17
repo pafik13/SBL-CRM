@@ -820,37 +820,40 @@ namespace SBLCRM
 			public const int ic_cached_black_48dp = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int ic_check_circle_white_48dp = 2130837595;
+			public const int ic_check_circle_white_36dp = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int ic_exit_to_app_black_36dp = 2130837596;
+			public const int ic_check_circle_white_48dp = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int ic_fast_forward_black_36dp = 2130837597;
+			public const int ic_exit_to_app_black_36dp = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int ic_fast_forward_white_36dp = 2130837598;
+			public const int ic_fast_forward_black_36dp = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int ic_fast_rewind_black_36dp = 2130837599;
+			public const int ic_fast_forward_white_36dp = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int ic_fast_rewind_white_36dp = 2130837600;
+			public const int ic_fast_rewind_black_36dp = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int ic_highlight_off_white_48dp = 2130837601;
+			public const int ic_fast_rewind_white_36dp = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int ic_keyboard_arrow_left_black_24dp = 2130837602;
+			public const int ic_highlight_off_white_36dp = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int ic_keyboard_arrow_right_black_24dp = 2130837603;
+			public const int ic_highlight_off_white_48dp = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int ic_loop_black_36dp = 2130837604;
+			public const int ic_keyboard_arrow_left_black_24dp = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int monoandroidsplash = 2130837605;
+			public const int ic_keyboard_arrow_right_black_24dp = 2130837605;
+			
+			// aapt resource value: 0x7f020066
+			public const int ic_loop_black_36dp = 2130837606;
 			
 			static Drawable()
 			{
@@ -938,7 +941,7 @@ namespace SBLCRM
 			public const int b1fPromosButton = 2131361882;
 			
 			// aapt resource value: 0x7f0a0059
-			public const int b1fPromosText = 2131361881;
+			public const int b1fPromosEdit = 2131361881;
 			
 			// aapt resource value: 0x7f0a0057
 			public const int b1fPurchaserFIOEdit = 2131361879;
@@ -1602,9 +1605,6 @@ namespace SBLCRM
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f0c009a
-			public const int Mono_Android_Theme_Splash = 2131493018;
-			
 			// aapt resource value: 0x7f0c0063
 			public const int TextAppearance_AppCompat_Base_CompactMenu_Dialog = 2131492963;
 			
@@ -2034,8 +2034,17 @@ namespace SBLCRM
 			// aapt resource value: 0x7f0c008d
 			public const int alert_warning = 2131493005;
 			
+			// aapt resource value: 0x7f0c009a
+			public const int control_label = 2131493018;
+			
 			// aapt resource value: 0x7f0c008b
 			public const int dialog_animation = 2131493003;
+			
+			// aapt resource value: 0x7f0c009c
+			public const int fcs_block1 = 2131493020;
+			
+			// aapt resource value: 0x7f0c009b
+			public const int form_control_static = 2131493019;
 			
 			// aapt resource value: 0x7f0c0093
 			public const int headerTextForPharmacy = 2131493011;
