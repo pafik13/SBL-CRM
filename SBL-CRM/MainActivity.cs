@@ -154,8 +154,12 @@ namespace SBLCRM
 			List<AttendanceResult> newAttendanceResults = AttendanceResultManager.GetCurrentAttendanceResults ();
 			List<AttendancePhoto> newAttendancePhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
 			int attID = AttendanceManager.SaveAttendance (newAttendance);
-			AttendanceResultManager.SaveNewAttendanceResults (attID, newAttendanceResults);
-			AttendancePhotoManager.SaveNewAttendancePhotos (attID, newAttendancePhotos);
+			if (newAttendanceResults != null) {
+				AttendanceResultManager.SaveNewAttendanceResults (attID, newAttendanceResults);
+			}
+			if (newAttendancePhotos != null) {
+				AttendancePhotoManager.SaveNewAttendancePhotos (attID, newAttendancePhotos);
+			}
 
 			//Correct Pharmacy
 			Pharmacy pharmacy = PharmacyManager.GetPharmacy (selectedPharmacyID);
@@ -210,8 +214,6 @@ namespace SBLCRM
 		void RefreshMainView()
 		{
 			user = Common.GetCurrentUser ();
-
-
 
 			if (user == null) {
 				content.Visibility = ViewStates.Gone;
@@ -344,6 +346,8 @@ namespace SBLCRM
 					TableRow cRow = new TableRow (this);
 					if (pharmacy.prev.Date == DateTime.Now.Date) {
 						cRow.SetBackgroundResource (Resource.Drawable.bottomline_green);
+					} else if (pharmacy.next.Date < DateTime.Now.Date) {
+						cRow.SetBackgroundResource (Resource.Drawable.bottomline_red);
 					} else {
 						cRow.SetBackgroundResource (Resource.Drawable.bottomline);
 					}
@@ -413,21 +417,26 @@ namespace SBLCRM
 			}
 		}
 
+		int ToDIP(int pix)
+		{
+			return (int) (pix * BaseContext.Resources.DisplayMetrics.Density);
+		}
+
 		TextView GetHeadItem (ColumnPosition columnPosition)
 		{
 			TextView textView = new TextView (this);
 			textView.SetTextAppearance (this, Resource.Style.headerTextForPharmacy);
-			textView.SetHeight (56);
+			textView.SetHeight (ToDIP(56));
 
 			switch (columnPosition) {
 			case ColumnPosition.cpFirst:
-				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24, LeftMargin = 24 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24), LeftMargin = ToDIP(24) };
 				break;
 			case ColumnPosition.cpMiddle:
-				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(56) };
 				break;		
 			case ColumnPosition.cpLast:
-				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24) };
 				break;						
 			default:
 				break;
@@ -484,17 +493,17 @@ namespace SBLCRM
 		{
 			TextView textView = new TextView (this);
 			textView.SetTextAppearance (this, Resource.Style.rowTextForPharmacy);
-			textView.SetHeight (48);
+			textView.SetHeight (ToDIP(48));
 
 			switch (columnPosition) {
 			case ColumnPosition.cpFirst:
-				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24, LeftMargin = 24 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24), LeftMargin = ToDIP(24) };
 				break;
 			case ColumnPosition.cpMiddle:
-				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(56) };
 				break;		
 			case ColumnPosition.cpLast:
-				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
+				textView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24) };
 				break;						
 			default:
 				break;
@@ -508,14 +517,14 @@ namespace SBLCRM
 
 			switch (columnPosition) {
 			case ColumnPosition.cpFirst:
-				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24, LeftMargin = 24 };
+				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24), LeftMargin = ToDIP(24) };
 //				new TableRow.LayoutParams () {Gravity = GravityFlags.CenterVertical, RightMargin = 24, LeftMargin = 24 };
 				break;
 			case ColumnPosition.cpMiddle:
-				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56, Gravity = GravityFlags.CenterVertical };
+				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(56), Gravity = GravityFlags.CenterVertical };
 				break;		
 			case ColumnPosition.cpLast:
-				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
+				imageView.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24) };
 				break;						
 			default:
 				break;
@@ -529,13 +538,13 @@ namespace SBLCRM
 
 			switch (columnPosition) {
 			case ColumnPosition.cpFirst:
-				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24, LeftMargin = 24 };
+				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24), LeftMargin = ToDIP(24) };
 				break;
 			case ColumnPosition.cpMiddle:
-				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 56, Gravity = GravityFlags.CenterVertical };
+				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(56), Gravity = GravityFlags.CenterVertical };
 				break;		
 			case ColumnPosition.cpLast:
-				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = 24 };
+				button.LayoutParameters = new TableRow.LayoutParams () { RightMargin = ToDIP(24) };
 				break;						
 			default:
 				break;

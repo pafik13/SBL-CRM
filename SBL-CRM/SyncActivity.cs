@@ -51,7 +51,9 @@ namespace SBLCRM
 
 			spnDates = FindViewById<Spinner> (Resource.Id.sfSelectedDateSpinner);
 			//			spnDates.Adapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, SyncQueueManager.DatesToString(dates));
-			spnDates.Adapter = new ArrayAdapter (this, Resource.Layout.Spinner, SyncQueueManager.DatesToString(dates));
+			ArrayAdapter adapter = new ArrayAdapter (this, Android.Resource.Layout.SimpleSpinnerItem, SyncQueueManager.DatesToString(dates));
+			adapter.SetDropDownViewResource (Resource.Layout.Spinner);
+			spnDates.Adapter = adapter;
 			spnDates.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
 				//				TextView tv = (TextView) e.View;
 				selectedDate = dates[e.Position];

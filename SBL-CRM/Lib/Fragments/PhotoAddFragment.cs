@@ -31,6 +31,10 @@ namespace SBLCRM
 		private LinearLayout llPhotoList = null;
 		private static Java.IO.File file = null;
 		private List<AttendancePhoto> newAttendancePhotos = null;
+		private Dictionary<int, PhotoType> photoTypesDict = null;
+		private Dictionary<int, PhotoSubType> photoSubTypesDict = null;
+
+		LayoutInflater layoutInflater = null;
 
 		public override void OnCreate (Bundle savedInstanceState)
 		{
@@ -43,6 +47,7 @@ namespace SBLCRM
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+			layoutInflater = inflater;
 
 			base.OnCreateView (inflater, container, savedInstanceState);
 
@@ -51,18 +56,27 @@ namespace SBLCRM
 			user = Common.GetCurrentUser ();
 
 			photoTypes = Common.GetPhotoTypes (user.username);
+			photoTypesDict = new Dictionary<int, PhotoType> ();
+			foreach (var item in photoTypes) {
+				photoTypesDict.Add (item.id, item);
+			}
 			photoSubTypes = Common.GetPhotoSubTypes (user.username);
+			photoSubTypesDict = new Dictionary<int, PhotoSubType> ();
+			foreach (var item in photoSubTypes) {
+				photoSubTypesDict.Add (item.id, item);
+			}
 
 			newAttendancePhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
 			if ((newAttendancePhotos == null) || (newAttendancePhotos.Count == 0)) {
 				newAttendancePhotos = new List<AttendancePhoto> ();
 			} 
 
-			llPhotoList = rootView.FindViewById<LinearLayout> (Resource.Id.pafLinearLayout);
+			llPhotoList = rootView.FindViewById<LinearLayout> (Resource.Id.pafAddedPhotoLL);
 			RefreshPhotoList ();
 
 			spnPhotoTypes = rootView.FindViewById<Spinner> (Resource.Id.pafPhotoTypeSpinner);
 			ArrayAdapter adapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, (string []) (from item in photoTypes select item.name).ToArray());
+			adapter.SetDropDownViewResource (Resource.Layout.SpinnerItem);
 			spnPhotoTypes.Adapter = adapter;
 
 			spnPhotoTypes.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
@@ -70,7 +84,7 @@ namespace SBLCRM
 
 				currentPhotoSubTypes = (List<PhotoSubType>)(from item in photoSubTypes where item.type == photoTypesID select item).ToList();
 				ArrayAdapter adapterPST = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, (string []) (from item in currentPhotoSubTypes select item.name).ToArray());
-
+				adapterPST.SetDropDownViewResource(Resource.Layout.SpinnerItem);
 				spnPhotoSubTypes.Adapter = adapterPST;
 
 			};
@@ -97,23 +111,27 @@ namespace SBLCRM
 
 		void RefreshPhotoList()
 		{
-			llPhotoList.RemoveViews (1, llPhotoList.ChildCount - 1);
+			//llPhotoList.RemoveViews (1, llPhotoList.ChildCount - 1);
+			llPhotoList.RemoveAllViews();
 
 			int i = 0;
 			foreach (var item in newAttendancePhotos) {
 				i++;
 
-				TextView tvPhoto = new TextView (Activity);
-				tvPhoto.Gravity = GravityFlags.Center;
-				tvPhoto.SetMinimumHeight (64);
-				tvPhoto.SetMinimumWidth (224);
-//				tvPhoto.SetMaxWidth (224);
-				tvPhoto.Ellipsize = Android.Text.TextUtils.TruncateAt.End;
-				tvPhoto.SetMaxLines (2);
-				tvPhoto.SetTextAppearance (Activity, Resource.Style.text_header_large);
-				tvPhoto.Text =string.Format(@"{0}: {1}", i, Path.GetFileNameWithoutExtension(item.photoPath));
-
-				llPhotoList.AddView (tvPhoto);
+				View vPhoto = layoutInflater.Inflate (Resource.Layout.PhotoAddListItem, null);
+				vPhoto.SetTag (Resource.String.PhotoPath, item.photoPath);
+				vPhoto.FindViewById<TextView> (Resource.Id.paliNumTV).Text = i.ToString ();
+				vPhoto.FindViewById<TextView> (Resource.Id.paliTypeTV).Text = photoTypesDict[photoSubTypesDict[item.subType].type].name;
+				vPhoto.FindViewById<TextView> (Resource.Id.paliSubTypeTV).Text = photoSubTypesDict[item.subType].name;
+				vPhoto.FindViewById<TextView> (Resource.Id.paliDateTimeTV).Text = item.stamp.ToString("G");
+				vPhoto.Click+= (object sender, EventArgs e) => {
+					View view = (View) sender;
+					//Toast.MakeText(Activity, view.GetTag(Resource.String.PhotoPath).ToString(), ToastLength.Short).Show();
+					Intent intent = new Intent(Intent.ActionView);
+					intent.SetDataAndType(Android.Net.Uri.Parse("file://" + view.GetTag(Resource.String.PhotoPath).ToString()), "image/*");
+					StartActivity(intent);
+				};
+				llPhotoList.AddView (vPhoto);
 			}
 		}
 

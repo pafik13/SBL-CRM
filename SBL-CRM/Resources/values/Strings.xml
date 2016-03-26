@@ -7,4 +7,6 @@
 	<string name="IDattendance">ID посещения - используется в MainFragment</string>
     <string name="IDdrug">ID препарата - используется в MainFragment</string>
     <string name="IDinfo">ID информации - используется в MainFragment</string>
+
+	<string name="PhotoPath">Путь к выполненному фото - используется в PhotoAddFragment</string>
 </resources>

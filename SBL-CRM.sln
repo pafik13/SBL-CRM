@@ -14,4 +14,9 @@ Global
 		{767825CF-12E9-46D2-9593-1DCF47F70236}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{767825CF-12E9-46D2-9593-1DCF47F70236}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.VersionControlPolicy = $1
+		$1.inheritsSet = Mono
+	EndGlobalSection
 EndGlobal

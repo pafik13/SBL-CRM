@@ -93,6 +93,7 @@ namespace SBLCRM.Lib.Fragments
 
 			categoryNetSpinner = rootView.FindViewById<Spinner> (Resource.Id.b1fCategoryNetSpinner);
 			ArrayAdapter adapter = new ArrayAdapter (Activity, Android.Resource.Layout.SimpleSpinnerItem, (from item in netCategories select item.key).ToArray<string>());
+			adapter.SetDropDownViewResource(Resource.Layout.SpinnerItem);
 			categoryNetSpinner.Adapter = adapter;
 			categoryNetSpinner.ItemSelected += (object sender, AdapterView.ItemSelectedEventArgs e) => {
 				attendance.category_net = netCategories[e.Position].id;
@@ -122,9 +123,10 @@ namespace SBLCRM.Lib.Fragments
 						}
 					}
 				}
-				string[] items = (from promo in promos
-					orderby promo.id
-					select promo.name).ToArray<string>();
+				string[] items = (from promo
+								 	in promos
+							    orderby promo.id
+								 select promo.name).ToArray<string>();
 				AlertDialog.Builder builder;
 				builder = new AlertDialog.Builder(Activity);
 				builder.SetTitle("Выбор ПРОМО-матералов");

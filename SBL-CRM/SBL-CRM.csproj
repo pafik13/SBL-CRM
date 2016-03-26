@@ -143,6 +143,16 @@
     <AndroidResource Include="Resources\drawable\ic_highlight_off_white_48dp.png" />
     <AndroidResource Include="Resources\drawable\ic_check_circle_white_36dp.png" />
     <AndroidResource Include="Resources\drawable\ic_highlight_off_white_36dp.png" />
+    <AndroidResource Include="Resources\layout\DrugInfoDrugItem.axml" />
+    <AndroidResource Include="Resources\layout\DrugInfoValueItem.axml" />
+    <AndroidResource Include="Resources\layout\DrugInfoValueHeader.axml" />
+    <AndroidResource Include="Resources\drawable\rightline.xml" />
+    <AndroidResource Include="Resources\layout\PhotoAddListItem.axml" />
+    <AndroidResource Include="Resources\drawable\ic_visibility_black_36dp.png" />
+    <AndroidResource Include="Resources\layout\SpinnerItem.axml" />
+    <AndroidResource Include="Resources\drawable\bottomline_with_states.xml" />
+    <AndroidResource Include="Resources\drawable\bottomline_focused.xml" />
+    <AndroidResource Include="Resources\drawable\bottomline_red.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

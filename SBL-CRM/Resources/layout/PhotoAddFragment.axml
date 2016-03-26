@@ -9,36 +9,40 @@
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/relativeLayout1"
-        android:layout_weight="1">
+        android:layout_weight="25"
+        android:background="@drawable/rightline">
         <TextView
-            android:text="ДОБАВИТЬ ФОТО"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="НОВОЕ ФОТО"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/pafAddPhotoHeaderText"
             android:layout_centerHorizontal="true"
             android:textColor="#000000"
-            android:background="@drawable/bottomline"
-            android:layout_marginTop="100dp" />
+            android:layout_marginTop="60dp"
+            android:textSize="28dp" />
         <TextView
             android:text="Тип фото"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/pafAddPhotoHeaderText"
             android:id="@+id/pafPhotoTypeText"
             android:layout_marginTop="60dp"
-            android:layout_centerHorizontal="true"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp" />
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/pafPhotoTypeText"
             android:id="@+id/pafPhotoTypeSpinner"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp" />
         <TextView
             android:text="Подтип фото"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -46,62 +50,74 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pafPhotoTypeSpinner"
             android:id="@+id/pafPhotoSubTypeText"
-            android:layout_marginTop="60dp"
-            android:layout_centerHorizontal="true"
-            android:textColor="#000000" />
+            android:layout_marginTop="30dp"
+            android:textColor="#000000"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp" />
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/pafPhotoSubTypeText"
             android:id="@+id/pafPhotoSubTypeSpinner"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
         <Button
-            android:text="ДОБАВИТь"
+            android:text="ДОБАВИТЬ ФОТО"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/pafPhotoSubTypeSpinner"
             android:id="@+id/pafAddPhotoButton"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:typeface="monospace"
             android:textSize="24dp"
             android:textStyle="bold"
             android:background="#03A9F4"
             android:textColor="#FFFFFF"
-            android:minWidth="160dp" />
+            android:minWidth="160dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" />
     </RelativeLayout>
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/relativeLayout1"
-        android:layout_weight="1">
+        android:layout_weight="75">
+        <TextView
+            android:text="ВЫПОЛНЕННЫЕ ФОТО"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pafAddedPhotoHeaderText"
+            android:textColor="#000000"
+            android:layout_marginTop="60dp"
+            android:layout_alignParentLeft="true"
+            android:textSize="28dp"
+            android:layout_marginLeft="30dp" />
         <ScrollView
             android:minWidth="25px"
             android:minHeight="25px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/pafScrollView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp">
+            android:layout_below="@+id/pafAddedPhotoHeaderText"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bottomline">
             <LinearLayout
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/pafLinearLayout"
-                android:orientation="vertical"
-                android:background="@drawable/bottomline">
-                <TextView
-                    android:text="ВЫПОЛНЕННЫЕ ФОТО"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pafAddedPhotoHeaderText"
-                    android:textColor="#000000"
-                    android:layout_gravity="center" />
-            </LinearLayout>
+                android:id="@+id/pafAddedPhotoLL"
+                android:orientation="vertical" />
         </ScrollView>
     </RelativeLayout>
 </LinearLayout>
