@@ -67,6 +67,21 @@ namespace SBLCRM
 			ivSync = FindViewById<ImageView> (Resource.Id.sfSyncImage);
 
 			ivSync.Click += (object sender, EventArgs e) => {
+				//progressDialog = ProgressDialog.Show(this, "", "Загрузка информации на сервер", true);
+				//progressDialog.SetProgressStyle(ProgressDialogStyle.Spinner);
+				//int i = 0;
+//				foreach (var item in queue) {
+//					if (!item.isSync) {
+//						File.Delete(item.fileLoacation);
+//						SyncQueueManager.DeleteSyncQueue(item);
+//						progressDialog.SetMessage(String.Format(@"Удалено id:{0}", item.id));
+//						i++;
+//					}
+//				}
+				//SyncQueueManager.AddToQueue( new Attendance{
+//				progressDialog.SetMessage(String.Format(@"Удалено всего:{0}", i));
+//				Thread.Sleep(3000);
+//				progressDialog.Dismiss();
 				progressDialog = ProgressDialog.Show(this, "", "Загрузка информации на сервер", true);
 				progressDialog.SetProgressStyle(ProgressDialogStyle.Spinner);
 				new Thread(new ThreadStart(delegate
@@ -76,7 +91,9 @@ namespace SBLCRM
 
 						UpLoadAttendances();
 						UpLoadAttendanceResults();
+						UpLoadAttendanceGPSPoints();
 						UpLoadAttendancePhotos();
+						SyncQueueManager.SaveSyncQueueToDisk();
 
 						//HIDE PROGRESS DIALOG
 						RunOnUiThread(() => { progressDialog.SetMessage(@"Обновление данных"); RefreshContent(); progressDialog.Dismiss(); }); //progressBar.Visibility = ViewStates.Gone);
@@ -117,7 +134,7 @@ namespace SBLCRM
 						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 						//Debug.WriteLine(@"Получение информации о себе.", @"Info");
-						Attendance oldAttendance = SyncQueueManager.GetAttendace(q.fileLoacation);
+						Attendance oldAttendance = SyncQueueManager.GetAttendace(q.fileLocation);
 						RunOnUiThread(() => progressDialog.SetMessage(string.Format(@"Загрузка посещения с id:{0}", oldAttendance.id)));
 						request = new RestRequest(@"Attendance/", Method.POST);
 						request.AddCookie(cookieName, cookieValue);
@@ -135,9 +152,10 @@ namespace SBLCRM
 						case HttpStatusCode.Created:
 							if (AttendanceResultManager.CorrectAttendanceForSync (oldAttendance.id, newAttendance.id)
 								&& AttendancePhotoManager.CorrectAttendanceForSync (oldAttendance.id, newAttendance.id)
+								&& AttendanceGPSPointManager.CorrectAttendanceForSync (oldAttendance.id, newAttendance.id)
 								&& AttendanceManager.CorrectAfterSync (oldAttendance, newAttendance)) {
 								q.isSync = true;
-								SyncQueueManager.SaveSyncQueue (q);
+								SyncQueueManager.SaveSyncQueue (q, false);
 								RunOnUiThread (() => {
 									progressDialog.SetMessage (string.Format (@"Посещение с id:{0} ЗАГРУЖЕНО!", oldAttendance.id));
 									//								RefreshContent ();
@@ -195,7 +213,7 @@ namespace SBLCRM
 						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 						//Debug.WriteLine(@"Получение информации о себе.", @"Info");
-						AttendanceResult attendanceResult = SyncQueueManager.GetAttendaceResult(q.fileLoacation);
+						AttendanceResult attendanceResult = SyncQueueManager.GetAttendaceResult(q.fileLocation);
 						Attendance attendance = AttendanceManager.GetAttendance (attendanceResult.attendance);
 						RunOnUiThread(() => progressDialog.SetMessage(string.Format(@"Загрузка значения с id {0} по посещению с id:{1}", attendanceResult.id, attendance.id)));
 						request = new RestRequest(@"AttendanceResult/", Method.POST);
@@ -212,7 +230,7 @@ namespace SBLCRM
 						case HttpStatusCode.OK:
 						case HttpStatusCode.Created:
 							q.isSync = true;
-							SyncQueueManager.SaveSyncQueue (q);
+							SyncQueueManager.SaveSyncQueue (q, false);
 							//						Thread.Sleep (500);
 							RunOnUiThread(() => {
 								progressDialog.SetMessage(string.Format(@"Значение с id {0} по посещению с id:{1} ЗАГРУЖЕНО!", attendanceResult.id, attendance.id));
@@ -222,6 +240,76 @@ namespace SBLCRM
 						default:
 							//						Thread.Sleep (500);
 							RunOnUiThread(() => progressDialog.SetMessage(@"Не удалось загрузить значение по посещению!"));
+							//						Thread.Sleep (1500);
+							break;
+						}
+					}
+				} catch (Exception ex) {
+					RunOnUiThread(() => progressDialog.SetMessage(@"Error : " + ex.Message));
+					//						Thread.Sleep (1500);
+					break;				
+				}
+			}
+		}
+
+		void UpLoadAttendanceGPSPoints()
+		{
+			string cookieName = string.Empty;
+			string cookieValue = string.Empty;
+			var user = Common.GetCurrentUser ();
+
+			var login = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
+
+			//login.Authenticator = new SimpleAuthenticator("identifier", "lyubin.p@gmail.com", "password", "q1234567");
+			login.Authenticator = new SimpleAuthenticator(@"identifier", user.username, @"password", user.password);
+			login.CookieContainer = new CookieContainer();
+
+			var request = new RestRequest(@"auth/local", Method.POST);
+			var response = login.Execute<User>(request);
+			User userRes = response.Data;
+
+			if (userRes == null)
+			{
+				RunOnUiThread(() => progressDialog.SetMessage(@"Не удалось пройти аутентификацию!"));
+			}
+
+			cookieName = response.Cookies[0].Name;
+			cookieValue = response.Cookies[0].Value;
+
+			var queueToUpload = (List<SyncQueue>) SyncQueueManager.GetSyncQueue(selectedDate);
+			foreach (var q in queueToUpload) {
+				try {
+					if (( q.type == SyncQueueType.sqtAttendanceGPSPoint) && (!q.isSync)) {
+						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
+
+						//Debug.WriteLine(@"Получение информации о себе.", @"Info");
+						AttendanceGPSPoint attendanceGPSPoint = SyncQueueManager.GetAttendanceGPSPoint(q.fileLocation);
+						Attendance attendance = AttendanceManager.GetAttendance (attendanceGPSPoint.attendance);
+						RunOnUiThread(() => progressDialog.SetMessage(string.Format(@"Загрузка GPS значений с id {0} по посещению с id:{1}", attendanceGPSPoint.id, attendance.id)));
+						request = new RestRequest(@"AttendanceGPSPoint/", Method.POST);
+						request.AddCookie(cookieName, cookieValue);
+						request.RequestFormat = DataFormat.Json;
+						request.JsonSerializer.ContentType = @"application/json; charset=utf-8";
+						request.AddParameter(@"application/json; charset=utf-8", attendanceGPSPoint.ToJSON(), ParameterType.RequestBody);
+						//					attendanceResult.id = 0;
+						//					request.AddBody(attendanceResult);
+
+						var respAttendanceGPSPoint = client.Execute(request);
+
+						switch (respAttendanceGPSPoint.StatusCode) {
+						case HttpStatusCode.OK:
+						case HttpStatusCode.Created:
+							q.isSync = true;
+							SyncQueueManager.SaveSyncQueue (q, false);
+							//						Thread.Sleep (500);
+							RunOnUiThread(() => {
+								progressDialog.SetMessage(string.Format(@"GPS значение с id {0} по посещению с id:{1} ЗАГРУЖЕНО!", attendanceGPSPoint.id, attendance.id));
+								//							RefreshContent();
+							});
+							continue;
+						default:
+							//						Thread.Sleep (500);
+							RunOnUiThread(() => progressDialog.SetMessage(@"Не удалось загрузить GPS значение по посещению!"));
 							//						Thread.Sleep (1500);
 							break;
 						}
@@ -263,7 +351,7 @@ namespace SBLCRM
 				try {
 					if (( q.type == SyncQueueType.sqtAttendancePhoto) && (!q.isSync)) {
 						//Debug.WriteLine(@"Получение информации о себе.", @"Info");
-						AttendancePhoto attendancePhoto = SyncQueueManager.GetAttendancePhoto(q.fileLoacation);
+						AttendancePhoto attendancePhoto = SyncQueueManager.GetAttendancePhoto(q.fileLocation);
 						Attendance attendance = AttendanceManager.GetAttendance (attendancePhoto.attendance);
 						RunOnUiThread(() => progressDialog.SetMessage(string.Format(@"Загрузка фото с id {0} по посещению с id:{1}", attendancePhoto.id, attendance.id)));
 
@@ -285,7 +373,7 @@ namespace SBLCRM
 						case HttpStatusCode.Created:
 							//					case HttpStatusCode.U
 							q.isSync = true;
-							SyncQueueManager.SaveSyncQueue (q);
+							SyncQueueManager.SaveSyncQueue (q, false);
 							//						Thread.Sleep (500);
 							RunOnUiThread(() => {
 								progressDialog.SetMessage(string.Format(@"Фото с id {0} по посещению с id:{1}"" ЗАГРУЖЕНО!", attendancePhoto.id, attendance.id));
@@ -333,24 +421,33 @@ namespace SBLCRM
 						loc.SetTextAppearance (this, Resource.Style.text_danger_small);
 					}
 
+					Attendance att = null;
+					Pharmacy pharm = null;
 					switch (q.type) {
 					case SyncQueueType.sqtAttendance:
-						Attendance att = SyncQueueManager.GetAttendace (q.fileLoacation);
-						Pharmacy pharm = PharmacyManager.GetPharmacy (att.pharmacy);
+						att = SyncQueueManager.GetAttendace (q.fileLocation);
+						pharm = PharmacyManager.GetPharmacy (att.pharmacy);
 						type.Text = string.Format(@"Тип: Посещение аптеки {0} за дату {1}", pharm.fullName, att.date.ToString(@"d"));
-						loc.Text = string.Format(@"Размещение: {0}", q.fileLoacation);
+						loc.Text = string.Format(@"Размещение: {0}", q.fileLocation);
 						break;
 					case SyncQueueType.sqtAttendanceResult:
-						AttendanceResult attRes = SyncQueueManager.GetAttendaceResult (q.fileLoacation);
-						Attendance att2 = AttendanceManager.GetAttendance(attRes.attendance);
-						Pharmacy pharm2 = PharmacyManager.GetPharmacy (att2.pharmacy);
-						type.Text = string.Format(@"Тип: Значение по препарату в посещение аптеки {0} за дату {1}", pharm2.fullName, att2.date.ToString(@"d"));
-						loc.Text = string.Format(@"Размещение: {0}", q.fileLoacation);
+						AttendanceResult attRes = SyncQueueManager.GetAttendaceResult (q.fileLocation);
+						att = AttendanceManager.GetAttendance(attRes.attendance);
+						pharm = PharmacyManager.GetPharmacy (att.pharmacy);
+						type.Text = string.Format(@"Тип: Значение по препарату в посещение аптеки {0} за дату {1}", pharm.fullName, att.date.ToString(@"d"));
+						loc.Text = string.Format(@"Размещение: {0}", q.fileLocation);
+						break;
+					case SyncQueueType.sqtAttendanceGPSPoint:
+						AttendanceGPSPoint attGPS = SyncQueueManager.GetAttendanceGPSPoint (q.fileLocation);
+						att = AttendanceManager.GetAttendance(attGPS.attendance);
+						pharm = PharmacyManager.GetPharmacy (att.pharmacy);
+						type.Text = string.Format(@"Тип: GPS значение в посещение аптеки {0} за дату {1} - lat:{2}, lon:{3}", pharm.fullName, att.date.ToString(@"d"), attGPS.latitude, attGPS.longitude);
+						loc.Text = string.Format(@"Размещение: {0}", q.fileLocation);
 						break;
 					case SyncQueueType.sqtAttendancePhoto:
-						AttendancePhoto attPho = SyncQueueManager.GetAttendancePhoto (q.fileLoacation);
+						AttendancePhoto attPho = SyncQueueManager.GetAttendancePhoto (q.fileLocation);
 						type.Text = string.Format(@"Фото: {0}", attPho.photoPath);
-						loc.Text = q.fileLoacation;
+						loc.Text = q.fileLocation;
 						break;
 					default:
 						type.Text = @"Неизвестный тип файла";

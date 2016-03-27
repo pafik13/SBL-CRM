@@ -70,6 +70,16 @@ namespace SBLCRM.Lib.Entities
 			return SyncQueueRepository.GetAttendaceResult(location);
 
 		}
+		public static int AddToQueue (AttendanceGPSPoint attendanceGPSPoint)
+		{
+			return SyncQueueRepository.AddToQueue(attendanceGPSPoint);
+		}
+
+		public static AttendanceGPSPoint GetAttendanceGPSPoint(string location)
+		{
+			return SyncQueueRepository.GetAttendanceGPSPoint(location);
+
+		}
 
 		public static int AddToQueue (AttendancePhoto attendancePhoto)
 		{
@@ -81,10 +91,24 @@ namespace SBLCRM.Lib.Entities
 			return SyncQueueRepository.GetAttendancePhoto(location);
 		}
 
-		public static int SaveSyncQueue (SyncQueue item)
+		public static int SaveSyncQueue (SyncQueue item, bool isWriteXml)
 		{
-			return SyncQueueRepository.SaveSyncQueue(item);
+			return SyncQueueRepository.SaveSyncQueue(item, isWriteXml);
+		}
+			
+		public static void SaveSyncQueueToDisk ()
+		{
+			SyncQueueRepository.SaveSyncQueueToDisk();
 		}
 
+		public static int DeleteSyncQueue (SyncQueue item)
+		{
+			return DeleteSyncQueue(item.id);
+		}
+
+		public static int DeleteSyncQueue (int id)
+		{
+			return SyncQueueRepository.DeleteSyncQueue(id);
+		}
 	}
 }

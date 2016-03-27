@@ -6,7 +6,8 @@ namespace SBLCRM.Lib.Entities
 	{
 		sqtAttendance,
 		sqtAttendanceResult,
-		sqtAttendancePhoto
+		sqtAttendancePhoto,
+		sqtAttendanceGPSPoint
 	}
 
 	public class SyncQueue: IEntity
@@ -20,7 +21,7 @@ namespace SBLCRM.Lib.Entities
 		public int id { get; set; }
 		public DateTime stamp { get; set; }
 		public SyncQueueType type { get; set; }
-		public string fileLoacation { get; set; }
+		public string fileLocation { get; set; }
 		public bool isSync { get; set; }
 	}
 }

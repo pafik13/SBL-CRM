@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Views;
 using Android.OS;
 using Android.Util;
+using Android.Locations;
 using Android.Content.PM;
 using Android.Views.InputMethods;
 
@@ -22,7 +23,7 @@ namespace SBLCRM
 	enum ColumnPosition {cpFirst, cpLast, cpMiddle}
 
 	[Activity (Label = "SBL-CRM", MainLauncher = true, Icon = "@mipmap/icon", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Landscape)]
-	public class MainActivity : Activity
+	public class MainActivity : Activity, ILocationListener
 	{
 		RelativeLayout upPanel = null;
 		RelativeLayout botPanel = null;
@@ -52,6 +53,9 @@ namespace SBLCRM
 
 		Fragment fragment = null;
 
+		LocationManager locMgr = null;
+		List<AttendanceGPSPoint> attendanceGPSPoints = null;
+
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			Xamarin.Insights.Initialize (XamarinInsights.ApiKey, this);
@@ -59,6 +63,7 @@ namespace SBLCRM
 
 			RequestWindowFeature (WindowFeatures.NoTitle);
 			Window.AddFlags (WindowManagerFlags.KeepScreenOn);
+			locMgr = GetSystemService (Context.LocationService) as LocationManager;
 
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
@@ -143,6 +148,7 @@ namespace SBLCRM
 		{
 			isVisitStart = false;
 			Common.SetIsAttendanceRun (user.username, isVisitStart);
+			locMgr.RemoveUpdates (this);
 
 			// SAVE
 			upPrevBlock.Visibility = ViewStates.Gone;
@@ -153,6 +159,7 @@ namespace SBLCRM
 			Attendance newAttendance = AttendanceManager.GetCurrentAttendance ();
 			List<AttendanceResult> newAttendanceResults = AttendanceResultManager.GetCurrentAttendanceResults ();
 			List<AttendancePhoto> newAttendancePhotos = AttendancePhotoManager.GetCurrentAttendancePhotos ();
+//			List<AttendanceGPSPoint> newAttendanceGPSPoints = AttendanceGPSPointManager.GetCurrentAttendanceGPSPoints ();
 			int attID = AttendanceManager.SaveAttendance (newAttendance);
 			if (newAttendanceResults != null) {
 				AttendanceResultManager.SaveNewAttendanceResults (attID, newAttendanceResults);
@@ -160,7 +167,9 @@ namespace SBLCRM
 			if (newAttendancePhotos != null) {
 				AttendancePhotoManager.SaveNewAttendancePhotos (attID, newAttendancePhotos);
 			}
-
+			if (attendanceGPSPoints != null) {
+				AttendanceGPSPointManager.SaveNewAttendanceGPSPoints (attID, attendanceGPSPoints);
+			}
 			//Correct Pharmacy
 			Pharmacy pharmacy = PharmacyManager.GetPharmacy (selectedPharmacyID);
 			pharmacy.prev = DateTime.Now;
@@ -478,6 +487,14 @@ namespace SBLCRM
 			upPrevBlock.Visibility = ViewStates.Visible;
 			upStartAttendance.Visibility = ViewStates.Gone;
 			upClose.Visibility = ViewStates.Gone;
+
+			if (locMgr.AllProviders.Contains (LocationManager.NetworkProvider)
+				&& locMgr.IsProviderEnabled (LocationManager.NetworkProvider)) {
+				attendanceGPSPoints = new List<AttendanceGPSPoint> ();
+				locMgr.RequestLocationUpdates (LocationManager.NetworkProvider, 2000, 1, this);
+			} else {
+				Toast.MakeText (this, "The Network Provider does not exist or is not enabled!", ToastLength.Long).Show ();
+			}
 		}
 
 		void UpRightB_Click (object sender, EventArgs e)
@@ -559,6 +576,39 @@ namespace SBLCRM
 			}
 
 			return char.ToUpper (s [0]) + s.Substring (1);
+		}
+
+		/**/
+		public void OnLocationChanged (Android.Locations.Location location)
+		{
+			Log.Debug ("GPS", "Location changed");
+			if (attendanceGPSPoints != null) {
+				attendanceGPSPoints.Add (
+					new AttendanceGPSPoint {
+						latitude = location.Latitude,
+						longitude = location.Longitude,
+						provider = location.Provider,
+						stamp = DateTime.Now
+					}
+				);
+			}
+//			AttendanceGPSPointManager.SetCurrentAttendanceGPSPoints (currAttGPSPoints);
+//			latitude.Text = "Latitude: " + location.Latitude.ToString();
+//			longitude.Text = "Longitude: " + location.Longitude.ToString();
+//			provider.Text = "Provider: " + location.Provider.ToString();
+		}
+
+		public void OnProviderDisabled (string provider)
+		{
+			Log.Debug ("GPS", provider + " disabled by user");
+		}
+		public void OnProviderEnabled (string provider)
+		{
+			Log.Debug ("GPS", provider + " enabled by user");
+		}
+		public void OnStatusChanged (string provider, Availability status, Bundle extras)
+		{
+			Log.Debug ("GPS", provider + " availability has changed to " + status.ToString());
 		}
 	}
 }

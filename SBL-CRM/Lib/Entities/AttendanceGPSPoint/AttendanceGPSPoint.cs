@@ -1,22 +1,21 @@
 ﻿using System;
+using System.Globalization;
 
 namespace SBLCRM.Lib.Entities
 {
 	[Serializable]
-	public class AttendancePhoto: IEntity
+	public class AttendanceGPSPoint : IEntity
 	{
-		public AttendancePhoto ()
+		public AttendanceGPSPoint ()
 		{
-			stamp = DateTime.Now;
+			// empty
 		}
 
 		public int id { get; set; }
 		public int attendance { get; set; }
-		public int drug { get; set; }
-		public int subType { get; set; }
 		public double longitude { get; set; }
 		public double latitude { get; set; }
-		public string photoPath { get; set; }
+		public string provider { get; set; }
 		public DateTime stamp { get; set; }
 
 		public string ToJSON()
@@ -25,10 +24,9 @@ namespace SBLCRM.Lib.Entities
 			return
 				@" { " 
 					+ quote + @"attendance" + quote + @" : " + attendance + @","	
-					+ quote + @"drug" + quote + @" : " + drug + @","
-					+ quote + @"subType" + quote + @" : " + subType + @","
-					+ quote + @"longitude" + quote + @" : " + longitude + @","
-					+ quote + @"latitude" + quote + @" : " + latitude + @","
+					+ quote + @"longitude" + quote + @" : " + longitude.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + @","
+					+ quote + @"latitude" + quote + @" : " + latitude.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + @","
+					+ quote + @"provider" + quote + @" : " + quote + provider + quote + @","
 					+ quote + @"stamp" + quote + @" : " + quote + stamp.ToString(@"O") + quote
 					+
 				@" } ";

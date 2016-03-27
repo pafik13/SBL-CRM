@@ -98,6 +98,9 @@
     <Compile Include="Lib\Entities\Promo.cs" />
     <Compile Include="Lib\Entities\NetCategory.cs" />
     <Compile Include="Lib\Entities\TradeNet.cs" />
+    <Compile Include="Lib\Entities\AttendanceGPSPoint\AttendanceGPSPoint.cs" />
+    <Compile Include="Lib\Entities\AttendanceGPSPoint\AttendanceGPSPointRepository.cs" />
+    <Compile Include="Lib\Entities\AttendanceGPSPoint\AttendanceGPSPointManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -161,6 +164,7 @@
     <Folder Include="Lib\Entities\" />
     <Folder Include="Resources\anim\" />
     <Folder Include="Lib\Dialogs\" />
+    <Folder Include="Lib\Entities\AttendanceGPSPoint\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.6\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.6\build\MonoAndroid10\Xamarin.Insights.targets')" />

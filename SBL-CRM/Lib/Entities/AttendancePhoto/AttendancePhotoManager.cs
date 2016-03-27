@@ -29,7 +29,7 @@ namespace SBLCRM.Lib.Entities
 
 		public static int SaveAttendancePhoto (AttendancePhoto item)
 		{
-			return AttendancePhotoRepository.SaveAttendancePhoto(item);;
+			return AttendancePhotoRepository.SaveAttendancePhoto(item);
 		}
 
 		public static bool SaveNewAttendancePhotos (int attendanceID, List<AttendancePhoto> photos)

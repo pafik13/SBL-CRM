@@ -117,16 +117,16 @@ namespace SBLCRM.Lib.Entities
 		{
 			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendance};
 
-			queueItem.fileLoacation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendance_{0}.xml", Guid.NewGuid()));
+			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendance_{0}.xml", Guid.NewGuid()));
 
-			new FileInfo(queueItem.fileLoacation).Directory.Create();
+			new FileInfo(queueItem.fileLocation).Directory.Create();
 			var serializer = new XmlSerializer(typeof(Attendance));
-			using (var writer = new StreamWriter(queueItem.fileLoacation))
+			using (var writer = new StreamWriter(queueItem.fileLocation))
 			{
 				serializer.Serialize(writer, attendance);
 			}
 
-			return SaveSyncQueue(queueItem);
+			return SaveSyncQueue(queueItem, false);
 		}
 
 		public static Attendance GetAttendace(string location)
@@ -143,20 +143,50 @@ namespace SBLCRM.Lib.Entities
 			return null;
 		}
 
+		public static int AddToQueue (AttendanceGPSPoint attendanceGPSPoint)
+		{
+			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendanceGPSPoint};
+
+			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendanceGPSPoint_{0}.xml", Guid.NewGuid()));
+
+			new FileInfo(queueItem.fileLocation).Directory.Create();
+			var serializer = new XmlSerializer(typeof(AttendanceGPSPoint));
+			using (var writer = new StreamWriter(queueItem.fileLocation))
+			{
+				serializer.Serialize(writer, attendanceGPSPoint);
+			}
+
+			return SaveSyncQueue(queueItem, false);
+		}
+
+		public static AttendanceGPSPoint GetAttendanceGPSPoint(string location)
+		{
+			var serializer = new XmlSerializer(typeof(AttendanceGPSPoint));
+
+			if (File.Exists(location)) {
+				using (var stream = new FileStream(location, FileMode.Open))
+				{
+					return (AttendanceGPSPoint)serializer.Deserialize(stream);
+				}
+			}
+
+			return null;
+		}
+
 		public static int AddToQueue (AttendanceResult attendanceResult)
 		{
 			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendanceResult};
 
-			queueItem.fileLoacation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendanceResult_{0}.xml", Guid.NewGuid()));
+			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendanceResult_{0}.xml", Guid.NewGuid()));
 
-			new FileInfo(queueItem.fileLoacation).Directory.Create();
+			new FileInfo(queueItem.fileLocation).Directory.Create();
 			var serializer = new XmlSerializer(typeof(AttendanceResult));
-			using (var writer = new StreamWriter(queueItem.fileLoacation))
+			using (var writer = new StreamWriter(queueItem.fileLocation))
 			{
 				serializer.Serialize(writer, attendanceResult);
 			}
 
-			return SaveSyncQueue(queueItem);
+			return SaveSyncQueue(queueItem, false);
 		}
 
 		public static AttendanceResult GetAttendaceResult(string location)
@@ -177,16 +207,16 @@ namespace SBLCRM.Lib.Entities
 		{
 			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendancePhoto};
 
-			queueItem.fileLoacation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendancePhoto_{0}.xml", Guid.NewGuid()));
+			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendancePhoto_{0}.xml", Guid.NewGuid()));
 
-			new FileInfo(queueItem.fileLoacation).Directory.Create();
+			new FileInfo(queueItem.fileLocation).Directory.Create();
 			var serializer = new XmlSerializer(typeof(AttendancePhoto));
-			using (var writer = new StreamWriter(queueItem.fileLoacation))
+			using (var writer = new StreamWriter(queueItem.fileLocation))
 			{
 				serializer.Serialize(writer, attendancePhoto);
 			}
 
-			return SaveSyncQueue(queueItem);
+			return SaveSyncQueue(queueItem, false);
 		}
 
 		public static AttendancePhoto GetAttendancePhoto(string location)
@@ -206,7 +236,7 @@ namespace SBLCRM.Lib.Entities
 		/// <summary>
 		/// Insert or update a Doctor
 		/// </summary>
-		public static int SaveSyncQueue (SyncQueue item)
+		public static int SaveSyncQueue (SyncQueue item, bool isWriteXml = true)
 		{
 			var max = 0;
 			if (queue.Count > 0)
@@ -224,8 +254,19 @@ namespace SBLCRM.Lib.Entities
 				}
 			}
 
-			WriteXml ();
+			if (isWriteXml) { 
+				WriteXml ();
+			}
 			return item.id;
+		}
+
+
+		/// <summary>
+		/// Save SyncQueue to disk
+		/// </summary>
+		public static void SaveSyncQueueToDisk ()
+		{
+			WriteXml ();
 		}
 
 		public static int DeleteSyncQueue (int id)

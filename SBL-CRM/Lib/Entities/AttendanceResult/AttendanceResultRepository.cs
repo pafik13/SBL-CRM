@@ -121,7 +121,7 @@ namespace SBLCRM.Lib.Entities
 		}
 
 		/// <summary>
-		/// Insert or update a Doctor
+		/// Insert or update a AttendanceResult
 		/// </summary>
 		public static int SaveAttendanceResult (AttendanceResult item)
 		{

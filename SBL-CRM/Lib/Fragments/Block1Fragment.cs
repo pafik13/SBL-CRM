@@ -73,12 +73,13 @@ namespace SBLCRM.Lib.Fragments
 				attendance = AttendanceManager.GetLastAttendance (pharmacyID);
 
 				if (attendance == null) {
-					
 					attendance = new Attendance () {
 						pharmacy = pharmacyID,
 						date = DateTime.Now,
 						merchant = merchant.id
 					};
+				} else {
+					attendance.id = -1;
 				}
 			}
 

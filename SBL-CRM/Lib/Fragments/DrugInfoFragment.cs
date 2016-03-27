@@ -107,7 +107,7 @@ namespace SBLCRM
 
 			TableRow.LayoutParams lpRow = new TableRow.LayoutParams ();
 			lpRow.Height = TableLayout.LayoutParams.WrapContent;
-			lpRow.Width = TableLayout.LayoutParams.WrapContent;;
+			lpRow.Width = TableLayout.LayoutParams.WrapContent;
 			lpRow.Gravity = GravityFlags.Center;
 
 			//header
@@ -171,7 +171,7 @@ namespace SBLCRM
 						evValue.SetMinimumWidth (ToDIP(64));
 						evValue.SetMaxWidth (ToDIP(64));
 						evValue.InputType = Android.Text.InputTypes.ClassNumber;
-						evValue.Text = value.Equals (@"N") ? string.Empty : value;;
+						evValue.Text = value.Equals (@"N") ? string.Empty : value;
 						rlValue.AddView (evValue);
 						evValue.AfterTextChanged += NumberValue_AfterTextChanged;
 					}

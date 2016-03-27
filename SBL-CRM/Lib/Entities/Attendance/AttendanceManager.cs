@@ -34,7 +34,7 @@ namespace SBLCRM.Lib.Entities
 
 		public static int SaveAttendance (Attendance item)
 		{
-			return AttendanceRepository.SaveAttendance(item);;
+			return AttendanceRepository.SaveAttendance(item);
 		}
 
 		public static bool CorrectAfterSync(Attendance oldItem, Attendance newItem)
