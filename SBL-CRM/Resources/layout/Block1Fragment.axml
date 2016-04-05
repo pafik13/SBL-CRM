@@ -186,7 +186,8 @@
                     android:hint="Телефон"
                     android:phoneNumber="true"
                     android:enabled="false"
-                    android:layout_marginRight="24dp" />
+                    android:layout_marginRight="24dp"
+                    android:inputType="phone" />
             </TableRow>
             <TableRow
                 android:id="@+id/b1fRow11">
@@ -208,7 +209,8 @@
                     android:textColor="#000000"
                     android:hint="ФИО закупщика"
                     android:enabled="false"
-                    android:layout_marginRight="24dp" />
+                    android:layout_marginRight="24dp"
+                    android:inputType="textCapWords" />
             </TableRow>
             <TableRow
                 android:id="@+id/b1fRow12">

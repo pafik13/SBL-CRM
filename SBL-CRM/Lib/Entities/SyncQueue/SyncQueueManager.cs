@@ -21,12 +21,12 @@ namespace SBLCRM.Lib.Entities
 
 		public static List<DateTime> GetAvailableDatesAsc ()
 		{
-			return new List<DateTime> (SyncQueueRepository.GetAvailableDatesAsc ());
+			return new List<DateTime> (SyncQueueRepository.GetAvailableAttendanceDatesAsc ());
 		}
 
 		public static List<DateTime> GetAvailableDatesDesc ()
 		{
-			return new List<DateTime> (SyncQueueRepository.GetAvailableDatesDesc ());
+			return new List<DateTime> (SyncQueueRepository.GetAvailableAttendanceDatesDesc ());
 		}
 
 		public static string [] DatesToString (List<DateTime> dates)
@@ -60,9 +60,9 @@ namespace SBLCRM.Lib.Entities
 			return SyncQueueRepository.GetAttendace(location);
 		}
 
-		public static int AddToQueue (AttendanceResult attendanceResult)
+		public static int AddToQueue (AttendanceResult attendanceResult, Attendance attendance)
 		{
-			return SyncQueueRepository.AddToQueue(attendanceResult);
+			return SyncQueueRepository.AddToQueue(attendanceResult, attendance);
 		}
 
 		public static AttendanceResult GetAttendaceResult(string location)
@@ -70,9 +70,9 @@ namespace SBLCRM.Lib.Entities
 			return SyncQueueRepository.GetAttendaceResult(location);
 
 		}
-		public static int AddToQueue (AttendanceGPSPoint attendanceGPSPoint)
+		public static int AddToQueue (AttendanceGPSPoint attendanceGPSPoint, Attendance attendance)
 		{
-			return SyncQueueRepository.AddToQueue(attendanceGPSPoint);
+			return SyncQueueRepository.AddToQueue(attendanceGPSPoint, attendance);
 		}
 
 		public static AttendanceGPSPoint GetAttendanceGPSPoint(string location)
@@ -81,9 +81,9 @@ namespace SBLCRM.Lib.Entities
 
 		}
 
-		public static int AddToQueue (AttendancePhoto attendancePhoto)
+		public static int AddToQueue (AttendancePhoto attendancePhoto, Attendance attendance)
 		{
-			return SyncQueueRepository.AddToQueue(attendancePhoto);
+			return SyncQueueRepository.AddToQueue(attendancePhoto, attendance);
 		}
 
 		public static AttendancePhoto GetAttendancePhoto(string location)

@@ -18,11 +18,12 @@ using SBLCRM.Lib.Entities;
 using SBLCRM.Lib.Fragments;
 using SBLCRM.Lib.Dialogs;
 
+
 namespace SBLCRM
 {
 	enum ColumnPosition {cpFirst, cpLast, cpMiddle}
 
-	[Activity (Label = "SBL-CRM", MainLauncher = true, Icon = "@mipmap/icon", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Landscape)]
+	[Activity (Label = "SBL-CRM Main", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Landscape)]
 	public class MainActivity : Activity, ILocationListener
 	{
 		RelativeLayout upPanel = null;
@@ -142,6 +143,11 @@ namespace SBLCRM
 
 //			Common.SetCurrentUser (null);
 			RefreshMainView ();
+
+//			List<Attendance> atts =(List<Attendance>) AttendanceManager.GetAttendances ();
+//			foreach (var item in atts) {
+//				SyncQueueManager.AddToQueue (item);
+//			}
 		}
 
 		void UpEndAttendance_Click (object sender, EventArgs e)
@@ -355,7 +361,7 @@ namespace SBLCRM
 					TableRow cRow = new TableRow (this);
 					if (pharmacy.prev.Date == DateTime.Now.Date) {
 						cRow.SetBackgroundResource (Resource.Drawable.bottomline_green);
-					} else if (pharmacy.next.Date < DateTime.Now.Date) {
+					} else if (pharmacy.next.Date < DateTime.Now.Date && pharmacy.prev != DateTime.MinValue) {
 						cRow.SetBackgroundResource (Resource.Drawable.bottomline_red);
 					} else {
 						cRow.SetBackgroundResource (Resource.Drawable.bottomline);

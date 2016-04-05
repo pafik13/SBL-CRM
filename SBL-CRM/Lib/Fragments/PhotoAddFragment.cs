@@ -169,21 +169,26 @@ namespace SBLCRM
 
 			if (resultCode == Result.Ok) {
 				// Make it available in the gallery
-				Intent mediaScanIntent = new Intent (Intent.ActionMediaScannerScanFile);
-				Android.Net.Uri contentUri = Android.Net.Uri.FromFile (file);
-				mediaScanIntent.SetData (contentUri);
-
-				Activity.SendBroadcast (mediaScanIntent);
-
-				ExifInterface exif = new ExifInterface (file.ToString ());
-
-				AttendancePhoto attPhoto = new AttendancePhoto () { photoPath = file.ToString ()};
-				DateTime dtStamp;
-				if (DateTime.TryParse (exif.GetAttribute (ExifInterface.TagDatetime), out dtStamp)){
-					attPhoto.stamp = dtStamp;
+//				Intent mediaScanIntent = new Intent (Intent.ActionMediaScannerScanFile);
+//				Android.Net.Uri contentUri = Android.Net.Uri.FromFile (file);
+//				mediaScanIntent.SetData (contentUri);
+//
+//				Activity.SendBroadcast (mediaScanIntent);
+//
+				AttendancePhoto attPhoto = new AttendancePhoto () {
+					photoPath = file.ToString (),
+					stamp = DateTime.Now,
+					subType = currentPhotoSubTypes[spnPhotoSubTypes.SelectedItemPosition].id
 				};
 
-				attPhoto.subType = currentPhotoSubTypes[spnPhotoSubTypes.SelectedItemPosition].id;
+				//Latitude and Longitude
+				ExifInterface exif = new ExifInterface (attPhoto.photoPath);
+				float[] lat_long = new float[2];
+				if (exif.GetLatLong (lat_long)) {
+					attPhoto.latitude = lat_long [0];
+					attPhoto.longitude = lat_long [1];
+				}
+
 				newAttendancePhotos.Add (attPhoto);
 				AttendancePhotoManager.SetCurrentAttendancePhotos (newAttendancePhotos);
 

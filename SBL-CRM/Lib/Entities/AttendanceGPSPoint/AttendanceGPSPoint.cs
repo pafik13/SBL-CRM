@@ -22,7 +22,8 @@ namespace SBLCRM.Lib.Entities
 		{
 			const char quote = '"';
 			return
-				@" { " 
+				@" { "
+					+ quote + @"localID" + quote + @" : " + id + @","	
 					+ quote + @"attendance" + quote + @" : " + attendance + @","	
 					+ quote + @"longitude" + quote + @" : " + longitude.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + @","
 					+ quote + @"latitude" + quote + @" : " + latitude.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + @","

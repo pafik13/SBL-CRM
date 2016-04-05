@@ -37,11 +37,6 @@ namespace SBLCRM.Lib.Entities
 			return AttendanceRepository.SaveAttendance(item);
 		}
 
-		public static bool CorrectAfterSync(Attendance oldItem, Attendance newItem)
-		{
-			return AttendanceRepository.CorrectAfterSync (oldItem, newItem);
-		}
-
 		public static int DeleteAttendance(int id)
 		{
 			return AttendanceRepository.DeleteAttendance(id);

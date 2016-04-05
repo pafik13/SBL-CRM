@@ -20,6 +20,7 @@ namespace SBLCRM.Lib.Entities
 			const char quote = '"';
 			return
 				@" { " 
+					+ quote + @"localID" + quote + @" : " + id + @","	
 					+ quote + @"attendance" + quote + @" : " + attendance + @","	
 					+ quote + @"info" + quote + @" : " + info + @","
 					+ quote + @"drug" + quote + @" : " + drug + @","

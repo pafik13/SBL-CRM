@@ -37,9 +37,9 @@ namespace SBLCRM.Lib.Entities
 			return AttendancePhotoRepository.SaveNewAttendancePhotos(attendanceID, photos);
 		}
 
-		public static bool CorrectAttendanceForSync(int oldAttendance, int newAttendance)
+		public static bool CreateItemsForSync(Attendance oldAttendance, Attendance newAttendance)
 		{
-			return AttendancePhotoRepository.CorrectAttendanceForSync (oldAttendance, newAttendance);
+			return AttendancePhotoRepository.CreateItemsForSync (oldAttendance, newAttendance);
 		}
 
 		public static int DeleteAttendancePhoto(int id)

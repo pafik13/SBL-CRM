@@ -29,14 +29,15 @@ namespace SBLCRM.Lib.Entities
 //			}
 			return
 				@" { " 
-					+ quote + @"merchant" + quote + @" : " + merchant + ","	
-					+ quote + @"pharmacy" + quote + @" : " + pharmacy + ","
-					+ quote + @"category_net" + quote + @" : " + category_net + ","
-					+ quote + @"telephone" + quote + @" : " + quote + telephone + quote + ","
-					+ quote + @"comment" + quote + @" : " + quote + comment + quote + ","
-					+ quote + @"purchaserFIO" + quote + @" : " + quote + purchaserFIO + quote + ","
-					+ quote + @"promos" + quote + @" : " + @"[" + string.Join(@",", promos) + @"]" + ","
-					+ quote + @"pharmacistCount" + quote + @" : " + pharmacistCount + ","
+					+ quote + @"localID" + quote + @" : " + id + @","	
+					+ quote + @"merchant" + quote + @" : " + merchant + @","	
+					+ quote + @"pharmacy" + quote + @" : " + pharmacy + @","
+					+ quote + @"category_net" + quote + @" : " + category_net + @","
+					+ quote + @"telephone" + quote + @" : " + quote + telephone + quote + @","
+					+ quote + @"comment" + quote + @" : " + quote + comment + quote + @","
+					+ quote + @"purchaserFIO" + quote + @" : " + quote + purchaserFIO + quote + @","
+					+ quote + @"promos" + quote + @" : " + @"[" + string.Join(@",", promos) + @"]" + @","
+					+ quote + @"pharmacistCount" + quote + @" : " + pharmacistCount + @","
 					+ quote + @"date" + quote + @" : " + quote + date.ToString(@"O") + quote
 					+
 				@" } ";

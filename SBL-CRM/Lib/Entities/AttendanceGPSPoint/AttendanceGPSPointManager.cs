@@ -38,9 +38,9 @@ namespace SBLCRM.Lib.Entities
 			return AttendanceGPSPointRepository.SaveNewAttendanceGPSPoints(attendanceID, points);
 		}
 
-		public static bool CorrectAttendanceForSync(int oldAttendance, int newAttendance)
+		public static bool CreateItemsForSync(Attendance oldAttendance, Attendance newAttendance)
 		{
-			return AttendanceGPSPointRepository.CorrectAttendanceForSync (oldAttendance, newAttendance);
+			return AttendanceGPSPointRepository.CreateItemsForSync (oldAttendance, newAttendance);
 		}
 
 		public static int DeleteAttendanceGPSPoint(int id)

@@ -54,9 +54,9 @@ namespace SBLCRM.Lib.Entities
 			);
 		}
 
-		public static bool CorrectAttendanceForSync(int oldAttendance, int newAttendance)
+		public static bool CreateItemsForSync(Attendance oldAttendance, Attendance newAttendance)
 		{
-			return AttendanceResultRepository.CorrectAttendanceForSync (oldAttendance, newAttendance);
+			return AttendanceResultRepository.CreateItemsForSync (oldAttendance, newAttendance);
 		}
 
 		public static int DeleteAttendanceResult(int id)

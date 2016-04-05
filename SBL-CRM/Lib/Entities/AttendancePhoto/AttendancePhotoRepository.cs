@@ -126,16 +126,16 @@ namespace SBLCRM.Lib.Entities
 			return true;
 		}
 
-		public static bool CorrectAttendanceForSync(int oldAttendance, int newAttendance)
+		public static bool CreateItemsForSync(Attendance oldAttendance, Attendance newAttendance)
 		{
 			for (int i = 0; i < attendancePhotos.Count; i++) {
-				if (attendancePhotos[i].attendance == oldAttendance) {
-					attendancePhotos[i].attendance = newAttendance;
-					SyncQueueManager.AddToQueue (attendancePhotos[i]);
+				if (attendancePhotos[i].attendance == oldAttendance.id) {
+					attendancePhotos[i].attendance = newAttendance.id;
+					SyncQueueManager.AddToQueue (attendancePhotos[i], oldAttendance);
+					attendancePhotos[i].attendance = oldAttendance.id;
 				}				
 			}
 
-			WriteXml ();
 			return true;
 		}
 

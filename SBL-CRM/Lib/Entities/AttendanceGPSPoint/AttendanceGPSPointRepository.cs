@@ -122,16 +122,16 @@ namespace SBLCRM.Lib.Entities
 			return true;
 		}
 
-		public static bool CorrectAttendanceForSync(int oldAttendance, int newAttendance)
+		public static bool CreateItemsForSync(Attendance oldAttendance, Attendance newAttendance)
 		{
 			for (int i = 0; i < attendanceGPSPoints.Count; i++) {
-				if (attendanceGPSPoints[i].attendance == oldAttendance) {
-					attendanceGPSPoints[i].attendance = newAttendance;
-					SyncQueueManager.AddToQueue (attendanceGPSPoints[i]);
+				if (attendanceGPSPoints[i].attendance == oldAttendance.id) {
+					attendanceGPSPoints[i].attendance = newAttendance.id;
+					SyncQueueManager.AddToQueue (attendanceGPSPoints[i], oldAttendance);
+					attendanceGPSPoints[i].attendance = oldAttendance.id;
 				}				
 			}
 
-			WriteXml ();
 			return true;
 		}
 
@@ -141,7 +141,7 @@ namespace SBLCRM.Lib.Entities
 				if (attendanceGPSPoints[t].id == id){
 					attendanceGPSPoints.RemoveAt (t);
 					WriteXml ();
-					return 1;
+					return t;
 				}
 			}
 			return -1;

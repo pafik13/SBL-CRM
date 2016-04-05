@@ -80,6 +80,7 @@ namespace SBLCRM.Lib.Fragments
 					};
 				} else {
 					attendance.id = -1;
+					attendance.date = DateTime.Now;
 				}
 			}
 

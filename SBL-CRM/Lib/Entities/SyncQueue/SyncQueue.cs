@@ -20,7 +20,9 @@ namespace SBLCRM.Lib.Entities
 
 		public int id { get; set; }
 		public DateTime stamp { get; set; }
+		public DateTime attendanceDate { get; set; }
 		public SyncQueueType type { get; set; }
+		public int itemID { get; set; }
 		public string fileLocation { get; set; }
 		public bool isSync { get; set; }
 	}

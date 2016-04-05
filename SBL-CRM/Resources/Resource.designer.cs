@@ -868,7 +868,16 @@ namespace SBLCRM
 			public const int ic_visibility_black_36dp = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int rightline = 2130837611;
+			public const int logo_v1 = 2130837611;
+			
+			// aapt resource value: 0x7f02006c
+			public const int rightline = 2130837612;
+			
+			// aapt resource value: 0x7f02006d
+			public const int splash_logo = 2130837613;
+			
+			// aapt resource value: 0x7f02006e
+			public const int splash_screen = 2130837614;
 			
 			static Drawable()
 			{
@@ -1573,6 +1582,9 @@ namespace SBLCRM
 			// aapt resource value: 0x7f030000
 			public const int Icon = 2130903040;
 			
+			// aapt resource value: 0x7f030001
+			public const int s5_logo_v2 = 2130903041;
+			
 			static Mipmap()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -1658,6 +1670,9 @@ namespace SBLCRM
 		
 		public partial class Style
 		{
+			
+			// aapt resource value: 0x7f0c009d
+			public const int MyTheme_Splash = 2131493021;
 			
 			// aapt resource value: 0x7f0c0063
 			public const int TextAppearance_AppCompat_Base_CompactMenu_Dialog = 2131492963;

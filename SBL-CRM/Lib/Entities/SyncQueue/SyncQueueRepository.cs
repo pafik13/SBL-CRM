@@ -72,23 +72,23 @@ namespace SBLCRM.Lib.Entities
 			return queue;
 		}
 
-		public static IEnumerable<DateTime> GetAvailableDatesDesc ()
+		public static IEnumerable<DateTime> GetAvailableAttendanceDatesDesc ()
 		{
 			IEnumerable<DateTime> result = (
 				from q in queue
-				orderby q.stamp.Date descending
-				select q.stamp.Date
+			 orderby q.attendanceDate.Date descending
+			  select q.attendanceDate.Date
 			).Distinct();
 
 			return result;
 		}
 
-		public static IEnumerable<DateTime> GetAvailableDatesAsc ()
+		public static IEnumerable<DateTime> GetAvailableAttendanceDatesAsc ()
 		{
 			IEnumerable<DateTime> result = (
 				from q in queue
-				orderby q.stamp.Date
-				select q.stamp.Date
+			 orderby q.attendanceDate.Date ascending
+			  select q.attendanceDate.Date
 			).Distinct();
 
 			return result;
@@ -105,17 +105,22 @@ namespace SBLCRM.Lib.Entities
 //			return result;
 //		}
 
-		public static IEnumerable<SyncQueue> GetSyncQueue (DateTime date)
+		public static IEnumerable<SyncQueue> GetSyncQueue (DateTime attendanceDate)
 		{
-			return (from q in queue
-			        where q.stamp.Date == date.Date
-							orderby q.stamp
-			        select q);
+			return ( from q in queue
+				    where q.attendanceDate.Date == attendanceDate.Date
+				  orderby q.attendanceDate
+			       select q
+			       );
 		}
 
 		public static int AddToQueue (Attendance attendance)
 		{
-			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendance};
+			SyncQueue queueItem = new SyncQueue() {
+				type = SyncQueueType.sqtAttendance,
+				itemID = attendance.id,
+				attendanceDate = attendance.date
+			};
 
 			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendance_{0}.xml", Guid.NewGuid()));
 
@@ -126,7 +131,7 @@ namespace SBLCRM.Lib.Entities
 				serializer.Serialize(writer, attendance);
 			}
 
-			return SaveSyncQueue(queueItem, false);
+			return SaveSyncQueue(queueItem);
 		}
 
 		public static Attendance GetAttendace(string location)
@@ -143,9 +148,13 @@ namespace SBLCRM.Lib.Entities
 			return null;
 		}
 
-		public static int AddToQueue (AttendanceGPSPoint attendanceGPSPoint)
+		public static int AddToQueue (AttendanceGPSPoint attendanceGPSPoint, Attendance attendance)
 		{
-			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendanceGPSPoint};
+			SyncQueue queueItem = new SyncQueue() {
+				type = SyncQueueType.sqtAttendanceGPSPoint,
+				itemID = attendanceGPSPoint.id,
+				attendanceDate = attendance.date
+			};
 
 			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendanceGPSPoint_{0}.xml", Guid.NewGuid()));
 
@@ -173,9 +182,13 @@ namespace SBLCRM.Lib.Entities
 			return null;
 		}
 
-		public static int AddToQueue (AttendanceResult attendanceResult)
+		public static int AddToQueue (AttendanceResult attendanceResult, Attendance attendance)
 		{
-			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendanceResult};
+			SyncQueue queueItem = new SyncQueue() {
+				type = SyncQueueType.sqtAttendanceResult,
+				itemID = attendanceResult.id,
+				attendanceDate = attendance.date
+			};
 
 			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendanceResult_{0}.xml", Guid.NewGuid()));
 
@@ -203,9 +216,13 @@ namespace SBLCRM.Lib.Entities
 			return null;
 		}
 
-		public static int AddToQueue(AttendancePhoto attendancePhoto)
+		public static int AddToQueue(AttendancePhoto attendancePhoto, Attendance attendance)
 		{
-			SyncQueue queueItem = new SyncQueue() {type = SyncQueueType.sqtAttendancePhoto};
+			SyncQueue queueItem = new SyncQueue() {
+				type = SyncQueueType.sqtAttendancePhoto,
+				itemID = attendancePhoto.id,
+				attendanceDate = attendance.date
+			};
 
 			queueItem.fileLocation = Path.Combine(Common.DatabaseFileDir, fUserName, @"SyncQueue", String.Format("attendancePhoto_{0}.xml", Guid.NewGuid()));
 
@@ -234,7 +251,7 @@ namespace SBLCRM.Lib.Entities
 		}
 
 		/// <summary>
-		/// Insert or update a Doctor
+		/// Добавление или обновление записи о синхронизации
 		/// </summary>
 		public static int SaveSyncQueue (SyncQueue item, bool isWriteXml = true)
 		{
@@ -275,7 +292,7 @@ namespace SBLCRM.Lib.Entities
 				if (queue[t].id == id){
 					queue.RemoveAt (t);
 					WriteXml ();
-					return 1;
+					return t;
 				}
 			}
 			return -1;
