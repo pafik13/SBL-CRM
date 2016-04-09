@@ -249,7 +249,7 @@ namespace SBLCRM.Lib.Dialogs
 								{
 									//Debug.WriteLine("Проверка наличия информации о собираемых данных", @"Info");
 
-									if (@"InformationType" == null)
+									if (Common.GetInfos(username) == null)
 									{
 										//Debug.WriteLine(@"Не удалось найти информацию о собираемых данных! Попробуйте подключить интернет и повторить попытку.", @"Info");
 										return false;

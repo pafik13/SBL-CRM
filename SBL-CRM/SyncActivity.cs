@@ -241,13 +241,13 @@ namespace SBLCRM
 							//						Thread.Sleep (500);
 							RunOnUiThread(() => progressDialog.SetMessage(@"Не удалось загрузить значение по посещению!"));
 							//						Thread.Sleep (1500);
-							break;
+							continue;
 						}
 					}
 				} catch (Exception ex) {
 					RunOnUiThread(() => progressDialog.SetMessage(@"Error : " + ex.Message));
 					//						Thread.Sleep (1500);
-					break;				
+					continue;				
 				}
 			}
 		}
@@ -311,13 +311,13 @@ namespace SBLCRM
 							//						Thread.Sleep (500);
 							RunOnUiThread(() => progressDialog.SetMessage(@"Не удалось загрузить GPS значение по посещению!"));
 							//						Thread.Sleep (1500);
-							break;
+							continue;
 						}
 					}
 				} catch (Exception ex) {
 					RunOnUiThread(() => progressDialog.SetMessage(@"Error : " + ex.Message));
 					//						Thread.Sleep (1500);
-					break;				
+					continue;				
 				}
 			}
 		}
@@ -386,13 +386,13 @@ namespace SBLCRM
 							//						Thread.Sleep (500);
 							RunOnUiThread(() => progressDialog.SetMessage(@"Не удалось загрузить фото по посещению!"));
 							//						Thread.Sleep (1500);
-							break;
+							continue;
 						}
 					}
 				} catch (Exception ex) {
 					RunOnUiThread(() => progressDialog.SetMessage(@"Error : " + ex.Message));
 					//						Thread.Sleep (1500);
-					break;				
+					continue;				
 				}
 			}
 		}

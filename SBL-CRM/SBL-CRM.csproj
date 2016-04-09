@@ -92,10 +92,8 @@
     <Compile Include="Lib\Entities\SyncQueue\SyncQueueManager.cs" />
     <Compile Include="Lib\Entities\SyncQueue\SyncQueueRepository.cs" />
     <Compile Include="Lib\Fragments\Block1Fragment.cs" />
-    <Compile Include="Lib\Fragments\Block2Fragment.cs" />
     <Compile Include="Lib\Fragments\DrugInfoFragment.cs" />
     <Compile Include="Lib\Fragments\PhotoAddFragment.cs" />
-    <Compile Include="Lib\Fragments\PhotoListFragment.cs" />
     <Compile Include="Lib\Entities\PhotoType.cs" />
     <Compile Include="Lib\Entities\PhotoSubType.cs" />
     <Compile Include="Lib\Transliteration.cs" />
@@ -137,10 +135,8 @@
     <AndroidResource Include="Resources\drawable\ic_fast_rewind_white_36dp.png" />
     <AndroidResource Include="Resources\drawable\ic_fast_forward_black_36dp.png" />
     <AndroidResource Include="Resources\drawable\ic_fast_rewind_black_36dp.png" />
-    <AndroidResource Include="Resources\layout\Block2Fragment.axml" />
     <AndroidResource Include="Resources\layout\PhotoAddFragment.axml" />
     <AndroidResource Include="Resources\layout\DrugInfoFragment.axml" />
-    <AndroidResource Include="Resources\layout\PhotoListFragment.axml" />
     <AndroidResource Include="Resources\drawable\bottomline_green.xml" />
     <AndroidResource Include="Resources\drawable\ic_exit_to_app_black_36dp.png" />
     <AndroidResource Include="Resources\layout\Sync.axml" />
