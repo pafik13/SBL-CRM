@@ -107,7 +107,7 @@ namespace SBLCRM
 			string cookieValue = string.Empty;
 			var user = Common.GetCurrentUser ();
 
-			var login = new RestClient(Settings.URLs.Host);
+			var login = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 			//login.Authenticator = new SimpleAuthenticator("identifier", "lyubin.p@gmail.com", "password", "q1234567");
 			login.Authenticator = new SimpleAuthenticator(@"identifier", user.username, @"password", user.password);
@@ -131,7 +131,7 @@ namespace SBLCRM
 				try {
 					if (( q.type == SyncQueueType.sqtAttendance) && (!q.isSync)) {
 
-						var client = new RestClient(Settings.URLs.Host);
+						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 						Attendance oldAttendance = SyncQueueManager.GetAttendace(q.fileLocation);
 						RunOnUiThread(() => progressDialog.SetMessage(string.Format(@"Загрузка посещения с id:{0}", oldAttendance.id)));
@@ -188,7 +188,7 @@ namespace SBLCRM
 			string cookieValue = string.Empty;
 			var user = Common.GetCurrentUser ();
 
-			var login = new RestClient(Settings.URLs.Host);
+			var login = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 			//login.Authenticator = new SimpleAuthenticator("identifier", "lyubin.p@gmail.com", "password", "q1234567");
 			login.Authenticator = new SimpleAuthenticator(@"identifier", user.username, @"password", user.password);
@@ -210,7 +210,7 @@ namespace SBLCRM
 			foreach (var q in queueToUpload) {
 				try {
 					if (( q.type == SyncQueueType.sqtAttendanceResult) && (!q.isSync)) {
-						var client = new RestClient(Settings.URLs.Host);
+						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 						//Debug.WriteLine(@"Получение информации о себе.", @"Info");
 						AttendanceResult attendanceResult = SyncQueueManager.GetAttendaceResult(q.fileLocation);
@@ -258,7 +258,7 @@ namespace SBLCRM
 			string cookieValue = string.Empty;
 			var user = Common.GetCurrentUser ();
 
-			var login = new RestClient(Settings.URLs.Host);
+			var login = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 			//login.Authenticator = new SimpleAuthenticator("identifier", "lyubin.p@gmail.com", "password", "q1234567");
 			login.Authenticator = new SimpleAuthenticator(@"identifier", user.username, @"password", user.password);
@@ -280,7 +280,7 @@ namespace SBLCRM
 			foreach (var q in queueToUpload) {
 				try {
 					if (( q.type == SyncQueueType.sqtAttendanceGPSPoint) && (!q.isSync)) {
-						var client = new RestClient(Settings.URLs.Host);
+						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 						//Debug.WriteLine(@"Получение информации о себе.", @"Info");
 						AttendanceGPSPoint attendanceGPSPoint = SyncQueueManager.GetAttendanceGPSPoint(q.fileLocation);
@@ -328,7 +328,7 @@ namespace SBLCRM
 			string cookieValue = string.Empty;
 			var user = Common.GetCurrentUser ();
 
-			var login = new RestClient(Settings.URLs.Host);
+			var login = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 			//login.Authenticator = new SimpleAuthenticator("identifier", "lyubin.p@gmail.com", "password", "q1234567");
 			login.Authenticator = new SimpleAuthenticator(@"identifier", user.username, @"password", user.password);
@@ -355,7 +355,7 @@ namespace SBLCRM
 						//Attendance attendance = AttendanceManager.GetAttendance (attendancePhoto.attendance);
 						RunOnUiThread(() => progressDialog.SetMessage(string.Format(@"Загрузка фото с id {0} по посещению с id:{1}", attendancePhoto.id, attendancePhoto.attendance)));
 
-						var client = new RestClient(Settings.URLs.Host);
+						var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 						//					var request = new RestRequest (@"AttendancePhoto/create?attendance={attendance}&longitude={longitude}&latitude={latitude}&stamp={stamp}", Method.POST);
 						var request = new RestRequest (@"AttendancePhoto/create?localID={localID}&attendance={attendance}&longitude={longitude}&latitude={latitude}&subType={subType}", Method.POST);

@@ -108,6 +108,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:visibility="gone" />
+    <TableLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/maPharmacyTable"
+        android:shrinkColumns="1"
+        android:stretchColumns="2,3" />
     <RelativeLayout
         android:orientation="vertical"
         android:minWidth="25px"
@@ -140,27 +148,10 @@
             android:typeface="monospace" />
     </RelativeLayout>
     <RelativeLayout
-        android:orientation="vertical"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/maBottomRL">	
-		<TableLayout
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:id="@+id/maPharmacyTable"
-			android:shrinkColumns="1"
-			android:stretchColumns="2,3" />
-		<RelativeLayout
         android:id="@+id/maDownPanelRL"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
         android:minWidth="25px"
         android:minHeight="25px"
         android:background="@drawable/bottomline">
@@ -195,5 +186,4 @@
             android:paddingRight="14dp"
             android:minHeight="56dp" />
     </RelativeLayout>
-	</RelativeLayout>
 </LinearLayout>

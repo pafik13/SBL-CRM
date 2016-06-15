@@ -289,8 +289,14 @@ namespace SBLCRM.Lib.Dialogs
 		private bool onlineAuth(string username, string password)
 		{
 			WriteInfo (@"Подключение к серверу");
-			var login = new RestClient(Settings.URLs.Host);
+			var login = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
+
+			//login.Authenticator = new SimpleAuthenticator("identifier", "lyubin.p@gmail.com", "password", "q1234567");
+//			login.Authenticator = new SimpleAuthenticator(@"identifier", username, @"password", password);
 			login.CookieContainer = new CookieContainer();
+
+//			login.Add
+
 			var request = new RestRequest(@"auth/local", Method.POST);
 			request.AddParameter (@"identifier", username);
 			request.AddParameter (@"password", password);
@@ -310,7 +316,7 @@ namespace SBLCRM.Lib.Dialogs
 			cookieName = response.Cookies[0].Name;
 			cookieValue = response.Cookies[0].Value;
 
-			var client = new RestClient(Settings.URLs.Host);
+			var client = new RestClient(@"http://sbl-logisapp.rhcloud.com/");
 
 			//Debug.WriteLine(@"Получение информации о себе.", @"Info");
 			WriteInfo (@"Получение информации о себе", 2000);

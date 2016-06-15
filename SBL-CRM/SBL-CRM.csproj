@@ -105,6 +105,7 @@
     <Compile Include="Lib\Entities\AttendanceGPSPoint\AttendanceGPSPointRepository.cs" />
     <Compile Include="Lib\Entities\AttendanceGPSPoint\AttendanceGPSPointManager.cs" />
     <Compile Include="SplashActivity.cs" />
+    <Compile Include="Lib\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
